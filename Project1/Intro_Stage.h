@@ -4,7 +4,7 @@
 #define ANIID 346
 #define STAGE_SCALEX 0.3f
 #define STAGE_SCALEY 0.3f
-#define STAGE_BBOX_TOP 167
+#define STAGE_BBOX_TOP 165
 #define STAGE_BBOX_LEFT 0
 #define STAGE_BBOX_OFFSET 700
 

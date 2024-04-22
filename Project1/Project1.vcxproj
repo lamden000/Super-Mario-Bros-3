@@ -142,6 +142,8 @@
     <ClCompile Include="Intro.cpp" />
     <ClCompile Include="Intro_BrownCurtain.cpp" />
     <ClCompile Include="Intro_Stage.cpp" />
+    <ClCompile Include="KeyHandlerForLuigi.cpp" />
+    <ClCompile Include="Luigi.cpp" />
     <ClCompile Include="SampleKeyEventHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mario.cpp" />
@@ -172,6 +174,8 @@
     <ClInclude Include="Intro_BrownCurtain.h" />
     <ClInclude Include="Intro_Stage.h" />
     <ClInclude Include="KeyEventHandler.h" />
+    <ClInclude Include="KeyHandlerForLuigi.h" />
+    <ClInclude Include="Luigi.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="Platform.h" />
     <ClInclude Include="PlayScene.h" />

@@ -18,15 +18,12 @@ void CIntro::Render()
 
 	pD3DDevice->ClearRenderTargetView(pRenderTargetView, INTRO_BACKGROUND_COLOR);
 
-	spriteHandler->Begin(D3DX10_SPRITE_SORT_TEXTURE);
-
 	FLOAT NewBlendFactor[4] = { 0,0,0,0 };
 	pD3DDevice->OMSetBlendState(g->GetAlphaBlending(), NewBlendFactor, 0xffffffff);
 
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
 
-	spriteHandler->End();
 	pSwapChain->Present(0, 0);
 }
 

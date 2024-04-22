@@ -11,8 +11,10 @@
 #include "Platform.h"
 #include "Intro_BrownCurtain.h"
 #include "Intro_Stage.h"
+#include "Luigi.h"
 
 #include "SampleKeyEventHandler.h"
+#include "KeyHandlerForLuigi.h"
 
 using namespace std;
 
@@ -20,7 +22,6 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
 {
 	player = NULL;
-	key_handler = new CSampleKeyHandler(this);
 }
 
 #define SCENE_SECTION_UNKNOWN -1
@@ -111,10 +112,27 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			DebugOut(L"[ERROR] MARIO object was created before!\n");
 			return;
 		}
+		key_handler = new CSampleKeyHandler(this);
 		obj = new CMario(x, y);
 		player = (CMario*)obj;
 
+		CGame::GetInstance()->SetKeyHandler(key_handler);
+
 		DebugOut(L"[INFO] Player object has been created!\n");
+		break;
+	case OBJECT_TYPE_LUIGI:
+		if (player != NULL)
+		{
+			DebugOut(L"[ERROR] MARIO object was created before!\n");
+			return;
+		}
+		key_handler = new CKeyHandlerForLuigi(this);
+		obj = new CLuigi(x, y);
+		player = (CLuigi*)obj;
+
+		CGame::GetInstance()->SetKeyHandler(key_handler);
+
+		DebugOut(L"[INFO] Luigi has been created!\n");
 		break;
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x, y); break; 
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x, y); break;

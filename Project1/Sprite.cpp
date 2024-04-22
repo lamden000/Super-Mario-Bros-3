@@ -47,7 +47,7 @@ void CSprite::Draw(float x, float y, float scaleX,float scaleY)
 	D3DXMATRIX matScaling2;
 	D3DXMatrixScaling(&matScaling2, scaleX, scaleY, 1.0f);
 
-	this->sprite.matWorld = (matScaling * matTranslation* matScaling2);
+	this->sprite.matWorld = (matScaling * matScaling2 * matTranslation);
 
 	g->GetSpriteHandler()->DrawSpritesImmediate(&sprite, 1, 0, 0);
 }
