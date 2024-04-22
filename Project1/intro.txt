@@ -1,0 +1,18 @@
+[ASSETS]
+IntroObject.txt
+mario.txt
+cloud.txt
+brick.txt
+[OBJECTS]
+# type	x	y	extra_settings per object type
+# type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
+# See OBJECT_TYPE constants in AssetIDs.h
+
+# MARIO
+0	300	150
+
+#curtain 
+6	500	-300
+
+#stage
+7	500	150
