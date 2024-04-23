@@ -24,15 +24,12 @@ void CLuigi::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		untouchable_start = 0;
 		untouchable = 0;
 	}
-
-	isOnPlatform = false;
-
 	CCollision::GetInstance()->Process(this, dt, coObjects);
-
 }
 
 void CLuigi::OnNoCollision(DWORD dt)
 {
+	isOnPlatform = false;
 	x += vx * dt;
 	y += vy * dt;
 }
@@ -44,11 +41,11 @@ void CLuigi::OnCollisionWith(LPCOLLISIONEVENT e)
 		vy = 0;
 		if (e->ny < 0) isOnPlatform = true;
 	}
-	else
-		if (e->nx != 0 && e->obj->IsBlocking())
-		{
-			vx = 0;
-		}
+	else if (e->nx != 0 && e->obj->IsBlocking())
+	{
+		vx = 0;
+	}
+	else isOnPlatform = false;
 
 
 	if (dynamic_cast<CGoomba*>(e->obj))
@@ -301,12 +298,13 @@ void CLuigi::SetState(int state)
 		break;
 
 	case LUIGI_STATE_SIT:
-		if (isOnPlatform && level != LUIGI_LEVEL_SMALL)
+		if (isOnPlatform&& level != LUIGI_LEVEL_SMALL)
 		{
 			state = LUIGI_STATE_IDLE;
 			isSitting = true;
 			vx = 0.0f; 
 			vy = 0.0f;
+			ax = 0;
 			y += LUIGI_SIT_HEIGHT_ADJUST;
 		}
 		break;
@@ -324,7 +322,6 @@ void CLuigi::SetState(int state)
 		ax = 0.0f;
 		vx = 0.0f;
 		break;
-
 	case LUIGI_STATE_DIE:
 		JumpDeflect();
 		vx = 0;

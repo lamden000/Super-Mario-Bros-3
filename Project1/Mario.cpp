@@ -8,6 +8,7 @@
 #include "Coin.h"
 #include "Portal.h"
 #include "Luigi.h"
+#include "Leaf.h"
 
 #include "Collision.h"
 
@@ -23,13 +24,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		untouchable_start = 0;
 		untouchable = 0;
 	}
-	isOnPlatform = false;
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 
 }
 
 void CMario::OnNoCollision(DWORD dt)
 {
+	isOnPlatform = false;
 	x += vx * dt;
 	y += vy * dt;
 }
@@ -42,12 +43,13 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		if (e->ny < 0) 
 			isOnPlatform = true;
 	}
-	else
-		if (e->nx != 0 && e->obj->IsBlocking())
-		{
+	else if (e->nx != 0 && e->obj->IsBlocking())
+	{
 			vx = 0;
-		}
-
+	}
+	else {
+		isOnPlatform = false;
+	}
 
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
@@ -57,6 +59,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPortal(e);
 	else if (dynamic_cast<CLuigi*>(e->obj))
 		OnCollisionWithLuigi(e);
+	else if (dynamic_cast<CLeaf*>(e->obj))
+		OnCollisionWithLeaf(e);
 
 }
 
@@ -105,6 +109,11 @@ void CMario::OnCollisionWithLuigi(LPCOLLISIONEVENT e)
 			luigi->JumpDeflect();
 		}
 	}
+}
+
+void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
+{
+	DebugOut(L">>> colide leaf >>> \n");
 }
 
 
@@ -257,9 +266,9 @@ void CMario::Render()
 
 	animations->Get(aniId)->Render(x, y);
 
-	//RenderBoundingBox();
+	RenderBoundingBox();
 
-	DebugOutTitle(L"Coins: %d", coin);
+	//DebugOutTitle(L"Coins: %d", coin);
 }
 
 void CMario::SetState(int state)
@@ -307,10 +316,10 @@ void CMario::SetState(int state)
 		break;
 
 	case MARIO_STATE_SIT:
-		if ((isOnPlatform && level != MARIO_LEVEL_SMALL))//||autoRunning)
+		if ((isOnPlatform && level != MARIO_LEVEL_SMALL))
 		{
 			state = MARIO_STATE_IDLE;
-			vx = 0; vy = 0.0f;
+			vx = 0; vy = 0.0f; ax = 0;
 			y += MARIO_SIT_HEIGHT_ADJUST;
 			isSitting = true;
 		}

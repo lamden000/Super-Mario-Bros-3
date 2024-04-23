@@ -19,7 +19,6 @@ void CKeyHandlerForLuigi::OnKeyDown(int KeyCode)
 		{
 		case DIK_DOWN:
 			luigi->SetState(LUIGI_STATE_SIT);
-			break;
 		case DIK_S:
 			luigi->SetState(LUIGI_STATE_JUMP);
 			break;
@@ -62,10 +61,7 @@ void CKeyHandlerForLuigi::KeyState(BYTE* states)
 	CLuigi* luigi = (CLuigi*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	if (!luigi->GetAutoRunning())
 	{
-		LPGAME game = CGame::GetInstance();
-		if (luigi == nullptr)
-			return;
-
+		CGame* game = CGame::GetInstance();
 		if (game->IsKeyDown(DIK_RIGHT))
 		{
 			if (game->IsKeyDown(DIK_A))

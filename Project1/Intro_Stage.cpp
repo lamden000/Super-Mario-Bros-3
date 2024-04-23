@@ -1,6 +1,4 @@
 #include "Intro_Stage.h"
-#include"debug.h"
-#include"Mario.h"
 CStage::CStage(float x, float y)
 {
 	this->x = x;

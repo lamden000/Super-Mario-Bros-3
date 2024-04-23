@@ -5,6 +5,7 @@
 #define CURTAIN_SCALEX 0.28f
 #define CURTAIN_SCALEY 0.28f
 #define CURTAIN_SPEEDY 0.2f
+#define CURTAIN_ALTITUDE -95
 
 class CBrownCurtain : public CGameObject
 {

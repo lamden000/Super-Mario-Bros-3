@@ -1,4 +1,4 @@
-#include "Intro.h"
+﻿#include "Intro.h"
 #include <iostream>
 #include <fstream>
 #include "AssetIDs.h"
@@ -13,6 +13,8 @@
 #include "Intro_BrownCurtain.h"
 #include "Intro_Stage.h"
 #include "Luigi.h"
+#include "Logo.h"
+#include "Leaf.h"
 
 #include "SampleKeyEventHandler.h"
 #include "KeyHandlerForLuigi.h"
@@ -25,14 +27,28 @@ CIntro::CIntro(int id, LPCWSTR filePath) :
 
 void CIntro::Render()
 {
-	CGame* g = CGame::GetInstance();
+	static DWORD introStartTime = GetTickCount();
 
+	CGame* g = CGame::GetInstance();
 	ID3D10Device* pD3DDevice = g->GetDirect3DDevice();
 	IDXGISwapChain* pSwapChain = g->GetSwapChain();
 	ID3D10RenderTargetView* pRenderTargetView = g->GetRenderTargetView();
 	ID3DX10Sprite* spriteHandler = g->GetSpriteHandler();
 
-	pD3DDevice->ClearRenderTargetView(pRenderTargetView, INTRO_BACKGROUND_COLOR);
+	DWORD currentTime = GetTickCount64();
+	DWORD passedTime = currentTime - introStartTime;
+
+	if ((passedTime >= 7000&& passedTime<7600)|| passedTime>7800)
+	{
+		pD3DDevice->ClearRenderTargetView(pRenderTargetView, INTRO_BACKGROUND_COLOR_2);
+	}
+	else if (passedTime >= 7600 && passedTime <=7800)
+	{
+		pD3DDevice->ClearRenderTargetView(pRenderTargetView, INTRO_BACKGROUND_COLOR_3);
+	}
+	else {
+		pD3DDevice->ClearRenderTargetView(pRenderTargetView, INTRO_BACKGROUND_COLOR_1);
+	}
 
 	FLOAT NewBlendFactor[4] = { 0,0,0,0 };
 	pD3DDevice->OMSetBlendState(g->GetAlphaBlending(), NewBlendFactor, 0xffffffff);
@@ -47,7 +63,6 @@ void CIntro::Update(DWORD dt)
 {
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
-
 	static bool waitFinished = false;
 	WaitForIntro(dt, 1000, waitFinished);
 	if (!waitFinished) return;
@@ -66,7 +81,7 @@ void CIntro::Update(DWORD dt)
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
-		if (i == 2)
+		if (i == CURTAIN_ID||i==LOGO_ID)
 			continue;
 		objects[i]->Update(dt, &coObjects);
 	}
@@ -74,12 +89,25 @@ void CIntro::Update(DWORD dt)
 	if (this->action == ACTION_1)
 	{
 		float a, b, x, y;
-		objects[MARIO_ID]->GetPosition(a,b);
+		objects[MARIO_ID]->GetPosition(a, b);
 		objects[LUIGI_ID]->GetPosition(x, y);
-		if (a -x<=95)
+		if (a - x <= 110)
 		{
 			AutoRun(ACTION_2);
 		}
+	}
+	else if (this->action == ACTION_2) {
+		waitFinished = false;
+		WaitForIntro(dt, 9000, waitFinished);
+		if (waitFinished)
+			AutoRun(ACTION_3);
+	}
+	else if (this->action == ACTION_3)
+	{
+		waitFinished = false;
+		WaitForIntro(dt, 11000, waitFinished);
+		if(waitFinished)
+			objects[LOGO_ID]->Update(dt, &coObjects);
 	}
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
@@ -87,6 +115,8 @@ void CIntro::Update(DWORD dt)
 
 	PurgeDeletedObjects();
 }
+
+
 void CIntro::WaitForIntro(DWORD dt, DWORD introDuration, bool& waitFinished)
 {
 	static DWORD introTimer = 0;
@@ -117,9 +147,7 @@ void CIntro::_ParseSection_OBJECTS(string line)
 	switch (object_type)
 	{
 	case OBJECT_TYPE_MARIO:
-	//	key_handler = new CSampleKeyHandler(this);
 		obj = new CMario(x, y);
-	//	player = (CMario*)obj;
 
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
@@ -137,6 +165,8 @@ void CIntro::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
 	case OBJECT_TYPE_BROWNCURTAIN: obj = new CBrownCurtain(x, y); break;
 	case OBJECT_TYPE_STAGE: obj = new CStage(x, y); break;
+	case OBJECT_TYPE_LOGO: obj = new CLogo(x, y); break;
+	case OBJECT_TYPE_LEAF: obj = new CLeaf(x, y); break;
 	case OBJECT_TYPE_PLATFORM:
 	{
 
@@ -180,16 +210,22 @@ void CIntro::_ParseSection_OBJECTS(string line)
 
 void CIntro::AutoRun(int action)
 {
-	if (action == 1)
+	if (action == ACTION_1)
 	{
 		CMario* mario = dynamic_cast<CMario*>(objects[MARIO_ID]);
+		CLuigi* luigi = dynamic_cast<CLuigi*>(objects[LUIGI_ID]);
 		mario->SetAutoRunning(true);
-		objects[LUIGI_ID]->SetState(LUIGI_STATE_WALKING_RIGHT);
+		luigi->SetAutoRunning(true);
+		luigi->SetState(LUIGI_STATE_WALKING_RIGHT);
 		mario->SetState(MARIO_STATE_WALKING_LEFT);
 	}
-	else if (action == 2)
+	else if (action == ACTION_2)
 	{
 		objects[LUIGI_ID]->SetState(LUIGI_STATE_JUMP);		
+	}
+	else if (action == ACTION_3)
+	{
+		objects[MARIO_ID]->SetState(MARIO_STATE_SIT_RELEASE);
 	}
 	this->action = action;
 }

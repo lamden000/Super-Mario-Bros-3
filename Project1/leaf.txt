@@ -1,0 +1,11 @@
+# id	left	top	right	bottom	texture_id
+[SPRITES]
+#leaf
+
+2024	299	206	317	222	21
+2025	321	206	340	222	20
+
+# ani_id	sprite1_id	time1	sprite2_id	time2	...
+[ANIMATIONS]
+#leaf
+20241	2024	700	2025	700
