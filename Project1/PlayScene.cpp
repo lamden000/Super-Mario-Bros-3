@@ -107,32 +107,20 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	switch (object_type)
 	{
 	case OBJECT_TYPE_MARIO:
-		if (player != NULL)
-		{
-			DebugOut(L"[ERROR] MARIO object was created before!\n");
-			return;
-		}
-		key_handler = new CSampleKeyHandler(this);
 		obj = new CMario(x, y);
-		player = (CMario*)obj;
-
-		CGame::GetInstance()->SetKeyHandler(key_handler);
-
-		DebugOut(L"[INFO] Player object has been created!\n");
+		if (player == NULL)
+		{
+			key_handler = new CSampleKeyHandler(this);
+			player = (CMario*)obj;
+		}
 		break;
 	case OBJECT_TYPE_LUIGI:
-		if (player != NULL)
-		{
-			DebugOut(L"[ERROR] MARIO object was created before!\n");
-			return;
-		}
-		key_handler = new CKeyHandlerForLuigi(this);
 		obj = new CLuigi(x, y);
-		player = (CLuigi*)obj;
-
-		CGame::GetInstance()->SetKeyHandler(key_handler);
-
-		DebugOut(L"[INFO] Luigi has been created!\n");
+		if (player == NULL)
+		{
+			key_handler = new CKeyHandlerForLuigi(this);
+			player = (CLuigi*)obj;
+		}
 		break;
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x, y); break; 
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x, y); break;

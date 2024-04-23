@@ -2,8 +2,8 @@
 #include "GameObject.h"
 
 #define ANIID 345
-#define CURTAIN_SCALEX 0.3f
-#define CURTAIN_SCALEY 0.3f
+#define CURTAIN_SCALEX 0.28f
+#define CURTAIN_SCALEY 0.28f
 #define CURTAIN_SPEEDY 0.2f
 
 class CBrownCurtain : public CGameObject

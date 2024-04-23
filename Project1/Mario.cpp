@@ -7,27 +7,24 @@
 #include "Goomba.h"
 #include "Coin.h"
 #include "Portal.h"
-#include "Intro_Stage.h"
+#include "Luigi.h"
 
 #include "Collision.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-		vy += ay * dt;
-		vx += ax * dt;
+	vy += ay * dt;
+	vx += ax * dt;
+	if (abs(vx) > abs(maxVx)) vx = maxVx;
 
-		if (abs(vx) > abs(maxVx)) vx = maxVx;
-
-		// reset untouchable timer if untouchable time has passed
-		if (GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
-		{
-			untouchable_start = 0;
-			untouchable = 0;
-		}
-
-		isOnPlatform = false;
-
-		CCollision::GetInstance()->Process(this, dt, coObjects);
+	// reset untouchable timer if untouchable time has passed
+	if (GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
+	{
+		untouchable_start = 0;
+		untouchable = 0;
+	}
+	isOnPlatform = false;
+	CCollision::GetInstance()->Process(this, dt, coObjects);
 
 }
 
@@ -42,7 +39,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (e->ny != 0 && e->obj->IsBlocking())
 	{
 		vy = 0;
-		if (e->ny < 0) isOnPlatform = true;
+		if (e->ny < 0) 
+			isOnPlatform = true;
 	}
 	else
 		if (e->nx != 0 && e->obj->IsBlocking())
@@ -57,6 +55,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithCoin(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
+	else if (dynamic_cast<CLuigi*>(e->obj))
+		OnCollisionWithLuigi(e);
 
 }
 
@@ -93,6 +93,20 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 		}
 	}
 }
+
+void CMario::OnCollisionWithLuigi(LPCOLLISIONEVENT e)
+{
+	if (e->ny>0)
+	{
+		CLuigi* luigi = dynamic_cast<CLuigi*>(e->obj);
+		if (luigi->GetState() != LUIGI_STATE_DIE)
+		{			
+			this->SetState(MARIO_STATE_SIT);
+			luigi->JumpDeflect();
+		}
+	}
+}
+
 
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
@@ -252,7 +266,6 @@ void CMario::SetState(int state)
 {
 	// DIE is the end state, cannot be changed! 
 	if (this->state == MARIO_STATE_DIE) return;
-
 	switch (state)
 	{
 	case MARIO_STATE_RUNNING_RIGHT:
@@ -274,7 +287,6 @@ void CMario::SetState(int state)
 		nx = 1;
 		break;
 	case MARIO_STATE_WALKING_LEFT:
-		if (isSitting) break;
 		maxVx = -MARIO_WALKING_SPEED;
 		ax = -MARIO_ACCEL_WALK_X;
 		nx = -1;
@@ -295,15 +307,14 @@ void CMario::SetState(int state)
 		break;
 
 	case MARIO_STATE_SIT:
-		if (isOnPlatform && level != MARIO_LEVEL_SMALL)
+		if ((isOnPlatform && level != MARIO_LEVEL_SMALL))//||autoRunning)
 		{
 			state = MARIO_STATE_IDLE;
-			isSitting = true;
 			vx = 0; vy = 0.0f;
 			y += MARIO_SIT_HEIGHT_ADJUST;
+			isSitting = true;
 		}
 		break;
-
 	case MARIO_STATE_SIT_RELEASE:
 		if (isSitting)
 		{

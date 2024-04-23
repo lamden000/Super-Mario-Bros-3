@@ -17,12 +17,13 @@ void CStage::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CStage::Render()
 {
 	CAnimations::GetInstance()->Get(ANIID)->Render(x, y, STAGE_SCALEX, STAGE_SCALEY);
+	//RenderBoundingBox();
 }
 
 void CStage::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
-	l = STAGE_BBOX_LEFT;
-	t = STAGE_BBOX_TOP;
-	r = l + STAGE_BBOX_OFFSET;
-	b = t + STAGE_BBOX_OFFSET;
+	l = x- STAGE_BBOX_WIDTH /2;
+	t = y- STAGE_BBOX_HEIGHT /2;
+	r = l + STAGE_BBOX_WIDTH;
+	b = t + STAGE_BBOX_HEIGHT;
 }

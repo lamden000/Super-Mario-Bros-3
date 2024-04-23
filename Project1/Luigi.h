@@ -20,7 +20,7 @@
 
 #define LUIGI_GRAVITY			0.002f
 
-#define LUIGI_JUMP_DEFLECT_SPEED  0.4f
+#define LUIGI_JUMP_DEFLECT_SPEED  1.0f
 
 #define LUIGI_STATE_DIE				-10
 #define LUIGI_STATE_IDLE			0
@@ -139,6 +139,7 @@ public:
 		untouchable_start = -1;
 		isOnPlatform = false;
 		coin = 0;
+		nx = 1;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
@@ -153,6 +154,7 @@ public:
 
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
+	void JumpDeflect();
 
 	void SetLevel(int l);
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
@@ -164,14 +166,5 @@ public:
 
 	bool GetAutoRunning() {
 		return autoRunning;
-	}
-	D3DXVECTOR2 GetMoveDirection() {
-		return moveDirection;
-	}
-	void SetMoveDirection(D3DXVECTOR2 dir) {
-		moveDirection = dir;
-	}
-	void SetJumpDirection(D3DXVECTOR2 dir) {
-		jumpDirection = dir;
 	}
 };

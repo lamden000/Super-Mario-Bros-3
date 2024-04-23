@@ -1,10 +1,26 @@
 #include "Intro.h"
+#include <iostream>
+#include <fstream>
+#include "AssetIDs.h"
+
+#include "PlayScene.h"
+#include "Utils.h"
+#include "Textures.h"
+#include "Sprites.h"
+#include "Portal.h"
+#include "Coin.h"
+#include "Platform.h"
+#include "Intro_BrownCurtain.h"
+#include "Intro_Stage.h"
+#include "Luigi.h"
+
+#include "SampleKeyEventHandler.h"
+#include "KeyHandlerForLuigi.h"
 
 CIntro::CIntro(int id, LPCWSTR filePath) :
 	CPlayScene(id, filePath)
 {
 	player = NULL;
-	key_handler = new CSampleKeyHandler(this);
 }
 
 void CIntro::Render()
@@ -42,9 +58,28 @@ void CIntro::Update(DWORD dt)
 		coObjects.push_back(objects[i]);
 	}
 
+	objects[CURTAIN_ID]->Update(dt, &coObjects);
+
+	waitFinished = false;
+	WaitForIntro(dt, 3000, waitFinished);
+	if (!waitFinished) return;
+
 	for (size_t i = 0; i < objects.size(); i++)
 	{
+		if (i == 2)
+			continue;
 		objects[i]->Update(dt, &coObjects);
+	}
+
+	if (this->action == ACTION_1)
+	{
+		float a, b, x, y;
+		objects[MARIO_ID]->GetPosition(a,b);
+		objects[LUIGI_ID]->GetPosition(x, y);
+		if (a -x<=95)
+		{
+			AutoRun(ACTION_2);
+		}
 	}
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
@@ -65,4 +100,96 @@ void CIntro::WaitForIntro(DWORD dt, DWORD introDuration, bool& waitFinished)
 			waitFinished = true;
 		}
 	}
+}
+
+void CIntro::_ParseSection_OBJECTS(string line)
+{
+	vector<string> tokens = split(line);
+
+	// skip invalid lines - an object set must have at least id, x, y
+	if (tokens.size() < 2) return;
+
+	int object_type = atoi(tokens[0].c_str());
+	float x = (float)atof(tokens[1].c_str());
+	float y = (float)atof(tokens[2].c_str());
+	DebugOut(L" object type: %d\n", object_type);
+	CGameObject* obj = NULL;
+	switch (object_type)
+	{
+	case OBJECT_TYPE_MARIO:
+	//	key_handler = new CSampleKeyHandler(this);
+		obj = new CMario(x, y);
+	//	player = (CMario*)obj;
+
+		DebugOut(L"[INFO] Player object has been created!\n");
+		break;
+	case OBJECT_TYPE_LUIGI:
+		key_handler = new CKeyHandlerForLuigi(this);
+		obj = new CLuigi(x, y);
+		player = (CLuigi*)obj;
+
+		CGame::GetInstance()->SetKeyHandler(key_handler);
+
+		DebugOut(L"[INFO] Luigi has been created!\n");
+		break;
+	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x, y); break;
+	case OBJECT_TYPE_BRICK: obj = new CBrick(x, y); break;
+	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
+	case OBJECT_TYPE_BROWNCURTAIN: obj = new CBrownCurtain(x, y); break;
+	case OBJECT_TYPE_STAGE: obj = new CStage(x, y); break;
+	case OBJECT_TYPE_PLATFORM:
+	{
+
+		float cell_width = (float)atof(tokens[3].c_str());
+		float cell_height = (float)atof(tokens[4].c_str());
+		int length = atoi(tokens[5].c_str());
+		int sprite_begin = atoi(tokens[6].c_str());
+		int sprite_middle = atoi(tokens[7].c_str());
+		int sprite_end = atoi(tokens[8].c_str());
+
+		obj = new CPlatform(
+			x, y,
+			cell_width, cell_height, length,
+			sprite_begin, sprite_middle, sprite_end
+		);
+
+		break;
+	}
+
+	case OBJECT_TYPE_PORTAL:
+	{
+		float r = (float)atof(tokens[3].c_str());
+		float b = (float)atof(tokens[4].c_str());
+		int scene_id = atoi(tokens[5].c_str());
+		obj = new CPortal(x, y, r, b, scene_id);
+	}
+	break;
+
+
+	default:
+		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
+		return;
+	}
+
+	// General object setup
+	obj->SetPosition(x, y);
+
+
+	objects.push_back(obj);
+}
+
+void CIntro::AutoRun(int action)
+{
+	if (action == 1)
+	{
+		CMario* mario = dynamic_cast<CMario*>(objects[MARIO_ID]);
+		mario->SetAutoRunning(true);
+		objects[LUIGI_ID]->SetState(LUIGI_STATE_WALKING_RIGHT);
+		mario->SetState(MARIO_STATE_WALKING_LEFT);
+	}
+	else if (action == 2)
+	{
+		objects[LUIGI_ID]->SetState(LUIGI_STATE_JUMP);		
+	}
+	this->action = action;
 }

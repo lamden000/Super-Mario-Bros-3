@@ -1,6 +1,5 @@
 #pragma once
 #include "KeyEventHandler.h"
-
 /*
 *  Abstract class for a game scene
 */

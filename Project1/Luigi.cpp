@@ -1,4 +1,4 @@
-#include <algorithm>
+﻿#include <algorithm>
 #include "debug.h"
 
 #include "Luigi.h"
@@ -70,7 +70,7 @@ void CLuigi::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 		if (goomba->GetState() != GOOMBA_STATE_DIE)
 		{
 			goomba->SetState(GOOMBA_STATE_DIE);
-			vy = -LUIGI_JUMP_DEFLECT_SPEED;
+			JumpDeflect();
 		}
 	}
 	else // hit by Goomba
@@ -242,7 +242,7 @@ void CLuigi::Render()
 	else if (level == LUIGI_LEVEL_BIG)
 	{
 		aniId = GetAniIdBig();
-		animations->Get(aniId)->Render(x, y);
+		animations->Get(aniId)->Render(x, y,0.9,0.9);
 	}		
 	else if (level == LUIGI_LEVEL_SMALL)
 	{
@@ -261,7 +261,8 @@ void CLuigi::SetState(int state)
 	switch (state)
 	{
 	case LUIGI_STATE_RUNNING_RIGHT:
-		if (isSitting) break;
+		if (isSitting)
+			break;
 		maxVx = LUIGI_RUNNING_SPEED;
 		ax = LUIGI_ACCEL_RUN_X;
 		nx = 1;
@@ -304,7 +305,8 @@ void CLuigi::SetState(int state)
 		{
 			state = LUIGI_STATE_IDLE;
 			isSitting = true;
-			vx = 0; vy = 0.0f;
+			vx = 0.0f; 
+			vy = 0.0f;
 			y += LUIGI_SIT_HEIGHT_ADJUST;
 		}
 		break;
@@ -324,7 +326,7 @@ void CLuigi::SetState(int state)
 		break;
 
 	case LUIGI_STATE_DIE:
-		vy = -LUIGI_JUMP_DEFLECT_SPEED;
+		JumpDeflect();
 		vx = 0;
 		ax = 0;
 		break;
@@ -369,5 +371,10 @@ void CLuigi::SetLevel(int l)
 		y -= (LUIGI_BIG_BBOX_HEIGHT - LUIGI_SMALL_BBOX_HEIGHT) / 2;
 	}
 	level = l;
+}
+
+void CLuigi::JumpDeflect()
+{
+	vy -= LUIGI_JUMP_DEFLECT_SPEED;
 }
 

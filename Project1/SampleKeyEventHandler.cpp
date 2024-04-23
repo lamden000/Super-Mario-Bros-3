@@ -58,24 +58,6 @@ void CSampleKeyHandler::KeyState(BYTE* states)
 	if (mario == nullptr)
 		return;
 
-	if (mario->GetAutoRunning())
-	{
-		if (mario->GetMoveDirection() == D3DXVECTOR2(1.0f, 0.0f))
-		{
-			if (game->IsKeyDown(DIK_A))
-				mario->SetState(MARIO_STATE_RUNNING_RIGHT);
-			else
-				mario->SetState(MARIO_STATE_WALKING_RIGHT);
-		}
-		else if (mario->GetMoveDirection() == D3DXVECTOR2(-1.0f, 0.0f))
-		{
-			if (game->IsKeyDown(DIK_A))
-				mario->SetState(MARIO_STATE_RUNNING_LEFT);
-			else
-				mario->SetState(MARIO_STATE_WALKING_LEFT);
-		}
-	}
-
 	if (game->IsKeyDown(DIK_RIGHT))
 	{
 		if (game->IsKeyDown(DIK_A))

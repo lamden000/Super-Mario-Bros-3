@@ -121,6 +121,7 @@ class CMario : public CGameObject
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
+	void OnCollisionWithLuigi(LPCOLLISIONEVENT e);
 
 	int GetAniIdBig();
 	int GetAniIdSmall();
@@ -138,6 +139,7 @@ public:
 		untouchable_start = -1;
 		isOnPlatform = false;
 		coin = 0;
+		nx = -0.001;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
@@ -163,15 +165,6 @@ public:
 
 	bool GetAutoRunning() {
 		return autoRunning;
-	}
-	D3DXVECTOR2 GetMoveDirection() {
-		return moveDirection;
-	}
-	void SetMoveDirection(D3DXVECTOR2 dir) {
-		moveDirection = dir;
-	}
-	void SetJumpDirection(D3DXVECTOR2 dir) {
-		jumpDirection = dir;
 	}
 
 };

@@ -527,11 +527,19 @@ void CGame::SwitchScene()
 
 	CSprites::GetInstance()->Clear();
 	CAnimations::GetInstance()->Clear();
-
 	current_scene = next_scene;
 	LPSCENE s = scenes[next_scene];
-	this->SetKeyHandler(s->GetKeyEventHandler());
-	s->Load();
+	if (s->GetId() == INTRO_ID)
+	{
+		CIntro* introPtr = dynamic_cast<CIntro*>(s);
+		introPtr->Load();
+		this->SetKeyHandler(introPtr->GetKeyEventHandler());
+		introPtr->AutoRun(ACTION_1);
+	}
+	else {
+		s->Load();
+		this->SetKeyHandler(s->GetKeyEventHandler());
+	}
 }
 
 void CGame::InitiateSwitchScene(int scene_id)
