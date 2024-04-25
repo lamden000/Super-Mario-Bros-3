@@ -4,18 +4,26 @@ mario.txt
 coin.txt
 cloud.txt
 brick.txt
-luigi.txt
+#luigi.txt
+leaf.txt
+mushroom.txt
+bush.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
 # See OBJECT_TYPE constants in AssetIDs.h
 
-# Luigi
-8	120	10
-
 # MARIO
 0	160	10
+
+# Luigi
+#8	120	10
+# mushroom
+11	120	10
+
+# Bush
+12	160	87	1
 
 #COIN
 4	100	120
@@ -36,6 +44,9 @@ luigi.txt
 4	140	80
 4	160	80
 4	180	80
+
+#leaf
+10	150	-600
 
 
 #Platform

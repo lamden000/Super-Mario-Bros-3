@@ -23,6 +23,7 @@ CIntro::CIntro(int id, LPCWSTR filePath) :
 	CPlayScene(id, filePath)
 {
 	player = NULL;
+	action = 0;
 }
 
 void CIntro::Render()

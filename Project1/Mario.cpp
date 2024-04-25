@@ -9,6 +9,7 @@
 #include "Portal.h"
 #include "Luigi.h"
 #include "Leaf.h"
+#include "Mushroom.h"
 
 #include "Collision.h"
 
@@ -61,6 +62,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithLuigi(e);
 	else if (dynamic_cast<CLeaf*>(e->obj))
 		OnCollisionWithLeaf(e);
+	else if (dynamic_cast<CMushroom*>(e->obj))
+		OnCollisionWithMushroom(e);
 
 }
 
@@ -113,7 +116,8 @@ void CMario::OnCollisionWithLuigi(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 {
-	DebugOut(L">>> colide leaf >>> \n");
+	SetLevel(MARIO_LEVEL_FOX);
+	e->obj->Delete();
 }
 
 
@@ -127,6 +131,11 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 {
 	CPortal* p = (CPortal*)e->obj;
 	CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
+}
+void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
+{
+	SetLevel(MARIO_LEVEL_BIG);
+	e->obj->Delete();
 }
 
 //
@@ -252,17 +261,82 @@ int CMario::GetAniIdBig()
 	return aniId;
 }
 
+int CMario::GetAniIdFox()
+{
+	int aniId = -1;
+	if (!isOnPlatform)
+	{
+		if (abs(ax) == MARIO_ACCEL_RUN_X)
+		{
+			if (nx >= 0)
+				aniId =ID_ANI_MARIO_FOX_JUMP_RUN_RIGHT;
+			else
+				aniId =ID_ANI_MARIO_FOX_JUMP_RUN_LEFT;
+		}
+		else
+		{
+			if (nx >= 0)
+				aniId =ID_ANI_MARIO_FOX_JUMP_WALK_RIGHT;
+			else
+				aniId =ID_ANI_MARIO_FOX_JUMP_WALK_LEFT;
+		}
+	}
+	else
+		if (isSitting)
+		{
+			if (nx > 0)
+				aniId =ID_ANI_MARIO_FOX_SIT_RIGHT;
+			else
+				aniId =ID_ANI_MARIO_FOX_SIT_LEFT;
+		}
+		else
+			if (vx == 0)
+			{
+				if (nx > 0) aniId =ID_ANI_MARIO_FOX_IDLE_RIGHT;
+				else aniId =ID_ANI_MARIO_FOX_IDLE_LEFT;
+			}
+			else if (vx > 0)
+			{
+				if (ax < 0)
+					aniId =ID_ANI_MARIO_FOX_BRACE_RIGHT;
+				else if (ax == MARIO_ACCEL_RUN_X)
+					aniId =ID_ANI_MARIO_FOX_RUNNING_RIGHT;
+				else if (ax == MARIO_ACCEL_WALK_X)
+					aniId =ID_ANI_MARIO_FOX_WALKING_RIGHT;
+			}
+			else // vx < 0
+			{
+				if (ax > 0)
+					aniId =ID_ANI_MARIO_FOX_BRACE_LEFT;
+				else if (ax == -MARIO_ACCEL_RUN_X)
+					aniId =ID_ANI_MARIO_FOX_RUNNING_LEFT;
+				else if (ax == -MARIO_ACCEL_WALK_X)
+					aniId =ID_ANI_MARIO_FOX_WALKING_LEFT;
+			}
+
+	if (aniId == -1) aniId =ID_ANI_MARIO_FOX_IDLE_RIGHT;
+
+	return aniId;
+}
+
 void CMario::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
 	int aniId = -1;
 
 	if (state == MARIO_STATE_DIE)
-		aniId = ID_ANI_MARIO_DIE;
+	{
+		if (level == MARIO_LEVEL_BIG || level == MARIO_LEVEL_SMALL)
+			aniId = ID_ANI_MARIO_DIE;
+		else
+			aniId = ID_ANI_FOX_MARIO_DIE;
+	}
 	else if (level == MARIO_LEVEL_BIG)
 		aniId = GetAniIdBig();
 	else if (level == MARIO_LEVEL_SMALL)
 		aniId = GetAniIdSmall();
+	else if (level == MARIO_LEVEL_FOX)
+		aniId = GetAniIdFox();
 
 	animations->Get(aniId)->Render(x, y);
 
@@ -350,7 +424,7 @@ void CMario::SetState(int state)
 
 void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (level == MARIO_LEVEL_BIG)
+	if (level == MARIO_LEVEL_BIG||level==MARIO_LEVEL_FOX)
 	{
 		if (isSitting)
 		{

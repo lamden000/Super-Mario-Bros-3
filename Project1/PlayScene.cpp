@@ -12,6 +12,9 @@
 #include "Intro_BrownCurtain.h"
 #include "Intro_Stage.h"
 #include "Luigi.h"
+#include "Leaf.h"
+#include "Mushroom.h"
+#include "Bush.h"
 
 #include "SampleKeyEventHandler.h"
 #include "KeyHandlerForLuigi.h"
@@ -127,6 +130,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
 	case OBJECT_TYPE_BROWNCURTAIN: obj = new CBrownCurtain(x, y); break; 
 	case OBJECT_TYPE_STAGE: obj = new CStage(x, y); break;
+	case OBJECT_TYPE_LEAF: obj = new CLeaf(x, y); break;
+	case OBJECT_TYPE_MUSHROOM: obj = new CMushroom(x, y); break;
+	case OBJECT_TYPE_BUSH: 
+	{
+		int bush_type = (int)atof(tokens[3].c_str());
+		obj = new CBush(x, y,bush_type);
+		break;
+	}
 	case OBJECT_TYPE_PLATFORM:
 	{
 
@@ -274,8 +285,9 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
-	for (int i = 0; i < objects.size(); i++)
+	for (int i = 1; i < objects.size(); i++)
 		objects[i]->Render();
+	objects[0]->Render();
 }
 
 /*

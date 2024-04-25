@@ -36,7 +36,7 @@
 
 
 #pragma region ANIMATION_ID
-
+//BIG
 #define ID_ANI_MARIO_IDLE_RIGHT 400
 #define ID_ANI_MARIO_IDLE_LEFT 401
 
@@ -79,6 +79,30 @@
 #define ID_ANI_MARIO_SMALL_JUMP_RUN_RIGHT 1600
 #define ID_ANI_MARIO_SMALL_JUMP_RUN_LEFT 1601
 
+//FOX MARIO
+#define ID_ANI_MARIO_FOX_IDLE_RIGHT 430
+#define ID_ANI_MARIO_FOX_IDLE_LEFT 431
+
+#define ID_ANI_MARIO_FOX_WALKING_RIGHT 530
+#define ID_ANI_MARIO_FOX_WALKING_LEFT 531
+
+#define ID_ANI_MARIO_FOX_RUNNING_RIGHT 630
+#define ID_ANI_MARIO_FOX_RUNNING_LEFT 631
+
+#define ID_ANI_MARIO_FOX_JUMP_WALK_RIGHT 730
+#define ID_ANI_MARIO_FOX_JUMP_WALK_LEFT 731
+
+#define ID_ANI_MARIO_FOX_JUMP_RUN_RIGHT 830
+#define ID_ANI_MARIO_FOX_JUMP_RUN_LEFT 831
+
+#define ID_ANI_MARIO_FOX_SIT_RIGHT 930
+#define ID_ANI_MARIO_FOX_SIT_LEFT 931
+
+#define ID_ANI_MARIO_FOX_BRACE_RIGHT 1300
+#define ID_ANI_MARIO_FOX_BRACE_LEFT 1301
+
+#define ID_ANI_FOX_MARIO_DIE 939
+
 #pragma endregion
 
 #define GROUND_Y 160.0f
@@ -88,6 +112,7 @@
 
 #define	MARIO_LEVEL_SMALL	1
 #define	MARIO_LEVEL_BIG		2
+#define	MARIO_LEVEL_FOX		3
 
 #define MARIO_BIG_BBOX_WIDTH  14
 #define MARIO_BIG_BBOX_HEIGHT 24
@@ -123,9 +148,11 @@ class CMario : public CGameObject
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
 	void OnCollisionWithLuigi(LPCOLLISIONEVENT e);
 	void OnCollisionWithLeaf(LPCOLLISIONEVENT e);
+	void OnCollisionWithMushroom(LPCOLLISIONEVENT e);
 
 	int GetAniIdBig();
 	int GetAniIdSmall();
+	int GetAniIdFox();
 
 public:
 	CMario(float x, float y) : CGameObject(x, y)

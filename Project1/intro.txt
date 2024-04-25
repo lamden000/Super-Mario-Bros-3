@@ -16,18 +16,18 @@ leaf.txt
 # Luigi
 8	5	153
 
-#leaf
-10	150	-600
-
 #curtain 
 6	153	55
 
 #stage
 7	150	188
 
+
 #logo
 9	160	-100
 
+#leaf
+10	150	-500
 
 
 #Platform

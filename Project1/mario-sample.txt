@@ -22,3 +22,4 @@ height	240
 40	textures\luigi_texture_right.png
 41	textures\luigi_texture_left.png
 50	textures\logo_texture.png
+60	textures\tex_environment.jpg

@@ -5,7 +5,7 @@
 #define LEAF_WIDTH 16
 #define LEAF_BBOX_WIDTH 16
 #define LEAF_BBOX_HEIGHT 16
-#define LEAF_SPEEDY 0.13f
+#define LEAF_SPEEDY 0.05f
 
 class CLeaf : public CGameObject
 {
