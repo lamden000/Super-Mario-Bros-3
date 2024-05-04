@@ -15,8 +15,9 @@
 #include "Luigi.h"
 #include "Logo.h"
 #include "Leaf.h"
+#include "Bush.h"
 
-#include "SampleKeyEventHandler.h"
+#include "KeyEventHandlerForMario.h"
 #include "KeyHandlerForLuigi.h"
 
 CIntro::CIntro(int id, LPCWSTR filePath) :
@@ -54,16 +55,23 @@ void CIntro::Render()
 	FLOAT NewBlendFactor[4] = { 0,0,0,0 };
 	pD3DDevice->OMSetBlendState(g->GetAlphaBlending(), NewBlendFactor, 0xffffffff);
 
-	for (int i = 0; i < objects.size(); i++)
-		objects[i]->Render();
-
+	if (passedTime >= 7000)
+	{
+		objects[BUSH_1_ID]->Render();
+		objects[BUSH_2_ID]->Render();
+	}
+	for (int i = 1; i < objects.size(); i++)
+	{
+		if (i == BUSH_1_ID|| i == BUSH_2_ID||i==CURTAIN_ID) continue;
+			objects[i]->Render();
+	}	
+	objects[MARIO_ID]->Render();
+	objects[CURTAIN_ID]->Render();
 	pSwapChain->Present(0, 0);
 }
 
 void CIntro::Update(DWORD dt)
 {
-	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
-	// TO-DO: This is a "dirty" way, need a more organized way 
 	static bool waitFinished = false;
 	WaitForIntro(dt, 1000, waitFinished);
 	if (!waitFinished) return;
@@ -82,7 +90,7 @@ void CIntro::Update(DWORD dt)
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
-		if (i == CURTAIN_ID||i==LOGO_ID)
+		if (i == CURTAIN_ID)
 			continue;
 		objects[i]->Update(dt, &coObjects);
 	}
@@ -105,10 +113,15 @@ void CIntro::Update(DWORD dt)
 	}
 	else if (this->action == ACTION_3)
 	{
-		waitFinished = false;
-		WaitForIntro(dt, 11000, waitFinished);
-		if(waitFinished)
-			objects[LOGO_ID]->Update(dt, &coObjects);
+		float a, b, x, y;
+		objects[MARIO_ID]->GetPosition(a, b);
+		objects[LEAF_ID]->GetPosition(x, y);
+		if (b-y<=80)
+			AutoRun(ACTION_4);
+	}
+	else if (this->action == ACTION_4)
+	{
+		
 	}
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
@@ -158,8 +171,6 @@ void CIntro::_ParseSection_OBJECTS(string line)
 		player = (CLuigi*)obj;
 
 		CGame::GetInstance()->SetKeyHandler(key_handler);
-
-		DebugOut(L"[INFO] Luigi has been created!\n");
 		break;
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x, y); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x, y); break;
@@ -168,6 +179,13 @@ void CIntro::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_STAGE: obj = new CStage(x, y); break;
 	case OBJECT_TYPE_LOGO: obj = new CLogo(x, y); break;
 	case OBJECT_TYPE_LEAF: obj = new CLeaf(x, y); break;
+	case OBJECT_TYPE_BUSH:
+	{
+		int bush_type = (int)atof(tokens[3].c_str());
+		int bush_direction = (int)atof(tokens[4].c_str());
+		obj = new CBush(x, y, bush_type,bush_direction);
+		break;
+	}
 	case OBJECT_TYPE_PLATFORM:
 	{
 
@@ -227,6 +245,10 @@ void CIntro::AutoRun(int action)
 	else if (action == ACTION_3)
 	{
 		objects[MARIO_ID]->SetState(MARIO_STATE_SIT_RELEASE);
+	}
+	else if (action == ACTION_4)
+	{
+		objects[MARIO_ID]->SetState(MARIO_STATE_JUMP);
 	}
 	this->action = action;
 }

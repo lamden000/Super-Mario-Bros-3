@@ -15,8 +15,10 @@
 #include "Leaf.h"
 #include "Mushroom.h"
 #include "Bush.h"
+#include "Koopas.h"
+#include "SpawnPoint.h"
 
-#include "SampleKeyEventHandler.h"
+#include "KeyEventHandlerForMario.h"
 #include "KeyHandlerForLuigi.h"
 
 using namespace std;
@@ -125,17 +127,23 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			player = (CLuigi*)obj;
 		}
 		break;
-	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x, y); break; 
+	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x, y); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x, y); break;
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
-	case OBJECT_TYPE_BROWNCURTAIN: obj = new CBrownCurtain(x, y); break; 
+	case OBJECT_TYPE_BROWNCURTAIN: obj = new CBrownCurtain(x, y); break;
 	case OBJECT_TYPE_STAGE: obj = new CStage(x, y); break;
 	case OBJECT_TYPE_LEAF: obj = new CLeaf(x, y); break;
 	case OBJECT_TYPE_MUSHROOM: obj = new CMushroom(x, y); break;
+	case OBJECT_TYPE_KOOPAS:
+	{
+		int koopas_type = (int)atof(tokens[3].c_str());
+		obj = new CBrownKoopas(x, y,koopas_type); break;
+	}
 	case OBJECT_TYPE_BUSH: 
 	{
 		int bush_type = (int)atof(tokens[3].c_str());
-		obj = new CBush(x, y,bush_type);
+		int bush_direction = (int)atof(tokens[4].c_str());
+		obj = new CBush(x, y, bush_type, bush_direction);
 		break;
 	}
 	case OBJECT_TYPE_PLATFORM:
@@ -163,6 +171,17 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		float b = (float)atof(tokens[4].c_str());
 		int scene_id = atoi(tokens[5].c_str());
 		obj = new CPortal(x, y, r, b, scene_id);
+	}
+	case OBJECT_TYPE_SPAWNPOINT:
+	{
+		float r = (float)atof(tokens[3].c_str());
+		float b = (float)atof(tokens[4].c_str());
+		string spawnObjectDetail = "";
+		for (int i = 5; i < tokens.size(); i++)
+		{
+			spawnObjectDetail += tokens[i]+"	";
+		}
+		obj = new CSpawnPoint(x, y, r, b,spawnObjectDetail );
 	}
 	break;
 
@@ -251,42 +270,37 @@ void CPlayScene::Load()
 
 void CPlayScene::Update(DWORD dt)
 {
-	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
-	// TO-DO: This is a "dirty" way, need a more organized way 
-	vector<LPGAMEOBJECT> coObjects;
-	for (size_t i = 1; i < objects.size(); i++)
-	{
-		coObjects.push_back(objects[i]);
+	vector<LPGAMEOBJECT>& coObjects = objects; 
+	if (!objects.empty()) {
+		LPGAMEOBJECT player = objects.front(); 
+		for (size_t i = 0; i < objects.size(); i++) {
+			objects[i]->Update(dt, &coObjects);
+		}
+
+		if (player == NULL)
+			return;
+		// Update camera to follow Mario
+		float cx, cy;
+		player->GetPosition(cx, cy);
+
+		CGame* game = CGame::GetInstance();
+		cx -= game->GetBackBufferWidth() / 2;
+		cy -= game->GetBackBufferHeight() / 2;
+
+		if (cx < 0) cx = 0;
+		game->SetCamPos(cx, 0.0f /*cy*/);
 	}
 
-	for (size_t i = 0; i < objects.size(); i++)
-	{
-		objects[i]->Update(dt, &coObjects);
-	}
-
-	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
-	if (player == NULL) return;
-
-	// Update camera to follow mario
-	float cx, cy;
-	player->GetPosition(cx, cy);
-
-	CGame* game = CGame::GetInstance();
-	cx -= game->GetBackBufferWidth() / 2;
-	cy -= game->GetBackBufferHeight() / 2;
-
-	if (cx < 0) cx = 0;
-	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
 	PurgeDeletedObjects();
 }
-
-
 
 
 void CPlayScene::Render()
 {
 	for (int i = 1; i < objects.size(); i++)
+	{
 		objects[i]->Render();
+	}
 	objects[0]->Render();
 }
 

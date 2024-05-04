@@ -10,6 +10,8 @@
 #include "Luigi.h"
 #include "Leaf.h"
 #include "Mushroom.h"
+#include"SpawnPoint.h"
+#include "PlayScene.h"
 
 #include "Collision.h"
 
@@ -64,6 +66,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithLeaf(e);
 	else if (dynamic_cast<CMushroom*>(e->obj))
 		OnCollisionWithMushroom(e);
+	else if (dynamic_cast<CSpawnPoint*>(e->obj))
+		OnCollisionWithSpawnPoint(e);
 
 }
 
@@ -120,6 +124,13 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 	e->obj->Delete();
 }
 
+void CMario::OnCollisionWithSpawnPoint(LPCOLLISIONEVENT e)
+{
+	CSpawnPoint* p = (CSpawnPoint*)e->obj;
+	CPlayScene* currenScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	currenScene->_ParseSection_OBJECTS(p->GetSpawnObjectDetai());
+	e->obj->Delete();
+}
 
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
@@ -340,7 +351,7 @@ void CMario::Render()
 
 	animations->Get(aniId)->Render(x, y);
 
-	RenderBoundingBox();
+	//RenderBoundingBox();
 
 	//DebugOutTitle(L"Coins: %d", coin);
 }

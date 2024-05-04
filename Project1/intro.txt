@@ -5,6 +5,7 @@ cloud.txt
 brick.txt
 luigi.txt
 leaf.txt
+bush.txt
 [OBJECTS]
 # type	x	y	extra_settings per object type
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas, 6=Brown Curtain, 7= Stage, 8=Luigi, 9=logo
@@ -19,15 +20,18 @@ leaf.txt
 #curtain 
 6	153	55
 
+# Bush
+12	280	123	1	1
+12	5	150	3	1
+
 #stage
 7	150	188
 
-
 #logo
-9	160	-100
+9	160	-1400
 
 #leaf
-10	150	-500
+10	150	-170
 
 
 #Platform

@@ -1,5 +1,7 @@
 #pragma once
 #include "KeyEventHandler.h"
+#include <vector>
+using namespace std;
 /*
 *  Abstract class for a game scene
 */

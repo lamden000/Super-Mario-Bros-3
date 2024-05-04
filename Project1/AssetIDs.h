@@ -5,9 +5,11 @@
 //
 
 #define ID_TEX_MARIO 0
-#define ID_TEX_ENEMY 10
+#define ID_TEX_ENEMY_LEFT 10
+#define ID_TEX_ENEMY_RIGHT 10
 #define ID_TEX_MISC 20
-#define ID_TEX_IntroObject 30
+#define ID_TEX_INTROOBJECT 30
+//#define
 
 
 #define OBJECT_TYPE_MARIO	0
@@ -23,6 +25,7 @@
 #define OBJECT_TYPE_LEAF 10
 #define OBJECT_TYPE_MUSHROOM 11
 #define OBJECT_TYPE_BUSH 12
+#define OBJECT_TYPE_SPAWNPOINT 13
 #define OBJECT_TYPE_PORTAL	50
 
 

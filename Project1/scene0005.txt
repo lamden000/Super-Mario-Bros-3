@@ -6,6 +6,7 @@ cloud.txt
 brick.txt
 #luigi.txt
 leaf.txt
+brownkoopas.txt
 mushroom.txt
 bush.txt
 #
@@ -17,13 +18,11 @@ bush.txt
 # MARIO
 0	160	10
 
-# Luigi
-#8	120	10
-# mushroom
-11	120	10
-
 # Bush
-12	160	87	1
+12	160	87	1	0
+
+# spawn point
+13	300	0	320	1000	5	140	100	16	15	26	51000	52000	53000
 
 #COIN
 4	100	120
@@ -46,8 +45,10 @@ bush.txt
 4	180	80
 
 #leaf
-10	150	-600
+10	150	-200
 
+# mushroom
+11	180	20
 
 #Platform
 5 	100	180	16	15	32	51000	52000	53000

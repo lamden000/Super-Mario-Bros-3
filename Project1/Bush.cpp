@@ -1,6 +1,7 @@
 #include "Bush.h"
-CBush::CBush(float x, float y,int type)
+CBush::CBush(float x, float y,int type, int direction)
 {
+	this->direction = direction;
 	this->x = x;
 	this->y = y;
 	this->type = type;
@@ -15,11 +16,15 @@ void CBush::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CBush::Render()
 {
-	if(type==1)
-		CAnimations::GetInstance()->Get(ANIID_TYPE_1)->Render(x, y,BUSH_SCALEX, BUSH_SCALEY);
+	int AniID=-1;
+	if (type == 1)
+		AniID = BUSH_ANIID_TYPE_1_LEFT;
 	else if(type==2)
-		CAnimations::GetInstance()->Get(ANIID_TYPE_2)->Render(x, y, BUSH_SCALEX, BUSH_SCALEY);
-	else if (type == 3)
-		CAnimations::GetInstance()->Get(ANIID_TYPE_3)->Render(x, y, BUSH_SCALEX, BUSH_SCALEY);
+		AniID= BUSH_ANIID_TYPE_2_LEFT;
+	else if(type==3)
+		AniID = BUSH_ANIID_TYPE_3_LEFT;
+	if (direction == BUSH_DIRECTION_RIGHT)
+		AniID += 30;
+	CAnimations::GetInstance()->Get(AniID)->Render(x, y, BUSH_SCALEX, BUSH_SCALEY);
 }
 

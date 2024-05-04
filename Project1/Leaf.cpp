@@ -27,6 +27,6 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CLeaf::Render()
 {
 	CAnimations::GetInstance()->Get(ANIID)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 

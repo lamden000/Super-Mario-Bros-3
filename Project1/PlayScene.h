@@ -22,12 +22,12 @@ protected:
 	void _ParseSection_ANIMATIONS(string line);
 
 	void _ParseSection_ASSETS(string line);
-	virtual void _ParseSection_OBJECTS(string line);
 
 	void LoadAssets(LPCWSTR assetFile);
 
 public:
 	CPlayScene(int id, LPCWSTR filePath);
+	virtual void _ParseSection_OBJECTS(string line);
 	virtual void Load();
 	virtual void Update(DWORD dt);
 	virtual void Render();
