@@ -28,6 +28,7 @@ protected:
 public:
 	CPlayScene(int id, LPCWSTR filePath);
 	virtual void _ParseSection_OBJECTS(string line);
+	virtual void AddObject(LPGAMEOBJECT object);
 	virtual void Load();
 	virtual void Update(DWORD dt);
 	virtual void Render();

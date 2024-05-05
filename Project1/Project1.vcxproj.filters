@@ -87,12 +87,6 @@
     <ClCompile Include="Intro_BrownCurtain.cpp">
       <Filter>Source Files\Object\IntroObject</Filter>
     </ClCompile>
-    <ClCompile Include="KeyHandlerForLuigi.cpp">
-      <Filter>Source Files\System</Filter>
-    </ClCompile>
-    <ClCompile Include="KeyEventHandlerForMario.cpp">
-      <Filter>Source Files\System</Filter>
-    </ClCompile>
     <ClCompile Include="PlayScene.cpp">
       <Filter>Source Files\System</Filter>
     </ClCompile>
@@ -146,6 +140,15 @@
     </ClCompile>
     <ClCompile Include="Koopas.cpp">
       <Filter>Source Files\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="QuestionBlock.cpp">
+      <Filter>Source Files\Object\WorldBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyEventHandlerForMario.cpp">
+      <Filter>Source Files\Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyHandlerForLuigi.cpp">
+      <Filter>Source Files\Object\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -253,6 +256,9 @@
     </ClInclude>
     <ClInclude Include="Koopas.h">
       <Filter>Header Files\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestionBlock.h">
+      <Filter>Header Files\Object\WorldBlock</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

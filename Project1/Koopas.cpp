@@ -1,10 +1,12 @@
 #include "Koopas.h"
+#include "debug.h"
 
 CBrownKoopas::CBrownKoopas(float x, float y, int level) :CGameObject(x, y)
 {
 	this->ax = 0;
 	this->ay = BROWNKOOPAS_GRAVITY;
 	die_start = -1;
+	this->level = level;
 	SetState(BROWNKOOPAS_STATE_WALKING);
 }
 
@@ -17,8 +19,7 @@ void CBrownKoopas::GetBoundingBox(float& left, float& top, float& right, float& 
 		right = left + BROWNKOOPAS_BBOX_WIDTH;
 		bottom = top + BROWNKOOPAS_BBOX_HEIGHT_DIE;
 	}
-	else
-	{
+	else {
 		left = x - BROWNKOOPAS_BBOX_WIDTH / 2;
 		top = y - BROWNKOOPAS_BBOX_HEIGHT / 2;
 		right = left + BROWNKOOPAS_BBOX_WIDTH;
@@ -28,8 +29,9 @@ void CBrownKoopas::GetBoundingBox(float& left, float& top, float& right, float& 
 
 void CBrownKoopas::OnNoCollision(DWORD dt)
 {
-	x += vx * dt;
-	y += vy * dt;
+	vx = -vx;
+	if (!wasOnPlatform||level==BROWNKOOPAS_STATE_SHELL)
+		y += vy * dt;
 };
 
 void CBrownKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
@@ -40,6 +42,7 @@ void CBrownKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (e->ny != 0)
 	{
 		vy = 0;
+		wasOnPlatform = true;
 	}
 	else if (e->nx != 0)
 	{
@@ -51,14 +54,11 @@ void CBrownKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
-
 	if ((state == BROWNKOOPAS_STATE_SHELL) && (GetTickCount64() - die_start > BROWNKOOPAS_REVIVE_TIME))
 	{
 		SetState(BROWNKOOPAS_STATE_WALKING);
 		return;
 	}
-
-	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
@@ -66,13 +66,24 @@ void CBrownKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CBrownKoopas::Render()
 {
 	int aniId = -1;
-	if (vx > 0)
+	if (vx >= 0)
 	{
-		if (level = BROWNKOOPAS_LEVEL_BIG)
+		if (level == BROWNKOOPAS_LEVEL_BIG)
 		{
-
+			aniId = ID_ANI_BIG_BROWNKOOPAS_WALKING_RIGHT;
 		}
-		else {}
+		else {
+			aniId = ID_ANI_SMALL_BROWNKOOPAS_WALKING_RIGHT;
+		}
+	}
+	else if (vx <0) {
+		if (level == BROWNKOOPAS_LEVEL_BIG)
+		{
+			aniId = ID_ANI_BIG_BROWNKOOPAS_WALKING_LEFT;
+		}
+		else {
+			aniId = ID_ANI_SMALL_BROWNKOOPAS_WALKING_LEFT;
+		}
 	}
 	if (state == BROWNKOOPAS_STATE_SHELL)
 	{
@@ -81,7 +92,6 @@ void CBrownKoopas::Render()
 		else
 			aniId = ID_ANI_BIG_BROWNKOOPAS_SHELL;
 	}
-
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	RenderBoundingBox();
 }

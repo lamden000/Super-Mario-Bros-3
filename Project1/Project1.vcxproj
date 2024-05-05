@@ -155,6 +155,7 @@
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="Portal.cpp" />
+    <ClCompile Include="QuestionBlock.cpp" />
     <ClCompile Include="SpawnPoint.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Sprites.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="KeyEventHandlerForMario.h" />
+    <ClInclude Include="QuestionBlock.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SpawnPoint.h" />
     <ClInclude Include="Sprite.h" />

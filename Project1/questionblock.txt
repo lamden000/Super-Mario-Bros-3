@@ -1,0 +1,18 @@
+# id	left	top	right	bottom	texture_id
+[SPRITES]
+#empty
+1238	371	115	388	133	21	
+
+#question
+1234	298	116	317	133	21
+1235	316	116	335	133	21
+1236	334	116	353	133	21
+1237	352	116	371	133	21
+
+# ani_id	sprite1_id	time1	sprite2_id	time2	...
+[ANIMATIONS]
+#question
+12341	1234	100	1235	100	1236	100	1237	100
+
+#empty
+12381	1238	100

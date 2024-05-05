@@ -150,6 +150,7 @@ class CMario : public CGameObject
 	void OnCollisionWithLeaf(LPCOLLISIONEVENT e);
 	void OnCollisionWithMushroom(LPCOLLISIONEVENT e);
 	void OnCollisionWithSpawnPoint(LPCOLLISIONEVENT e);
+	void OnCollisionWithQestionBlock(LPCOLLISIONEVENT e);
 
 	int GetAniIdBig();
 	int GetAniIdSmall();
@@ -185,13 +186,13 @@ public:
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 
 	void SetLevel(int l);
-	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
-
-	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void SetAutoRunning(bool isAutoRunning) {
 		autoRunning = isAutoRunning;
 	}
+	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
+	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	int GetLevel() { return level; }
 	bool GetAutoRunning() {
 		return autoRunning;
 	}

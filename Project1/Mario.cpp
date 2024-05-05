@@ -10,8 +10,9 @@
 #include "Luigi.h"
 #include "Leaf.h"
 #include "Mushroom.h"
-#include"SpawnPoint.h"
+#include "SpawnPoint.h"
 #include "PlayScene.h"
+#include "QuestionBlock.h"
 
 #include "Collision.h"
 
@@ -50,9 +51,6 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 			vx = 0;
 	}
-	else {
-		isOnPlatform = false;
-	}
 
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
@@ -68,9 +66,11 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithMushroom(e);
 	else if (dynamic_cast<CSpawnPoint*>(e->obj))
 		OnCollisionWithSpawnPoint(e);
+	else if (dynamic_cast<CQuestionBlock*>(e->obj))
+		OnCollisionWithQestionBlock(e);
 
 }
-
+#pragma region collision_with
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
 	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
@@ -120,7 +120,8 @@ void CMario::OnCollisionWithLuigi(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 {
-	SetLevel(MARIO_LEVEL_FOX);
+	if(level<MARIO_LEVEL_FOX)
+		SetLevel(MARIO_LEVEL_FOX);
 	e->obj->Delete();
 }
 
@@ -143,12 +144,26 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 	CPortal* p = (CPortal*)e->obj;
 	CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
 }
+
 void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 {
-	SetLevel(MARIO_LEVEL_BIG);
+	CMushroom* mushroom = (CMushroom*)e->obj;
+	if (level == MARIO_LEVEL_SMALL&&mushroom->GetType()==MUSHROOM_TYPE_RED)
+	{
+		SetLevel(MARIO_LEVEL_BIG);
+	}
 	e->obj->Delete();
 }
 
+void CMario::OnCollisionWithQestionBlock(LPCOLLISIONEVENT e)
+{
+	if (e->ny > 0)
+	{
+		CQuestionBlock* block = (CQuestionBlock*)e->obj;
+		block->Reward(level);
+	}
+}
+#pragma endregion
 //
 // Get animation ID for small Mario
 //
@@ -351,7 +366,7 @@ void CMario::Render()
 
 	animations->Get(aniId)->Render(x, y);
 
-	//RenderBoundingBox();
+	RenderBoundingBox();
 
 	//DebugOutTitle(L"Coins: %d", coin);
 }

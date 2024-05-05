@@ -9,14 +9,13 @@
 #include "Portal.h"
 #include "Coin.h"
 #include "Platform.h"
-#include "Intro_BrownCurtain.h"
-#include "Intro_Stage.h"
 #include "Luigi.h"
 #include "Leaf.h"
 #include "Mushroom.h"
 #include "Bush.h"
 #include "Koopas.h"
 #include "SpawnPoint.h"
+#include "QuestionBlock.h"
 
 #include "KeyEventHandlerForMario.h"
 #include "KeyHandlerForLuigi.h"
@@ -94,6 +93,11 @@ void CPlayScene::_ParseSection_ANIMATIONS(string line)
 	CAnimations::GetInstance()->Add(ani_id, ani);
 }
 
+void CPlayScene::AddObject(LPGAMEOBJECT object)
+{
+	objects.push_back(object);
+}
+
 /*
 	Parse a line in section [OBJECTS]
 */
@@ -102,12 +106,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	vector<string> tokens = split(line);
 
 	// skip invalid lines - an object set must have at least id, x, y
-	if (tokens.size() < 2) return;
-
+	if (tokens.size() <= 2) return;
 	int object_type = atoi(tokens[0].c_str());
 	float x = (float)atof(tokens[1].c_str());
 	float y = (float)atof(tokens[2].c_str());
-	DebugOut(L" object type: %d\n", object_type);
 	CGameObject* obj = NULL;
 	switch (object_type)
 	{
@@ -130,10 +132,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x, y); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x, y); break;
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
-	case OBJECT_TYPE_BROWNCURTAIN: obj = new CBrownCurtain(x, y); break;
-	case OBJECT_TYPE_STAGE: obj = new CStage(x, y); break;
 	case OBJECT_TYPE_LEAF: obj = new CLeaf(x, y); break;
 	case OBJECT_TYPE_MUSHROOM: obj = new CMushroom(x, y); break;
+	case OBJECT_TYPE_QUESTIONBLOCK: 
+	{
+		int type = (int)atof(tokens[3].c_str());
+		obj = new CQuestionBlock(x, y, type); 
+		break;
+	}
 	case OBJECT_TYPE_KOOPAS:
 	{
 		int koopas_type = (int)atof(tokens[3].c_str());
@@ -297,11 +303,10 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
-	for (int i = 1; i < objects.size(); i++)
+	for (int i = objects.size() - 1; i >=0 ; i--)
 	{
 		objects[i]->Render();
 	}
-	objects[0]->Render();
 }
 
 /*

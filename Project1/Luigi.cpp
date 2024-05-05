@@ -45,7 +45,6 @@ void CLuigi::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		vx = 0;
 	}
-	else isOnPlatform = false;
 
 
 	if (dynamic_cast<CGoomba*>(e->obj))
