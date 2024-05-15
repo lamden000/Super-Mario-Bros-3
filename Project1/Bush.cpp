@@ -8,12 +8,6 @@ CBush::CBush(float x, float y,int type, int direction)
 }
 
 
-void CBush::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
-{
-	CGameObject::Update(dt, coObjects);
-}
-
-
 void CBush::Render()
 {
 	int AniID=-1;

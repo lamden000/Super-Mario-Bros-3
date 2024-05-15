@@ -1,0 +1,32 @@
+# id	left	top	right	bottom	texture_id
+[SPRITES]
+#brown curtain
+345378	7	13	258	200	30
+
+#stage
+345379	48	315	312	358	30
+
+#logo
+345380	47	367	245	450	30
+
+#Number 3
+345381	50	451	100	498	30
+345382	98	451	148	498	30
+345383	145	451	193	498	30
+345384	191	451	241	498	30
+
+#cloud
+345385	225	271	266	293	30
+
+# ani_id	sprite1_id	time1	sprite2_id	time2	...
+[ANIMATIONS]
+#brown curtain
+345	345378	100
+#stage
+346	345379	100
+#logo
+347	345380	100
+#number 3
+348	345381	500	345382	500	345383	500	345384	500
+
+#cloud	345385	100

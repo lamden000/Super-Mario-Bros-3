@@ -14,7 +14,6 @@ public:
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
 
 	void RenderBoundingBox(void);
-	void SetIsDeleted(bool isDeleted) { this->isDeleted = isDeleted; };
 
 	string GetSpawnObjectDetai() { return objectDetail; };
 

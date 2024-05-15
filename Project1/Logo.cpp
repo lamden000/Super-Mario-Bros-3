@@ -9,17 +9,16 @@ CLogo::CLogo(float x, float y)
 
 void CLogo::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (y >= 60)
+	if (y >= LOGO_ALTITUDE)
 	{
 		return;
 	}
 	y += vy * dt;
-	CGameObject::Update(dt, coObjects);
 }
-
 
 void CLogo::Render()
 {
-	CAnimations::GetInstance()->Get(ANIID)->Render(x, y, LOGO_SCALEX, LOGO_SCALEY);
+	CAnimations::GetInstance()->Get(ANIID)->Render(x, y,LOGO_SCALEX,LOGO_SCALEY);
+	CAnimations::GetInstance()->Get(ANIID_NUMBER_3)->Render(x, y+50, LOGO_SCALEX, LOGO_SCALEY);
 }
 

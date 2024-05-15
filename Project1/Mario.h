@@ -98,8 +98,8 @@
 #define ID_ANI_MARIO_FOX_SIT_RIGHT 930
 #define ID_ANI_MARIO_FOX_SIT_LEFT 931
 
-#define ID_ANI_MARIO_FOX_BRACE_RIGHT 1300
-#define ID_ANI_MARIO_FOX_BRACE_LEFT 1301
+#define ID_ANI_MARIO_FOX_BRACE_RIGHT 1030
+#define ID_ANI_MARIO_FOX_BRACE_LEFT 1031
 
 #define ID_ANI_FOX_MARIO_DIE 939
 
@@ -144,6 +144,7 @@ class CMario : public CGameObject
 	int coin;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
+	void OnCollisionWithKoopas(LPCOLLISIONEVENT e);
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
 	void OnCollisionWithLuigi(LPCOLLISIONEVENT e);

@@ -55,6 +55,7 @@ void CIntro::Render()
 	FLOAT NewBlendFactor[4] = { 0,0,0,0 };
 	pD3DDevice->OMSetBlendState(g->GetAlphaBlending(), NewBlendFactor, 0xffffffff);
 
+	objects[STAGE_ID]->Render();
 	if (passedTime >= 7000)
 	{
 		objects[BUSH_1_ID]->Render();
@@ -62,9 +63,9 @@ void CIntro::Render()
 	}
 	for (int i = 1; i < objects.size(); i++)
 	{
-		if (i == BUSH_1_ID|| i == BUSH_2_ID||i==CURTAIN_ID) continue;
+		if (i == BUSH_1_ID|| i == BUSH_2_ID||i==CURTAIN_ID||i==STAGE_ID) continue;
 			objects[i]->Render();
-	}	
+	}
 	objects[MARIO_ID]->Render();
 	objects[CURTAIN_ID]->Render();
 	pSwapChain->Present(0, 0);
@@ -100,7 +101,7 @@ void CIntro::Update(DWORD dt)
 		float a, b, x, y;
 		objects[MARIO_ID]->GetPosition(a, b);
 		objects[LUIGI_ID]->GetPosition(x, y);
-		if (a - x <= 110)
+		if (a - x <= 115)
 		{
 			AutoRun(ACTION_2);
 		}
@@ -172,7 +173,13 @@ void CIntro::_ParseSection_OBJECTS(string line)
 
 		CGame::GetInstance()->SetKeyHandler(key_handler);
 		break;
-	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x, y); break;
+	case OBJECT_TYPE_GOOMBA:
+	{
+		int level = 1;
+		if (tokens.size() > 3)
+			level = (int)atof(tokens[3].c_str());
+		obj = new CGoomba(x, y, level); break;
+	}
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x, y); break;
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
 	case OBJECT_TYPE_BROWNCURTAIN: obj = new CBrownCurtain(x, y); break;

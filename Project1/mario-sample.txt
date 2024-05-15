@@ -19,9 +19,8 @@ height	240
 11	textures\enemies_right.png
 20	textures\misc_right.png
 21	textures\misc_left.png
-30	textures\curtain_and_stage.jpg
+30	textures\intro.png
 40	textures\luigi_texture_right.png
 41	textures\luigi_texture_left.png
-50	textures\logo_texture.png
 60	textures\tex_environment_left.png
 61	textures\tex_environment_right.png

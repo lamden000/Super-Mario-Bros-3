@@ -1,8 +1,11 @@
 #include "Goomba.h"
+#include "debug.h"
+#include "Playscene.h"
 
-CGoomba::CGoomba(float x, float y) :CGameObject(x, y)
+CGoomba::CGoomba(float x, float y,int level) :CGameObject(x, y)
 {
 	this->ax = 0;
+	this->level = level;
 	this->ay = GOOMBA_GRAVITY;
 	die_start = -1;
 	SetState(GOOMBA_STATE_WALKING);
@@ -28,8 +31,9 @@ void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& botto
 
 void CGoomba::OnNoCollision(DWORD dt)
 {
-	x += vx * dt;
 	y += vy * dt;
+	x += vx * dt;
+	isOnPlatform = false;
 };
 
 void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
@@ -37,7 +41,14 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (!e->obj->IsBlocking()) return;
 	if (dynamic_cast<CGoomba*>(e->obj)) return;
 
-	if (e->ny != 0)
+	if (e->ny < 0)
+	{
+		vy = 0;
+		if (state != GOOMBA_STATE_JUMP_READY)
+			state = GOOMBA_STATE_WALKING;
+		isOnPlatform = true;
+	}
+	else if (e->ny > 0)
 	{
 		vy = 0;
 	}
@@ -49,8 +60,6 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	vy += ay * dt;
-	vx += ax * dt;
 
 	if ((state == GOOMBA_STATE_DIE) && (GetTickCount64() - die_start > GOOMBA_DIE_TIMEOUT))
 	{
@@ -58,10 +67,48 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		return;
 	}
 
-	CGameObject::Update(dt, coObjects);
+	if (level == GOOMBA_LEVEL_WINGS)
+	{
+		Hop();
+		ChasePlayer();
+	}
+	else ax = 0;
+	vy += ay * dt;
+	vx += ax * dt;
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
+void CGoomba::Hop()
+{
+	if (GetTickCount64() - GOOMBA_JUMP_COOLDOWN >= jump_start)
+	{
+		if (isOnPlatform)
+			SetState(GOOMBA_STATE_JUMP_READY);
+		if (GetTickCount64() - GOOMBA_JUMP_COOLDOWN - GOOMBA_JUMP_READY_TIME >= jump_start)
+		{
+			SetState(GOOMBA_STATE_JUMP);
+		}
+	}
+}
+
+void CGoomba::ChasePlayer()
+{
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	float mario_x, mario_y;
+	mario->GetPosition(mario_x, mario_y);
+	if (x < mario_x)
+	{
+		if (vx <=GOOMBA_WALKING_SPEED)
+			ax= GOOMBA_ACEL_X;
+		else ax = 0;
+	}
+	else
+	{
+		if (vx >= -GOOMBA_WALKING_SPEED)
+			ax = -GOOMBA_ACEL_X;
+		else ax = 0;
+	}
+}
 
 void CGoomba::Render()
 {
@@ -70,9 +117,32 @@ void CGoomba::Render()
 	{
 		aniId = ID_ANI_GOOMBA_DIE;
 	}
+	if (level == GOOMBA_LEVEL_WINGS)
+	{
+		aniId = ID_ANI_GOOMBA_WALKING_WITH_WINGS;
+		if (state == GOOMBA_STATE_JUMP_READY)
+		{
+			aniId = ID_ANI_GOOMBA_JUMP_READY;
+		}
+		else if (state == GOOMBA_STATE_JUMP_READY)
+		{
+			aniId = ID_ANI_GOOMBA_JUMP_READY;
+		}
+		else if (state == GOOMBA_STATE_JUMP)
+		{
+			aniId = ID_ANI_GOOMBA_JUMP;
+		}
+	}
 
-	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	RenderBoundingBox();
+	CAnimations::GetInstance()->Get(aniId)->Render(x, y, GOOMBA_SCALEX, GOOMBA_SCALEY);
+}
+
+void CGoomba::DecreaseLevel()
+{
+	level--;
+	if (level == 0)
+		SetState(GOOMBA_STATE_DIE);
 }
 
 void CGoomba::SetState(int state)
@@ -88,7 +158,14 @@ void CGoomba::SetState(int state)
 		ay = 0;
 		break;
 	case GOOMBA_STATE_WALKING:
-		vx = -GOOMBA_WALKING_SPEED;
+		vx = GOOMBA_WALKING_SPEED;
+		break;
+	case GOOMBA_STATE_JUMP:
+		jump_start = GetTickCount64();
+		vy = -GOOMBA_JUMP_SPEED;
+		break;
+	case GOOMBA_STATE_JUMP_READY:
+		vy = -GOOMBA_JUMP_READY_SPEED;
 		break;
 	}
 }

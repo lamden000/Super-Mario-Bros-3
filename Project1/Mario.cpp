@@ -5,6 +5,7 @@
 #include "Game.h"
 
 #include "Goomba.h"
+#include "Koopas.h"
 #include "Coin.h"
 #include "Portal.h"
 #include "Luigi.h"
@@ -54,10 +55,12 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
-	else if (dynamic_cast<CCoin*>(e->obj))
-		OnCollisionWithCoin(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
+	else if (dynamic_cast<CBrownKoopas*>(e->obj))
+		OnCollisionWithKoopas(e);
+	else if (dynamic_cast<CCoin*>(e->obj))
+		OnCollisionWithCoin(e);
 	else if (dynamic_cast<CLuigi*>(e->obj))
 		OnCollisionWithLuigi(e);
 	else if (dynamic_cast<CLeaf*>(e->obj))
@@ -80,7 +83,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	{
 		if (goomba->GetState() != GOOMBA_STATE_DIE)
 		{
-			goomba->SetState(GOOMBA_STATE_DIE);
+			goomba->DecreaseLevel();
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
 	}
@@ -92,7 +95,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 			{
 				if (level > MARIO_LEVEL_SMALL)
 				{
-					level = MARIO_LEVEL_SMALL;
+					level--;
 					StartUntouchable();
 				}
 				else
@@ -103,6 +106,42 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 			}
 		}
 	}
+}
+
+void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
+{
+	CBrownKoopas* koopas = dynamic_cast<CBrownKoopas*>(e->obj);
+
+	if ((e->ny < 0) && koopas->GetState() ==BROWNKOOPAS_STATE_WALKING )
+	{
+		koopas->SetState(BROWNKOOPAS_STATE_SHELL);
+		vy = -MARIO_JUMP_DEFLECT_SPEED;
+	}
+	else
+	{
+		if (untouchable == 0)
+		{
+			if (koopas->GetState() != BROWNKOOPAS_STATE_SHELL&& koopas->GetState() != BROWNKOOPAS_STATE_REVIVING)
+			{
+				if (level > MARIO_LEVEL_SMALL)
+				{
+					level--;
+					StartUntouchable();
+				}
+				else
+				{
+					DebugOut(L">>> Mario DIE >>> \n");
+					SetState(MARIO_STATE_DIE);
+				}
+			}
+			else {
+				koopas->SetState(BROWNKOOPAS_STATE_SHELL_BOUNCING,nx);
+			}
+		}
+	}
+	float x, y;
+	koopas->GetPosition(x, y);
+	koopas->SetPosition(x, y - 2.0f);
 }
 
 void CMario::OnCollisionWithLuigi(LPCOLLISIONEVENT e)
@@ -160,7 +199,9 @@ void CMario::OnCollisionWithQestionBlock(LPCOLLISIONEVENT e)
 	if (e->ny > 0)
 	{
 		CQuestionBlock* block = (CQuestionBlock*)e->obj;
-		block->Reward(level);
+		if (block->GetType() == 1)
+			coin++;
+		block->Reward(level);	
 	}
 }
 #pragma endregion
@@ -366,9 +407,9 @@ void CMario::Render()
 
 	animations->Get(aniId)->Render(x, y);
 
-	RenderBoundingBox();
+	//RenderBoundingBox();
 
-	//DebugOutTitle(L"Coins: %d", coin);
+	DebugOutTitle(L"Coins: %d", coin);
 }
 
 void CMario::SetState(int state)

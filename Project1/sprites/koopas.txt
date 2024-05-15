@@ -1,0 +1,99 @@
+# id	left	top	right	bottom	texture_id
+[SPRITES]
+###### BROWN ######
+#walking left
+1	136	187	195	286	10
+2	79	197	139	286	10
+#walking left with wings
+7	433	274	497	362	10
+8	327	274	432	362	10
+#jump left
+9	304	274	370	362	10
+
+#walking right
+3	770	198	835	282	11
+4	833	199	893	282	11
+#walking right with wings
+10	474	277	538	362	11
+11	538	277	600	362	11
+#jump right
+12	599	273	662	364	11
+
+#reviving
+5	204	217	276	279	10
+#shell
+6	79	286	138	342	10
+
+#shell bouncing
+50	138	280	205	345	10
+51	206	280	272	345	10
+
+########## GREEN #######
+#walking left
+20	144	346	211	438	10
+21	89	346	147	438	10
+#walking left with wings
+27	433	380	497	471	10
+28	327	380	432	471	10
+#jump left
+29	304	380	370	471	10
+
+#walking right
+22	769	348	824	439	11
+23	824	348	890	439	11
+#walking right with wings
+25	466	383	538	474	11
+26	538	383	600	474	11
+#jump right
+30	538	383	600	474	11
+
+#reviving
+31	867	372	762	436	11
+#shell
+24	820	442	885	497	11
+
+#shell bouncing
+52	757	442	817	497	10
+53	686	442	762	497	11
+
+# ani_id	sprite1_id	time1	sprite2_id	time2	...
+[ANIMATIONS]
+###### BROWN ######
+
+#walking right & left
+11	1	200	2	200
+12	3	200	4	200
+
+#walking right & left with wings
+17	7	200	8	200
+18	10	200	11	200
+
+#jump left and right
+19	9	100
+20	12	100
+
+#reviving
+13	5	100	6	100
+#shell
+14	6	100
+#shell bouncing
+15	6	200	50	200	51	200
+
+########## GREEN #######
+#walking right & left
+30	20	200	21	200
+31	22	200	23	200
+#shell
+32	24	100
+#walking right & left with wings
+33	20	200	21	200
+34	25	200	26	200
+
+#jump left and right
+35	29	100
+36	30	100
+
+#reviving
+37	31	100	24	100
+#shell bouncing
+38	24	200	52	200	53	200

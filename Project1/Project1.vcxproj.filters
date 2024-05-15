@@ -55,6 +55,12 @@
     <Filter Include="Source Files\System">
       <UniqueIdentifier>{ffb46121-b902-489d-acc5-9020731c1981}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Object\BackgroundObject">
+      <UniqueIdentifier>{fb101536-0c54-4cdd-879f-0eaa9098054d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\BackgroundObject">
+      <UniqueIdentifier>{039b4af8-0bb5-48b4-bfbc-0e1acc992b0a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -123,9 +129,6 @@
     <ClCompile Include="Brick.cpp">
       <Filter>Source Files\Object\WorldBlock</Filter>
     </ClCompile>
-    <ClCompile Include="Bush.cpp">
-      <Filter>Source Files\Object\WorldBlock</Filter>
-    </ClCompile>
     <ClCompile Include="Platform.cpp">
       <Filter>Source Files\Object\WorldBlock</Filter>
     </ClCompile>
@@ -134,9 +137,6 @@
     </ClCompile>
     <ClCompile Include="Mario.cpp">
       <Filter>Source Files\Object\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="SpawnPoint.cpp">
-      <Filter>Source Files\System</Filter>
     </ClCompile>
     <ClCompile Include="Koopas.cpp">
       <Filter>Source Files\Object\Enemy</Filter>
@@ -149,6 +149,18 @@
     </ClCompile>
     <ClCompile Include="KeyHandlerForLuigi.cpp">
       <Filter>Source Files\Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Bush.cpp">
+      <Filter>Source Files\Object\BackgroundObject</Filter>
+    </ClCompile>
+    <ClCompile Include="SpawnPoint.cpp">
+      <Filter>Source Files\Object\BackgroundObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Intro_Cloud.cpp">
+      <Filter>Source Files\Object\IntroObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Cloud.cpp">
+      <Filter>Source Files\Object\BackgroundObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -233,9 +245,6 @@
     <ClInclude Include="Mushroom.h">
       <Filter>Header Files\Object\Item</Filter>
     </ClInclude>
-    <ClInclude Include="Bush.h">
-      <Filter>Header Files\Object\WorldBlock</Filter>
-    </ClInclude>
     <ClInclude Include="Platform.h">
       <Filter>Header Files\Object\WorldBlock</Filter>
     </ClInclude>
@@ -251,14 +260,23 @@
     <ClInclude Include="KeyEventHandlerForMario.h">
       <Filter>Header Files\Object\Player</Filter>
     </ClInclude>
-    <ClInclude Include="SpawnPoint.h">
-      <Filter>Header Files\Object\WorldBlock</Filter>
-    </ClInclude>
     <ClInclude Include="Koopas.h">
       <Filter>Header Files\Object\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="QuestionBlock.h">
       <Filter>Header Files\Object\WorldBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="Bush.h">
+      <Filter>Header Files\Object\BackgroundObject</Filter>
+    </ClInclude>
+    <ClInclude Include="SpawnPoint.h">
+      <Filter>Header Files\Object\BackgroundObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Intro_Cloud.h">
+      <Filter>Header Files\Object\IntroObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Cloud.h">
+      <Filter>Header Files\Object\BackgroundObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

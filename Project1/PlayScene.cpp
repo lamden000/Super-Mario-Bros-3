@@ -16,6 +16,7 @@
 #include "Koopas.h"
 #include "SpawnPoint.h"
 #include "QuestionBlock.h"
+#include "Cloud.h"
 
 #include "KeyEventHandlerForMario.h"
 #include "KeyHandlerForLuigi.h"
@@ -129,21 +130,24 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			player = (CLuigi*)obj;
 		}
 		break;
-	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x, y); break;
+	case OBJECT_TYPE_GOOMBA:
+	{
+		int level = 1;
+		if(tokens.size()>3)
+			level = (int)atof(tokens[3].c_str());
+		obj = new CGoomba(x, y,level); break;
+	}
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x, y); break;
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
 	case OBJECT_TYPE_LEAF: obj = new CLeaf(x, y); break;
 	case OBJECT_TYPE_MUSHROOM: obj = new CMushroom(x, y); break;
+	case OBJECT_TYPE_BACKGROUND_CLOUD:	obj = new CCloud(x, y); break;
+	case OBJECT_TYPE_KOOPAS:obj = new CBrownKoopas(x, y); break;
 	case OBJECT_TYPE_QUESTIONBLOCK: 
 	{
 		int type = (int)atof(tokens[3].c_str());
 		obj = new CQuestionBlock(x, y, type); 
 		break;
-	}
-	case OBJECT_TYPE_KOOPAS:
-	{
-		int koopas_type = (int)atof(tokens[3].c_str());
-		obj = new CBrownKoopas(x, y,koopas_type); break;
 	}
 	case OBJECT_TYPE_BUSH: 
 	{
@@ -178,6 +182,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int scene_id = atoi(tokens[5].c_str());
 		obj = new CPortal(x, y, r, b, scene_id);
 	}
+	break;
 	case OBJECT_TYPE_SPAWNPOINT:
 	{
 		float r = (float)atof(tokens[3].c_str());
@@ -187,7 +192,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		{
 			spawnObjectDetail += tokens[i]+"	";
 		}
-		obj = new CSpawnPoint(x, y, r, b,spawnObjectDetail );
+		obj = new CSpawnPoint(x, y, r, b,spawnObjectDetail);
 	}
 	break;
 

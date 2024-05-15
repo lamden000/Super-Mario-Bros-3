@@ -1,11 +1,11 @@
 [ASSETS]
-IntroObject.txt
-mario.txt
-cloud.txt
-brick.txt
-luigi.txt
-leaf.txt
-bush.txt
+sprites\IntroObject.txt
+sprites\mario.txt
+sprites\cloud.txt
+sprites\brick.txt
+sprites\luigi.txt
+sprites\leaf.txt
+sprites\bush.txt
 [OBJECTS]
 # type	x	y	extra_settings per object type
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas, 6=Brown Curtain, 7= Stage, 8=Luigi, 9=logo
@@ -18,14 +18,14 @@ bush.txt
 8	5	153
 
 #curtain 
-6	153	55
+6	150	75
 
 # Bush
-12	280	123	1	1
-12	5	150	3	1
+12	300	115	1	1
+12	-15	142	3	0
 
 #stage
-7	150	188
+7	155	188
 
 #logo
 9	160	-1400

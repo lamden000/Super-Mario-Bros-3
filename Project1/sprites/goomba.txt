@@ -1,0 +1,31 @@
+# id	left	top	right	bottom	texture_id
+[SPRITES]
+######### RED #########
+#WALK
+31001	368	201	427	266	10
+31002	300	201	367	266	10
+
+#Walk with wings
+31003	343	120	411	185	10
+31004	417	120	483	185	10
+
+#Ready jump
+31005	188	100	264	185	10
+31006	262	100	337	185	10
+
+#DIE
+32001	432	201	488	266	10
+
+# ani_id	sprite1_id	time1	sprite2_id	time2	...
+[ANIMATIONS]
+######### RED #########
+#Walk
+5000	31001	100	31002	100
+#Die
+5001	32001	100
+#Walk with wings
+5002	31003	100	31004	100
+#Ready jump
+5003	31005	200	31006	200
+#Jump
+5004	31005	100

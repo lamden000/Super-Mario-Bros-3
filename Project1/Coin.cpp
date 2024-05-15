@@ -25,7 +25,7 @@ void CCoin::Render()
 
 void CCoin::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if ( e->obj->IsBlocking())
+	if ( e->obj->IsBlocking()&&isFromBlock)
 	{
 		vy = -COIN_ESCAPE_BLOCK_SPEED_Y;
 	}

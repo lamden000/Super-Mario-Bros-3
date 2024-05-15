@@ -2,9 +2,13 @@
 #include "GameObject.h"
 
 #define ANIID 347
-#define LOGO_SCALEX 0.2f
-#define LOGO_SCALEY 0.2f
+#define ANIID_NUMBER_3 348
+#define LOGO_SHAKE_SPEED 0.8f
 #define LOGO_SPEEDY 0.4f
+#define LOGO_ALTITUDE 45
+#define LOGO_SCALEX 0.9f
+#define LOGO_SCALEY 0.9f
+#define LOGO_SHAKE_TIME 1000
 
 class CLogo : public CGameObject
 {

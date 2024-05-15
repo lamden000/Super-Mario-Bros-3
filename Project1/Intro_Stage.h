@@ -2,11 +2,11 @@
 #include "GameObject.h"
 
 #define ANIID 346
-#define STAGE_SCALEX 0.3f
-#define STAGE_SCALEY 0.3f
+#define STAGE_SCALEX 1.2f
+#define STAGE_SCALEY 1.2f
 #define STAGE_WIDTH 300
-#define STAGE_BBOX_WIDTH 400
-#define STAGE_BBOX_HEIGHT 45
+#define STAGE_BBOX_WIDTH 495
+#define STAGE_BBOX_HEIGHT 43
 
 class CStage : public CGameObject
 {

@@ -1,11 +1,11 @@
 # list of object assets to load in this scene
 [ASSETS]
-mario.txt
-brick.txt
-coin.txt
-goomba.txt
-cloud.txt
-IntroObject.txt
+sprites\mario.txt
+sprites\brick.txt
+sprites\coin.txt
+sprites\goomba.txt
+sprites\cloud.txt
+sprites\IntroObject.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -54,7 +54,7 @@ IntroObject.txt
 4	180	120
 
 #Goomba
-2	300	10
+2	150	10
 
 #Platform
 5	90	136	16	15	16	51000	52000	53000

@@ -10,6 +10,7 @@
 #define CURTAIN_ID 2
 #define LOGO_ID 6
 #define LEAF_ID 7
+#define STAGE_ID 5
 #define BUSH_1_ID 3
 #define BUSH_2_ID 4
 #define LUIGI_ID 1
