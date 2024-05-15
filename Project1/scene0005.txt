@@ -48,7 +48,7 @@ sprites\questionblock.txt
 14	250	90	2
 
 #koopas
-16	290	30	2
+2	290	30	2
 
 #brick
 1	140	125

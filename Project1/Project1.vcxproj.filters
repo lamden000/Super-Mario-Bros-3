@@ -165,6 +165,9 @@
     <ClCompile Include="GreenKoopas.cpp">
       <Filter>Source Files\Object\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="RedGoomba.cpp">
+      <Filter>Source Files\Object\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -282,6 +285,9 @@
       <Filter>Header Files\Object\BackgroundObject</Filter>
     </ClInclude>
     <ClInclude Include="GreenKoopas.h">
+      <Filter>Header Files\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="RedGoomba.h">
       <Filter>Header Files\Object\Enemy</Filter>
     </ClInclude>
   </ItemGroup>

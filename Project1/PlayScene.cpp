@@ -18,6 +18,7 @@
 #include "SpawnPoint.h"
 #include "QuestionBlock.h"
 #include "Cloud.h"
+#include	"RedGoomba.h"
 
 #include "KeyEventHandlerForMario.h"
 #include "KeyHandlerForLuigi.h"
@@ -131,13 +132,15 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			player = (CLuigi*)obj;
 		}
 		break;
-	case OBJECT_TYPE_GOOMBA:
+	case OBJECT_TYPE_REDGOOMBA:
 	{
 		int level = 1;
-		if(tokens.size()>3)
+		if (tokens.size() > 3)
 			level = (int)atof(tokens[3].c_str());
-		obj = new CGoomba(x, y,level); break;
+		obj = new CRedGoomba(x, y, level);
+		break;
 	}
+	case OBJECT_TYPE_GOOMBA:obj = new CGoomba(x, y); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x, y); break;
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
 	case OBJECT_TYPE_LEAF: obj = new CLeaf(x, y); break;
