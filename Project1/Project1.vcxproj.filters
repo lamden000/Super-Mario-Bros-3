@@ -162,6 +162,9 @@
     <ClCompile Include="Cloud.cpp">
       <Filter>Source Files\Object\BackgroundObject</Filter>
     </ClCompile>
+    <ClCompile Include="GreenKoopas.cpp">
+      <Filter>Source Files\Object\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -277,6 +280,9 @@
     </ClInclude>
     <ClInclude Include="Cloud.h">
       <Filter>Header Files\Object\BackgroundObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GreenKoopas.h">
+      <Filter>Header Files\Object\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -14,6 +14,7 @@
 #include "Mushroom.h"
 #include "Bush.h"
 #include "Koopas.h"
+#include "GreenKoopas.h"
 #include "SpawnPoint.h"
 #include "QuestionBlock.h"
 #include "Cloud.h"
@@ -142,7 +143,22 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_LEAF: obj = new CLeaf(x, y); break;
 	case OBJECT_TYPE_MUSHROOM: obj = new CMushroom(x, y); break;
 	case OBJECT_TYPE_BACKGROUND_CLOUD:	obj = new CCloud(x, y); break;
-	case OBJECT_TYPE_KOOPAS:obj = new CBrownKoopas(x, y); break;
+	case OBJECT_TYPE_KOOPAS:
+	{
+		int level = 1;
+		if (tokens.size() > 3)
+			level = (int)atof(tokens[3].c_str());
+		obj = new CBrownKoopas(x, y,level);
+		break;
+	}
+	case OBJECT_TYPE_GREENKOOPAS:
+	{
+		int level = 1;
+		if (tokens.size() > 3)
+			level = (int)atof(tokens[3].c_str());
+		obj = new CGreenKoopas(x, y, level);
+		break;
+	}
 	case OBJECT_TYPE_QUESTIONBLOCK: 
 	{
 		int type = (int)atof(tokens[3].c_str());

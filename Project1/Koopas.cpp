@@ -1,17 +1,19 @@
 #include "Koopas.h"
 #include "debug.h"
 
-CBrownKoopas::CBrownKoopas(float x, float y) :CGameObject(x, y)
+CBrownKoopas::CBrownKoopas(float x, float y, int level) :CGameObject(x, y)
 {
 	this->ax = 0;
-	this->ay = KOOPAS_GRAVITY;
+	this->ay = BROWNKOOPAS_GRAVITY;
 	die_start = -1;
 	SetState(BROWNKOOPAS_STATE_WALKING);
+	this->level = level;
 }
+
 
 void CBrownKoopas::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (state == BROWNKOOPAS_STATE_SHELL|| state == BROWNKOOPAS_STATE_REVIVING|| state == BROWNKOOPAS_STATE_SHELL_BOUNCING)
+	if (state == KOOPAS_STATE_SHELL|| state == BROWNKOOPAS_STATE_REVIVING|| state == BROWNKOOPAS_STATE_SHELL_BOUNCING)
 	{
 		left = x - BROWNKOOPAS_BBOX_WIDTH / 2;
 		top = y - BROWNKOOPAS_BBOX_HEIGHT_SHELL/ 2;
@@ -32,7 +34,7 @@ void CBrownKoopas::OnNoCollision(DWORD dt)
 	{
 		vx = -vx;
 		steppedBack = true;
-		if ( state == BROWNKOOPAS_STATE_SHELL)
+		if ( state == KOOPAS_STATE_SHELL)
 			y += vy * dt;
 	}
 	else {
@@ -58,11 +60,21 @@ void CBrownKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 	}
 }
 
+void CBrownKoopas::DecreaseLevel()
+{
+	level--;
+	if (level == 0)
+	{
+		SetState(KOOPAS_STATE_SHELL);
+		level = 1;
+	}
+};
+
 void CBrownKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
-	if ((state == BROWNKOOPAS_STATE_SHELL|| state == BROWNKOOPAS_STATE_REVIVING) && (GetTickCount64() - die_start > BROWNKOOPAS_SHELL_TIME))
+	if ((state == KOOPAS_STATE_SHELL|| state == BROWNKOOPAS_STATE_REVIVING) && (GetTickCount64() - die_start > BROWNKOOPAS_SHELL_TIME))
 	{
 		SetState(BROWNKOOPAS_STATE_REVIVING);
 		if ((GetTickCount64() - die_start > BROWNKOOPAS_SHELL_TIME+BROWNKOOPAS_REVIVE_TIME))
@@ -81,12 +93,18 @@ void CBrownKoopas::Render()
 	int aniId = -1;
 	if (vx >= 0)
 	{
-		aniId = ID_ANI_BROWNKOOPAS_WALKING_RIGHT;
+		if (level == BROWNKOOPAS_LEVEL_NORMAL)
+			aniId = ID_ANI_BROWNKOOPAS_WALKING_RIGHT;
+		else
+			aniId = ID_ANI_BROWNKOOPAS_WALKING_RIGHT_WITH_WINGS;
 	}
 	else if (vx <0) {
-		aniId = ID_ANI_BROWNKOOPAS_WALKING_LEFT;
+		if (level == BROWNKOOPAS_LEVEL_NORMAL)
+			aniId = ID_ANI_BROWNKOOPAS_WALKING_LEFT;
+		else
+			aniId = ID_ANI_BROWNKOOPAS_WALKING_LEFT_WITH_WINGS;
 	}
-	if (state == BROWNKOOPAS_STATE_SHELL)
+	if (state == KOOPAS_STATE_SHELL)
 	{
 		aniId = ID_ANI_BROWNKOOPAS_SHELL;
 	}
@@ -107,7 +125,7 @@ void CBrownKoopas::SetState(int state,float nx)
 	CGameObject::SetState(state);
 	switch (state)
 	{
-	case BROWNKOOPAS_STATE_SHELL:
+	case KOOPAS_STATE_SHELL:
 		die_start = GetTickCount64();
 		y -= (BROWNKOOPAS_BBOX_HEIGHT - BROWNKOOPAS_BBOX_HEIGHT_SHELL) / 2;
 		vx = 0;

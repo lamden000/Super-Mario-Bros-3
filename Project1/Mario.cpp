@@ -114,14 +114,14 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 
 	if ((e->ny < 0) && koopas->GetState() ==BROWNKOOPAS_STATE_WALKING )
 	{
-		koopas->SetState(BROWNKOOPAS_STATE_SHELL);
+		koopas->DecreaseLevel();
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 	}
 	else
 	{
 		if (untouchable == 0)
 		{
-			if (koopas->GetState() != BROWNKOOPAS_STATE_SHELL&& koopas->GetState() != BROWNKOOPAS_STATE_REVIVING)
+			if (koopas->GetState() != KOOPAS_STATE_SHELL&& koopas->GetState() != BROWNKOOPAS_STATE_REVIVING)
 			{
 				if (level > MARIO_LEVEL_SMALL)
 				{
