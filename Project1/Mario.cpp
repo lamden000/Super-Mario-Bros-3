@@ -14,6 +14,8 @@
 #include "SpawnPoint.h"
 #include "PlayScene.h"
 #include "QuestionBlock.h"
+#include "Venus.h"
+#include "FireBall.h"
 
 #include "Collision.h"
 
@@ -71,6 +73,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithSpawnPoint(e);
 	else if (dynamic_cast<CQuestionBlock*>(e->obj))
 		OnCollisionWithQestionBlock(e);
+	else if (dynamic_cast<CVenus*>(e->obj)|| dynamic_cast<CFireBall*>(e->obj))
+		OnCollisionWithVenus(e);
 
 }
 #pragma region collision_with
@@ -104,6 +108,23 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 					SetState(MARIO_STATE_DIE);
 				}
 			}
+		}
+	}
+}
+
+void CMario::OnCollisionWithVenus(LPCOLLISIONEVENT e)
+{
+	if (untouchable == 0)
+	{
+		if (level > MARIO_LEVEL_SMALL)
+		{
+			level--;
+			StartUntouchable();
+		}
+		else
+		{
+			DebugOut(L">>> Mario DIE >>> \n");
+			SetState(MARIO_STATE_DIE);
 		}
 	}
 }
@@ -199,9 +220,7 @@ void CMario::OnCollisionWithQestionBlock(LPCOLLISIONEVENT e)
 	if (e->ny > 0)
 	{
 		CQuestionBlock* block = (CQuestionBlock*)e->obj;
-		if (block->GetType() == 1)
-			coin++;
-		block->Reward(level);	
+		block->Reward();	
 	}
 }
 #pragma endregion

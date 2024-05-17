@@ -27,8 +27,10 @@ void CQuestionBlock::GetBoundingBox(float& l, float& t, float& r, float& b)
     b = t + QUESTIONBLOCK_BBOX_HEIGHT;
 }
 
-void CQuestionBlock::Reward(int level)
+void CQuestionBlock::Reward()
 {
+    CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+    int level = mario->GetLevel();
     if (this->type == QUESTIONBLOCK_TYPE_LEVEL_ITEM)
     {
         if (level == MARIO_LEVEL_SMALL)
@@ -52,11 +54,12 @@ void CQuestionBlock::Reward(int level)
         CCoin* coin = new CCoin(x, y);
         currentScene->AddObject(coin);
         coin->EscapeBlock();
+        mario->EarnCoin();
     }
     else if (this->type == QUESTIONBLOCK_TYPE_GREEN_MUSHROOM)
     {
         CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
-        CMushroom* mushroom = new CMushroom(x, y,2);
+        CMushroom* mushroom = new CMushroom(x, y,MUSHROOM_TYPE_GREEN);
         currentScene->AddObject(mushroom);
         mushroom->EscapeBlock();
     }

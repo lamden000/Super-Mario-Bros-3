@@ -168,6 +168,15 @@
     <ClCompile Include="RedGoomba.cpp">
       <Filter>Source Files\Object\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Pipe.cpp">
+      <Filter>Source Files\Object\WorldBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="Venus.cpp">
+      <Filter>Source Files\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="FireBall.cpp">
+      <Filter>Source Files\Object\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -288,6 +297,15 @@
       <Filter>Header Files\Object\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="RedGoomba.h">
+      <Filter>Header Files\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Pipe.h">
+      <Filter>Header Files\Object\WorldBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="Venus.h">
+      <Filter>Header Files\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="FireBall.h">
       <Filter>Header Files\Object\Enemy</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,5 +1,6 @@
 #include "GreenKoopas.h"
-#include	"debug.h"
+#include "debug.h"
+#include "QuestionBlock.h"
 
 void CGreenKoopas::OnNoCollision(DWORD dt)
 {
@@ -26,6 +27,8 @@ void CGreenKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		vx = -vx;
 	}
+	if (dynamic_cast<CQuestionBlock*>(e->obj))
+		OnCollisionWithQestionBlock(e);
 }
 
 void CGreenKoopas::Hop()

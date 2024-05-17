@@ -18,7 +18,9 @@
 #include "SpawnPoint.h"
 #include "QuestionBlock.h"
 #include "Cloud.h"
-#include	"RedGoomba.h"
+#include "RedGoomba.h"
+#include "Pipe.h"
+#include "Venus.h"
 
 #include "KeyEventHandlerForMario.h"
 #include "KeyHandlerForLuigi.h"
@@ -140,6 +142,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CRedGoomba(x, y, level);
 		break;
 	}
+	case OBJECT_TYPE_VENUS:
+	{
+		int type = 1;
+		if (tokens.size() > 3)
+			type = (int)atof(tokens[3].c_str());
+		obj = new CVenus(x, y, type);
+		break;
+	}
 	case OBJECT_TYPE_GOOMBA:obj = new CGoomba(x, y); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x, y); break;
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
@@ -193,7 +203,26 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 		break;
 	}
+	case OBJECT_TYPE_PIPE:
+	{
 
+		float cell_width = (float)atof(tokens[3].c_str());
+		float cell_height = (float)atof(tokens[4].c_str());
+		int length = atoi(tokens[5].c_str());
+		int sprite_begin = atoi(tokens[6].c_str());
+		int sprite_middle = atoi(tokens[7].c_str());
+		int sprite_end = atoi(tokens[8].c_str());
+		int orientation = atoi(tokens[9].c_str());
+		int height = atoi(tokens[10].c_str());
+
+		obj = new CPipe(
+			x, y,
+			cell_width, cell_height, length,
+			sprite_begin, sprite_middle, sprite_end, orientation, height
+		);
+
+		break;
+	}
 	case OBJECT_TYPE_PORTAL:
 	{
 		float r = (float)atof(tokens[3].c_str());

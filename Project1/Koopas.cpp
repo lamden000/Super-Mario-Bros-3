@@ -1,4 +1,6 @@
 #include "Koopas.h"
+#include "QuestionBlock.h"
+#include "Playscene.h"
 #include "debug.h"
 
 CBrownKoopas::CBrownKoopas(float x, float y, int level) :CGameObject(x, y)
@@ -58,6 +60,16 @@ void CBrownKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		vx = -vx;
 	}
+	if (dynamic_cast<CQuestionBlock*>(e->obj))
+		OnCollisionWithQestionBlock(e);
+}
+
+void CBrownKoopas::OnCollisionWithQestionBlock(LPCOLLISIONEVENT e)
+{
+	DebugOut(L"<<<work<<\n");
+	if (state != BROWNKOOPAS_STATE_SHELL_BOUNCING) return;
+	CQuestionBlock* block = (CQuestionBlock*)e->obj;
+	block->Reward();
 }
 
 void CBrownKoopas::DecreaseLevel()

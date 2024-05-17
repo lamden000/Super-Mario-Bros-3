@@ -1,0 +1,35 @@
+# id	left	top	right	bottom	texture_id
+[SPRITES]
+######  RED   #######
+#Head down left and right
+60	8	91	81	203	10
+61	890	91	962	203	11
+#Head up left and right
+62	8	203	81	316	10
+63	890	203	962	316	11
+######  GREEN   #######
+#Head down left and right
+70	8	491	81	581	10
+71	890	492	962	581	11
+#Head up left and right
+72	8	581	81	660	10
+73	891	581	962	660	11
+
+
+# ani_id	sprite1_id	time1	sprite2_id	time2	...
+[ANIMATIONS]
+######  RED   #######
+#Head down left and right
+64	60	100
+65	61	100
+#Head up left and right
+66	62	100
+67	63	100
+
+######  GREEN  #######
+#Head down left and right
+74	70	100
+75	71	100
+#Head up left and right
+76	72	100
+77	73	100

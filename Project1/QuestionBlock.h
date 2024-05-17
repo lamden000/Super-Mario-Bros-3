@@ -22,9 +22,8 @@ public:
 	{
 		this->type = type;
 	}
-	int GetType() { return type; }
 	void Render();
 	void Update(DWORD dt) {}
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
-	void Reward(int type);
+	void Reward();
 };

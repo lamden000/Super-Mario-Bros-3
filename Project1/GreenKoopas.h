@@ -1,12 +1,11 @@
 #pragma once
-#pragma once
 #include "Koopas.h"
 
 #define KOOPAS_GRAVITY 0.0015f
 #define KOOPAS_WALKING_SPEED 0.05f
 #define KOOPAS_BOUNCING_SPEED 0.23f;
 #define KOOPAS_JUMP_COOLDOWN 2500
-#define KOOPAS_JUMP_SPEED 0.45f
+#define KOOPAS_JUMP_SPEED 0.42f
 
 #define GREENKOOPAS_BBOX_WIDTH 10
 #define GREENKOOPAS_BBOX_HEIGHT 25

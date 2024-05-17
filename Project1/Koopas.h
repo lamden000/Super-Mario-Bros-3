@@ -54,6 +54,7 @@ protected:
 	virtual void OnNoCollision(DWORD dt);
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+	void OnCollisionWithQestionBlock(LPCOLLISIONEVENT e);
 
 public:
 	CBrownKoopas(float x, float y,int level);

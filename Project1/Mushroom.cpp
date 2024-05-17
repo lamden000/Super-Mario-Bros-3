@@ -1,9 +1,16 @@
 #include "Mushroom.h"
+#include "PlayScene.h"
 
 CMushroom::CMushroom(float x, float y,int type) :CGameObject(x, y)
 {
-	this->vx = MUSHROOM_WALKING_SPEED;
-	this->vy = MUSHROOM_WALKING_SPEED;
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	float mario_x, mario_y;
+	mario->GetPosition(mario_x, mario_y);
+	if(x<mario_x)
+		this->vx = -MUSHROOM_WALKING_SPEED;
+	else 
+		this->vx = MUSHROOM_WALKING_SPEED;
+
 	this->ay = MUSHROOM_GRAVITY;
 	this->vy = -MUSHROOM_ESCAPE_BLOCK_SPEED;
 	this->type = type;
@@ -34,6 +41,10 @@ void CMushroom::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (e->ny != 0)
 	{
 		vy = 0;
+	}
+	else if (e->nx != 0)
+	{
+		vx = -vx;
 	}
 }
 

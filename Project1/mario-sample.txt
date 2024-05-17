@@ -24,3 +24,4 @@ height	240
 41	textures\luigi_texture_left.png
 60	textures\tex_environment_left.png
 61	textures\tex_environment_right.png
+70	textures\pipe.png
