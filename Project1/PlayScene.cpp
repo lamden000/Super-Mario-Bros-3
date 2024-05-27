@@ -21,11 +21,14 @@
 #include "RedGoomba.h"
 #include "Pipe.h"
 #include "Venus.h"
+#include "Point.h"
+#include "Box.h"
 
 #include "KeyEventHandlerForMario.h"
 #include "KeyHandlerForLuigi.h"
 
 using namespace std;
+
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
@@ -98,9 +101,13 @@ void CPlayScene::_ParseSection_ANIMATIONS(string line)
 	CAnimations::GetInstance()->Add(ani_id, ani);
 }
 
-void CPlayScene::AddObject(LPGAMEOBJECT object)
+void CPlayScene::AddObject(LPGAMEOBJECT object,int id)
 {
-	objects.push_back(object);
+
+	if (id == -1)
+		objects.push_back(object);
+	else
+		objects.insert(objects.begin() + id, object);
 }
 
 /*
@@ -180,9 +187,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_BUSH: 
 	{
-		int bush_type = (int)atof(tokens[3].c_str());
-		int bush_direction = (int)atof(tokens[4].c_str());
-		obj = new CBush(x, y, bush_type, bush_direction);
+		int height = atoi(tokens[3].c_str());
+		int sprite_begin = atoi(tokens[4].c_str());
+		int sprite_middle = atoi(tokens[5].c_str());
+		int sprite_end = atoi(tokens[6].c_str());
+		obj = new CBush(x, y,height,sprite_begin,sprite_middle,sprite_end);
 		break;
 	}
 	case OBJECT_TYPE_PLATFORM:
@@ -194,11 +203,17 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int sprite_begin = atoi(tokens[6].c_str());
 		int sprite_middle = atoi(tokens[7].c_str());
 		int sprite_end = atoi(tokens[8].c_str());
-
+		float scaleX = 1;
+		float scaleY = 1;
+		if (tokens.size() > 9)
+		{
+			scaleX = atof(tokens[9].c_str());
+			scaleY = atof(tokens[10].c_str());
+		}
 		obj = new CPlatform(
 			x, y,
 			cell_width, cell_height, length,
-			sprite_begin, sprite_middle, sprite_end
+			sprite_begin, sprite_middle, sprite_end,scaleX,scaleY
 		);
 
 		break;
@@ -218,7 +233,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CPipe(
 			x, y,
 			cell_width, cell_height, length,
-			sprite_begin, sprite_middle, sprite_end, orientation, height
+			sprite_begin, sprite_middle, sprite_end,1,1, orientation, height
 		);
 
 		break;
@@ -243,8 +258,20 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CSpawnPoint(x, y, r, b,spawnObjectDetail);
 	}
 	break;
-
-
+	case OBJECT_TYPE_POINT:
+	{
+		float value = (float)atof(tokens[3].c_str());
+		obj = new CPoint(x, y, value);
+	}
+	break;
+	case OBJECT_TYPE_BOX:
+	{
+		float height = (float)atof(tokens[3].c_str());
+		float width = (float)atof(tokens[4].c_str());
+		int type = atoi(tokens[5].c_str());
+		obj = new CBox(x, y, height, width, type);
+	}
+	break;
 	default:
 		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
 		return;
@@ -338,16 +365,17 @@ void CPlayScene::Update(DWORD dt)
 
 		if (player == NULL)
 			return;
-		// Update camera to follow Mario
 		float cx, cy;
 		player->GetPosition(cx, cy);
-
 		CGame* game = CGame::GetInstance();
+		float screenHeight = game->GetBackBufferHeight();
 		cx -= game->GetBackBufferWidth() / 2;
-		cy -= game->GetBackBufferHeight() / 2;
-
+		if (cy < -screenHeight)
+			cy -= screenHeight / 2;
+		else
+			cy = 0;
 		if (cx < 0) cx = 0;
-		game->SetCamPos(cx, 0.0f /*cy*/);
+		game->SetCamPos(cx, cy);
 	}
 
 	PurgeDeletedObjects();
@@ -356,7 +384,7 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
-	for (int i = objects.size() - 1; i >=0 ; i--)
+	for (int i = objects.size()-1; i >=0 ; i--)
 	{
 		objects[i]->Render();
 	}

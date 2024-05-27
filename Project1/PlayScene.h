@@ -13,6 +13,7 @@
 class CPlayScene : public CScene
 {
 protected:
+
 	// A play scene has to have player, right? 
 	LPGAMEOBJECT player;
 
@@ -20,15 +21,14 @@ protected:
 
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
-
+	virtual void _ParseSection_OBJECTS(string line);
 	void _ParseSection_ASSETS(string line);
 
 	void LoadAssets(LPCWSTR assetFile);
 
 public:
 	CPlayScene(int id, LPCWSTR filePath);
-	virtual void _ParseSection_OBJECTS(string line);
-	virtual void AddObject(LPGAMEOBJECT object);
+	virtual void AddObject(LPGAMEOBJECT object, int id = -1);
 	virtual void Load();
 	virtual void Update(DWORD dt);
 	virtual void Render();

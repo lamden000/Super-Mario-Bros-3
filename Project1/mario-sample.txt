@@ -1,13 +1,12 @@
 [SETTINGS]
-start	5
+start	1
 width	320
 height	240
 
-#id	type	file
-# type: 0: intro, 1: play scene 
+#id	file
 [SCENES]
 0	intro.txt
-1	scene01.txt
+1	world11.txt
 2	scene02.txt
 5	scene0005.txt
 6	intro.txt
@@ -22,6 +21,6 @@ height	240
 30	textures\intro.png
 40	textures\luigi_texture_right.png
 41	textures\luigi_texture_left.png
-60	textures\tex_environment_left.png
-61	textures\tex_environment_right.png
+60	textures\world-1-1.png
 70	textures\pipe.png
+80	textures\ui.png

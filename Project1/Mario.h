@@ -58,6 +58,12 @@
 #define ID_ANI_MARIO_BRACE_RIGHT 1000
 #define ID_ANI_MARIO_BRACE_LEFT 1001
 
+#define ID_ANI_MARIO_HOLD_OBJECT_RIGHT 2000
+#define ID_ANI_MARIO_HOLD_OBJECT_LEFT 2001
+
+#define ID_ANI_MARIO_HOLD_OBJECT_MOVING_RIGHT 2100
+#define ID_ANI_MARIO_HOLD_OBJECT_MOVING_LEFT 2101
+
 #define ID_ANI_MARIO_DIE 999
 
 // SMALL MARIO
@@ -78,6 +84,12 @@
 
 #define ID_ANI_MARIO_SMALL_JUMP_RUN_RIGHT 1600
 #define ID_ANI_MARIO_SMALL_JUMP_RUN_LEFT 1601
+
+#define ID_ANI_MARIO_SMALL_HOLD_OBJECT_RIGHT 1700
+#define ID_ANI_MARIO_SMALL_HOLD_OBJECT_LEFT 1701
+
+#define ID_ANI_MARIO_SMALL_HOLD_OBJECT_MOVING_RIGHT 1800
+#define ID_ANI_MARIO_SMALL_HOLD_OBJECT_MOVING_LEFT 1801
 
 //FOX MARIO
 #define ID_ANI_MARIO_FOX_IDLE_RIGHT 430
@@ -114,7 +126,7 @@
 #define	MARIO_LEVEL_BIG		2
 #define	MARIO_LEVEL_FOX		3
 
-#define MARIO_BIG_BBOX_WIDTH  14
+#define MARIO_BIG_BBOX_WIDTH  11
 #define MARIO_BIG_BBOX_HEIGHT 24
 #define MARIO_BIG_SITTING_BBOX_WIDTH  14
 #define MARIO_BIG_SITTING_BBOX_HEIGHT 16
@@ -134,8 +146,10 @@ class CMario : public CGameObject
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
 	bool autoRunning;
+	bool isHolding;
 	int level;
 	int untouchable;
+	LPGAMEOBJECT holdedObject;
 	ULONGLONG untouchable_start;
 	BOOLEAN isOnPlatform;
 	D3DXVECTOR2 moveDirection;
@@ -159,23 +173,32 @@ class CMario : public CGameObject
 	int GetAniIdFox();
 
 public:
-	CMario(float x, float y) : CGameObject(x, y)
+	CMario(float x, float y,int level= MARIO_LEVEL_SMALL) : CGameObject(x, y)
 	{
 		isSitting = false;
 		maxVx = 0.0f;
 		ax = 0.0f;
 		ay = MARIO_GRAVITY;
 		autoRunning = false;
-		level = MARIO_LEVEL_BIG;
+		this->level = level;
 		untouchable = 0;
 		untouchable_start = -1;
 		isOnPlatform = false;
+		isHolding = false;
 		coin = 0;
-		nx = -0.001;
+		nx = 1;
+		holdedObject = NULL;
 	}
+
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
 	void SetState(int state);
+	void Hold() { isHolding = true; }
+	void SetHoldedObject(LPGAMEOBJECT object) { this->holdedObject = object; };
+	void HoldObject();
+
+	LPGAMEOBJECT GetHoldedObject() { return holdedObject; }
+	void ReleaseHold();
 
 	int IsCollidable()
 	{

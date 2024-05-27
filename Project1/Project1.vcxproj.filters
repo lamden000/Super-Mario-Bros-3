@@ -61,6 +61,12 @@
     <Filter Include="Source Files\Object\BackgroundObject">
       <UniqueIdentifier>{039b4af8-0bb5-48b4-bfbc-0e1acc992b0a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\UI">
+      <UniqueIdentifier>{af1057ae-288b-408f-8ec4-70c0721af983}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI">
+      <UniqueIdentifier>{0c84c7d4-e75a-47e2-a5d2-c7c37432f574}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -73,9 +79,6 @@
       <Filter>Source Files\System</Filter>
     </ClCompile>
     <ClCompile Include="Collision.cpp">
-      <Filter>Source Files\System</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
       <Filter>Source Files\System</Filter>
     </ClCompile>
     <ClCompile Include="Intro.cpp">
@@ -177,6 +180,15 @@
     <ClCompile Include="FireBall.cpp">
       <Filter>Source Files\Object\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Source Files\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Point.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Box.cpp">
+      <Filter>Source Files\Object\WorldBlock</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -213,9 +225,6 @@
       <Filter>Header Files\System</Filter>
     </ClInclude>
     <ClInclude Include="Intro.h">
-      <Filter>Header Files\System</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
       <Filter>Header Files\System</Filter>
     </ClInclude>
     <ClInclude Include="PlayScene.h">
@@ -307,6 +316,15 @@
     </ClInclude>
     <ClInclude Include="FireBall.h">
       <Filter>Header Files\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Point.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Box.h">
+      <Filter>Header Files\Object\WorldBlock</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

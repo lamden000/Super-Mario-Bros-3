@@ -12,7 +12,7 @@
 #define COIN_BBOX_HEIGHT 16
 #define COIN_ESCAPE_BLOCK_SPEED_Y 0.32f
 #define COIN_GRAVITY 0.001f
-#define FROM_BLOCK_TIMEOUT 1000
+#define FROM_BLOCK_TIMEOUT 600
 
 class CCoin : public CGameObject {
 protected:
@@ -22,7 +22,6 @@ public:
 	CCoin(float x, float y) : CGameObject(x, y) { isFromBlock = false; }
 	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
-	void OnCollisionWith(LPCOLLISIONEVENT e);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	int IsBlocking() { return 0; }
 	int IsCollidable() { return 1; }

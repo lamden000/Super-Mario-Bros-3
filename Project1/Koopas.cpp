@@ -1,7 +1,8 @@
 #include "Koopas.h"
 #include "QuestionBlock.h"
+#include "Goomba.h"
+#include "Point.h"
 #include "Playscene.h"
-#include "debug.h"
 
 CBrownKoopas::CBrownKoopas(float x, float y, int level) :CGameObject(x, y)
 {
@@ -49,7 +50,6 @@ void CBrownKoopas::OnNoCollision(DWORD dt)
 void CBrownKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (!e->obj->IsBlocking()) return;
-	if (dynamic_cast<CBrownKoopas*>(e->obj)) return;
 
 	if (e->ny != 0)
 	{
@@ -62,15 +62,23 @@ void CBrownKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 	}
 	if (dynamic_cast<CQuestionBlock*>(e->obj))
 		OnCollisionWithQestionBlock(e);
+	else if (dynamic_cast<CGoomba*>(e->obj))
+		OnCollisionWithGoomba(e);
 }
 
 void CBrownKoopas::OnCollisionWithQestionBlock(LPCOLLISIONEVENT e)
 {
-	DebugOut(L"<<<work<<\n");
 	if (state != BROWNKOOPAS_STATE_SHELL_BOUNCING) return;
 	CQuestionBlock* block = (CQuestionBlock*)e->obj;
 	block->Reward();
 }
+void CBrownKoopas::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
+{
+	if (state != BROWNKOOPAS_STATE_SHELL_BOUNCING) return;
+	CGoomba* goomba = (CGoomba*)e->obj;
+	goomba->DecreaseLevel();
+}
+
 
 void CBrownKoopas::DecreaseLevel()
 {
@@ -86,6 +94,7 @@ void CBrownKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
+
 	if ((state == KOOPAS_STATE_SHELL|| state == BROWNKOOPAS_STATE_REVIVING) && (GetTickCount64() - die_start > BROWNKOOPAS_SHELL_TIME))
 	{
 		SetState(BROWNKOOPAS_STATE_REVIVING);
@@ -139,12 +148,14 @@ void CBrownKoopas::SetState(int state,float nx)
 	{
 	case KOOPAS_STATE_SHELL:
 		die_start = GetTickCount64();
-		y -= (BROWNKOOPAS_BBOX_HEIGHT - BROWNKOOPAS_BBOX_HEIGHT_SHELL) / 2;
+		y += (BROWNKOOPAS_BBOX_HEIGHT - BROWNKOOPAS_BBOX_HEIGHT_SHELL) / 2;
 		vx = 0;
 		vy = 0;
+		ay = 0;
 		break;
 	case BROWNKOOPAS_STATE_WALKING:
 		vx = -KOOPAS_WALKING_SPEED;
+		ay = KOOPAS_GRAVITY;
 		break;
 	case BROWNKOOPAS_STATE_SHELL_BOUNCING:
 		if (nx > 0)
@@ -153,6 +164,7 @@ void CBrownKoopas::SetState(int state,float nx)
 		}
 		else 
 			vx = -KOOPAS_BOUNCING_SPEED;
+		ay = KOOPAS_GRAVITY;
 		break;
 	}
 }

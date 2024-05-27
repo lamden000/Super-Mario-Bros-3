@@ -3,11 +3,11 @@
 
 #define KOOPAS_GRAVITY 0.002f
 #define KOOPAS_WALKING_SPEED 0.05f
-#define KOOPAS_BOUNCING_SPEED 0.23f;
+#define KOOPAS_BOUNCING_SPEED 0.15f;
 #define BROWNKOOPAS_GRAVITY 0.002f;
 
 #define BROWNKOOPAS_BBOX_WIDTH 10
-#define BROWNKOOPAS_BBOX_HEIGHT 25
+#define BROWNKOOPAS_BBOX_HEIGHT 23
 #define BROWNKOOPAS_BBOX_HEIGHT_SHELL 11
 
 
@@ -49,12 +49,13 @@ protected:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 
-	virtual int IsCollidable() { return 1; };
+	virtual int IsCollidable() { return 1; }
 	virtual int IsBlocking() { return 0; }
 	virtual void OnNoCollision(DWORD dt);
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 	void OnCollisionWithQestionBlock(LPCOLLISIONEVENT e);
+	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 
 public:
 	CBrownKoopas(float x, float y,int level);

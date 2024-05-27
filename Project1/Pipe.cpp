@@ -50,7 +50,7 @@ void CPipe::Render()
 			s->Get(this->spriteIdMiddle)->Draw(x, yy, PIPE_SCALEX, PIPE_SCALEY);
 			yy += this->cellHeight;
 		}
-		if (length > 1)
+		if (height > 1)
 			s->Get(this->spriteIdEnd)->Draw(x, yy, PIPE_SCALEX, PIPE_SCALEY);
 	}
 	else {
@@ -66,7 +66,7 @@ void CPipe::Render()
 		if (length > 1)
 			s->Get(this->spriteIdEnd)->Draw(xx, y,PIPE_SCALEX,PIPE_SCALEY);
 	}
-	RenderBoundingBox();
+//	RenderBoundingBox();
 }
 
 

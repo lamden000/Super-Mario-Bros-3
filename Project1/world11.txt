@@ -1,0 +1,116 @@
+# list of object assets to load in this scene
+[ASSETS]
+sprites\mario.txt
+sprites\coin.txt
+sprites\cloud.txt
+sprites\goomba.txt
+sprites\backgroundcloud.txt
+sprites\brick.txt
+sprites\koopas.txt
+sprites\mushroom.txt
+sprites\bush.txt
+sprites\leaf.txt
+sprites\questionblock.txt
+sprites\pipe.txt
+sprites\venus.txt
+sprites\fireball.txt
+sprites\point.txt
+sprites\platform.txt
+sprites\box.txt
+#
+[OBJECTS]
+# type	x	y	extra_settings per object type
+# type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
+# See OBJECT_TYPE constants in AssetIDs.h
+
+# MARIO
+0	10	100
+
+#question block
+14	209	87	1
+14	226	87	1
+14	253	50	1
+14	270	50	2
+
+14	650	113	2
+14	704	78	1
+
+#Platform
+5	0	150	29	28	22	200	200	200	0.3	0.3
+5	638	135	29	28	17	200	200	200	0.3	0.3
+
+#Goomba
+2	260	120
+2	530	120
+
+#Box
+21	282	117	37	40	3
+21	310	105	61	38	4
+
+21	555	119	32	90	1
+21	455	117	37	79	1
+21	500	105	61	60	3
+21	535	80	90	60	2
+
+#pipe
+18 	370	106	30	14	2	20003	20002	20002	1	3
+
+#venus
+19	370	106	2
+####enemies with spawnpoint
+#koopas
+13	390	0	400	500	3	560	90	1
+
+#goomba
+13	650	0	670	500	2	800	100
+13	700	0	720	500	2	900	100
+13	750	0	770	500	17	1000	100	2
+
+####background 
+#Big Bush
+12 	50	128	2	2026	2026	2027	
+12 	33	128	3	2026	2026	2027	
+12 	50	128	4	2026	2026	2027	
+12 	110	128	1	2027	2026	2026
+12 	88	128	3	2026	2026	2027
+12 	150	128	2	2026	2026	2027	
+12 	126	128	3	2026	2026	2027
+
+12 	820	111	1	2027	2026	2026	
+12 	857	111	2	2026	2026	2027
+12 	898	111	2	2026	2026	2027
+12 	837	111	3	2026	2026	2027
+12 	876	111	3	2026	2026	2027
+12 	898	111	4	2026	2026	2027
+12 	936	111	3	2026	2026	2027
+
+12 	976	111	1	2027	2026	2026
+12 	1016	111	2	2026	2026	2027
+12 	993	111	3	2026	2026	2027
+
+#small bush
+12 	195	125	1	2028	2026	2026
+12 	215	125	1	2028	2026	2026
+12 	235	125	1	2028	2026	2026	
+
+12 	668	110	1	2028	2026	2026
+12 	686	110	1	2028	2026	2026
+12 	704	110	1	2028	2026	2026	
+12 	722	110	1	2028	2026	2026
+12 	740	110	1	2028	2026	2026	
+12 	758	110	1	2028	2026	2026
+
+12 	1079	110	1	2028	2026	2026	
+12 	1097	110	1	2028	2026	2026
+
+# cloud
+15	185	40
+15	170	40
+15	350	30
+15	640	40
+
+15	750	50
+15	735	50
+15	720	50
+
+

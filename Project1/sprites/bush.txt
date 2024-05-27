@@ -1,23 +1,13 @@
 # id	left	top	right	bottom	texture_id
 [SPRITES]
-#type 1 (the highest)
-2026	552	10	664	155	60
-2029	8	13	124	155	61
-#type 2 (the smallest)
-2027	49	28	123	80	60
-2030	548	26	622	79	61
-#type 3 (the longest)
-2028	0	80	133	148	60
-2031	544	78	676	149	61
+#4 cell
+2026	259	41	360	94	60
+#top
+2027	5	93	102	145	60
+
+#small bush
+2028	1616	845	1673	902	60
+
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
-#type 1 (the highest)
-20261	2026	100
-20291	2029	100
-#type 2 (the smallest)
-20271	2027	100
-20301	2030	100
-#type 3 (the longest)
-20281	2028	100
-20311	2031	100

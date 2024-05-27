@@ -9,6 +9,6 @@ CCloud::CCloud(float x, float y)
 
 void CCloud::Render()
 {
-	CAnimations::GetInstance()->Get(CLOUD_ANIID)->Render(x, y);
+	CAnimations::GetInstance()->Get(CLOUD_ANIID)->Render(x, y,CLOUD_SCALEX,CLOUD_SCALEY);
 }
 

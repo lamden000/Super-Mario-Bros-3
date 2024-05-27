@@ -1,0 +1,15 @@
+# id	left	top	right	bottom	texture_id
+[SPRITES]
+#white
+400	1404	14	1554	170	60
+#blue
+401	1601	188	1752	340	60
+#green
+402	1598	20	1747	168	60
+#pink
+403	1411	192	1564	343	60
+#shadow
+405	1722	356	1750	453	60
+
+# ani_id	sprite1_id	time1	sprite2_id	time2	...
+[ANIMATIONS]

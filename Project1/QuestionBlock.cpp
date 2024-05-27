@@ -16,7 +16,7 @@ void CQuestionBlock::Render()
         animations->Get(ID_ANI_QUESTIONBLOCK_EMPTY)->Render(x, y);
     else
         animations->Get(ID_ANI_QUESTIONBLOCK)->Render(x, y);
-    RenderBoundingBox();
+   // RenderBoundingBox();
 }
 
 void CQuestionBlock::GetBoundingBox(float& l, float& t, float& r, float& b)
@@ -37,14 +37,14 @@ void CQuestionBlock::Reward()
         {
             CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
             CMushroom* mushroom = new CMushroom(x, y);
-            currentScene->AddObject(mushroom);
+            currentScene->AddObject(mushroom,1);
             mushroom->EscapeBlock();
         }
         else if (level == MARIO_LEVEL_BIG)
         {
           CPlayScene* currentScene =(CPlayScene*) CGame::GetInstance()->GetCurrentScene();
           CLeaf* leaf = new CLeaf(x, y);
-          currentScene->AddObject(leaf);
+          currentScene->AddObject(leaf,1);
           leaf->EscapeBlock();
         }
     }
@@ -52,7 +52,7 @@ void CQuestionBlock::Reward()
     {
         CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
         CCoin* coin = new CCoin(x, y);
-        currentScene->AddObject(coin);
+        currentScene->AddObject(coin,1);
         coin->EscapeBlock();
         mario->EarnCoin();
     }
@@ -60,7 +60,7 @@ void CQuestionBlock::Reward()
     {
         CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
         CMushroom* mushroom = new CMushroom(x, y,MUSHROOM_TYPE_GREEN);
-        currentScene->AddObject(mushroom);
+        currentScene->AddObject(mushroom,1);
         mushroom->EscapeBlock();
     }
     this->type = QUESTIONBLOCK_TYPE_EMPTY;

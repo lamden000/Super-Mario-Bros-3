@@ -61,17 +61,25 @@ void CVenus::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CVenus::Shoot(DWORD dt)
 {
     static DWORD shooting_Time = VENUS_SHOOTING_TIME;
+    static bool shooted=false;
     shooting_Time -= dt;
-    if (shooting_Time > 0)
+    if (shooting_Time> 0)
     {
         vy = 0;
     }
     else {
         vy = VENUS_GROW_SPEED;
         shooting_Time = VENUS_SHOOTING_TIME;
+        shooted = false;
+    }
+    
+    if (shooting_Time <= VENUS_SHOOTING_TIME / 2&&!shooted)
+    {
         CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
-        CFireBall* fireBall = new CFireBall(x, y);
-        scene->AddObject(fireBall);
+        float fireBall_y = y - 5;
+        CFireBall* fireBall = new CFireBall(x, fireBall_y);
+        scene->AddObject(fireBall,1);
+        shooted = true;
     }
 }
 

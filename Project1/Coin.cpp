@@ -1,4 +1,5 @@
 #include "Coin.h"
+#include "Point.h"
 
 void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -6,8 +7,12 @@ void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		vy += COIN_GRAVITY * dt;
 		timeOut += dt;
-		if(timeOut > FROM_BLOCK_TIMEOUT )
+		
+		if (timeOut > FROM_BLOCK_TIMEOUT)
+		{
+			new CPoint(x, y, 100);
 			this->Delete();
+		}	
 	}
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -23,13 +28,6 @@ void CCoin::Render()
 	//RenderBoundingBox();
 }
 
-void CCoin::OnCollisionWith(LPCOLLISIONEVENT e)
-{
-	if ( e->obj->IsBlocking()&&isFromBlock)
-	{
-		vy = -COIN_ESCAPE_BLOCK_SPEED_Y;
-	}
-}
 
 void CCoin::OnNoCollision(DWORD dt)
 {

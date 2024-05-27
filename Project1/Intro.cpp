@@ -16,6 +16,7 @@
 #include "Logo.h"
 #include "Leaf.h"
 #include "Bush.h"
+#include "Point.h"
 
 #include "KeyEventHandlerForMario.h"
 #include "KeyHandlerForLuigi.h"
@@ -56,14 +57,9 @@ void CIntro::Render()
 	pD3DDevice->OMSetBlendState(g->GetAlphaBlending(), NewBlendFactor, 0xffffffff);
 
 	objects[STAGE_ID]->Render();
-	if (passedTime >= 7000)
-	{
-		objects[BUSH_1_ID]->Render();
-		objects[BUSH_2_ID]->Render();
-	}
 	for (int i = 1; i < objects.size(); i++)
 	{
-		if (i == BUSH_1_ID|| i == BUSH_2_ID||i==CURTAIN_ID||i==STAGE_ID) continue;
+		if (i==CURTAIN_ID||i==STAGE_ID) continue;
 			objects[i]->Render();
 	}
 	objects[MARIO_ID]->Render();
@@ -162,8 +158,7 @@ void CIntro::_ParseSection_OBJECTS(string line)
 	switch (object_type)
 	{
 	case OBJECT_TYPE_MARIO:
-		obj = new CMario(x, y);
-
+		obj = new CMario(x, y,MARIO_LEVEL_BIG);
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
 	case OBJECT_TYPE_LUIGI:
@@ -188,27 +183,11 @@ void CIntro::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_LEAF: obj = new CLeaf(x, y); break;
 	case OBJECT_TYPE_BUSH:
 	{
-		int bush_type = (int)atof(tokens[3].c_str());
-		int bush_direction = (int)atof(tokens[4].c_str());
-		obj = new CBush(x, y, bush_type,bush_direction);
-		break;
-	}
-	case OBJECT_TYPE_PLATFORM:
-	{
-
-		float cell_width = (float)atof(tokens[3].c_str());
-		float cell_height = (float)atof(tokens[4].c_str());
-		int length = atoi(tokens[5].c_str());
-		int sprite_begin = atoi(tokens[6].c_str());
-		int sprite_middle = atoi(tokens[7].c_str());
-		int sprite_end = atoi(tokens[8].c_str());
-
-		obj = new CPlatform(
-			x, y,
-			cell_width, cell_height, length,
-			sprite_begin, sprite_middle, sprite_end
-		);
-
+		int height = atoi(tokens[3].c_str());
+		int sprite_begin = atoi(tokens[4].c_str());
+		int sprite_middle = atoi(tokens[5].c_str());
+		int sprite_end = atoi(tokens[6].c_str());
+		obj = new CBush(x, y, height, sprite_begin, sprite_middle, sprite_end);
 		break;
 	}
 
@@ -234,6 +213,14 @@ void CIntro::_ParseSection_OBJECTS(string line)
 	objects.push_back(obj);
 }
 
+void CIntro::AddObject(LPGAMEOBJECT object,int id)
+{
+	if (!dynamic_cast<CPoint*>(object))
+	{
+		objects.push_back(object);
+	}
+}
+
 void CIntro::AutoRun(int action)
 {
 	if (action == ACTION_1)
@@ -256,6 +243,10 @@ void CIntro::AutoRun(int action)
 	else if (action == ACTION_4)
 	{
 		objects[MARIO_ID]->SetState(MARIO_STATE_JUMP);
+	}
+	else if (action == ACTION_5)
+	{
+		
 	}
 	this->action = action;
 }

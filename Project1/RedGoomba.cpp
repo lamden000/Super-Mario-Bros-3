@@ -1,3 +1,5 @@
+#include <cstdlib>
+
 #include "RedGoomba.h"
 #include "debug.h"
 #include "Playscene.h"
@@ -38,7 +40,6 @@ void CRedGoomba::OnNoCollision(DWORD dt)
 void CRedGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (!e->obj->IsBlocking()) return;
-	if (dynamic_cast<CGoomba*>(e->obj)) return;
 
 	if (e->ny < 0)
 	{
@@ -133,7 +134,7 @@ void CRedGoomba::Render()
 		}
 	}
 
-	RenderBoundingBox();
+	//RenderBoundingBox();
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y, GOOMBA_SCALEX, GOOMBA_SCALEY);
 }
 

@@ -1,4 +1,5 @@
 #include "Goomba.h"
+#include "Point.h"
 
 CGoomba::CGoomba(float x, float y,int level) :CGameObject(x, y)
 {
@@ -43,8 +44,6 @@ void CGoomba::OnNoCollision(DWORD dt)
 void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (!e->obj->IsBlocking()) return;
-	if (dynamic_cast<CGoomba*>(e->obj)) return;
-
 	if (e->ny != 0)
 	{
 		vy = 0;
@@ -79,7 +78,7 @@ void CGoomba::Render()
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y,GOOMBA_SCALEX,GOOMBA_SCALEY);
-	RenderBoundingBox();
+//	RenderBoundingBox();
 }
 
 void CGoomba::SetState(int state)

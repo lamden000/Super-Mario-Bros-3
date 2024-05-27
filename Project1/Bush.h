@@ -1,22 +1,37 @@
 #pragma once
+
 #include "GameObject.h"
 
-#define BUSH_ANIID_TYPE_1_LEFT 20261 
-#define BUSH_ANIID_TYPE_2_LEFT 20271	//Right +30
-#define BUSH_ANIID_TYPE_3_LEFT 20281
-#define BUSH_DIRECTION_LEFT 0
-#define BUSH_DIRECTION_RIGHT 1
-#define BUSH_SCALEX 0.8
-#define BUSH_SCALEY 0.8
+#define  BUSH_SCALEX 0.4
+#define  BUSH_SCALEY 0.4
+
+#define  BUSH_WIDTH	21
+#define  BUSH_HEIGTH 18
 
 class CBush : public CGameObject
 {
 protected:
-	int type;
-	int direction;
+	int height;				// Unit: cell 
+	float cellWidth;
+	float cellHeight;
+	int spriteIdBegin, spriteIdMiddle, spriteIdEnd;
+
 public:
-	void GetBoundingBox(float& l, float& t, float& r, float& b) {};
+	CBush(float x, float y,
+		 int height,
+		int sprite_id_begin, int sprite_id_middle, int sprite_id_end) :CGameObject(x, y)
+	{
+		this->height = height;
+		this->cellWidth =  BUSH_WIDTH;
+		this->cellHeight =  BUSH_HEIGTH;
+		this->spriteIdBegin = sprite_id_begin;
+		this->spriteIdMiddle = sprite_id_middle;
+		this->spriteIdEnd = sprite_id_end;
+	}
+	int  IsCollidable() { return 0; }
+	void Update(DWORD dt) {}
 	void Render();
-	CBush(float x, float y,int type, int direction=1);
+	void GetBoundingBox(float& l, float& t, float& r, float& b) {};
+	void RenderBoundingBox();
 };
 

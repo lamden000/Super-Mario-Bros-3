@@ -20,9 +20,9 @@ protected:
 	int height;
 public:
 	CPipe(float x, float y, float cell_width, float cell_height, int length,
-		int sprite_id_begin, int sprite_id_middle, int sprite_id_end,int orientation,int height) : CPlatform(x,y,
+		int sprite_id_begin, int sprite_id_middle, int sprite_id_end,  float scaleX, float ScaleY,int orientation,int height) : CPlatform(x,y,
 			cell_width, cell_height, length,
-		 sprite_id_begin, sprite_id_middle,sprite_id_end)
+		 sprite_id_begin, sprite_id_middle,sprite_id_end,scaleX,ScaleY)
 	{
 		this->height = height;
 		this->orientation = orientation;

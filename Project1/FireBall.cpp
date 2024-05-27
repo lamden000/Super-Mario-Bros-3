@@ -11,6 +11,7 @@ CFireBall::CFireBall(float x, float y) :CGameObject(x, y)
     mario->GetPosition(mario_x, mario_y);
     x_start = x;
     y_start = y;
+    timeOut = 0;
 
     if(mario_x<x)
          vx = -FIREBALL_SPEED;
@@ -18,15 +19,25 @@ CFireBall::CFireBall(float x, float y) :CGameObject(x, y)
         vx = FIREBALL_SPEED;
 
     if (mario_y < y)
-        t = FIREBALL_HIGH_TRAJECTORY_T;
+    {
+        if (mario_y < y_start - FIREBALL_MID_TRAJECTORY_RANGE_Y && abs(mario_x - x_start) < FIREBALL_MID_TRAJECTORY_RANGE_X)
+        {
+            t = FIREBALL_HIGH_TRAJECTORY_T;
+        }
+        else
+            t = FIREBALL_MID_HIGH_TRAJECTORY_T;
+    }    
     else
     {
-        if (mario_y  > y_start+ FIREBALL_LOW_TRAJECTORY_RANGE_Y && abs(mario_x-x_start) <  FIREBALL_LOW_TRAJECTORY_RANGE_X)
+        if (mario_y > y_start + FIREBALL_MID_TRAJECTORY_RANGE_Y && abs(mario_x - x_start) < FIREBALL_MID_TRAJECTORY_RANGE_X)
+        {
             t = FIREBALL_LOW_TRAJECTORY_T;
+        }
         else
-            t = FIREBALL_MID_TRAJECTORY_T;
+            t = FIREBALL_MID_LOW_TRAJECTORY_T;
     }
-\
+    DebugOut(L"%f\n", y_start - FIREBALL_MID_TRAJECTORY_RANGE_Y);
+    
 }
 
 void CFireBall::Render()
@@ -50,5 +61,10 @@ void CFireBall::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
         y = t * (x - x_start) + y_start;
     else
         y = -t * (x - x_start) + y_start;
+    timeOut += dt;
+    if (timeOut >= FIREBALL_TIMEOUT)
+    {
+        this->Delete();
+    }
     CCollision::GetInstance()->Process(this, dt, coObjects);
 }

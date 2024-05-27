@@ -1,6 +1,8 @@
 #include "GreenKoopas.h"
+#include "Goomba.h"
 #include "debug.h"
 #include "QuestionBlock.h"
+#include "Point.h"
 
 void CGreenKoopas::OnNoCollision(DWORD dt)
 {
@@ -11,7 +13,6 @@ void CGreenKoopas::OnNoCollision(DWORD dt)
 void CGreenKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (!e->obj->IsBlocking()) return;
-	if (dynamic_cast<CGreenKoopas*>(e->obj)) return;
 
 	if (e->ny < 0)
 	{
@@ -29,6 +30,8 @@ void CGreenKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 	}
 	if (dynamic_cast<CQuestionBlock*>(e->obj))
 		OnCollisionWithQestionBlock(e);
+	else if (dynamic_cast<CGoomba*>(e->obj))
+		OnCollisionWithGoomba(e);
 }
 
 void CGreenKoopas::Hop()
@@ -106,12 +109,14 @@ void CGreenKoopas::SetState(int state, float nx)
 	{
 	case KOOPAS_STATE_SHELL:
 		die_start = GetTickCount64();
-		y -= (GREENKOOPAS_BBOX_HEIGHT - GREENKOOPAS_BBOX_HEIGHT_SHELL) / 2;
+		y += (GREENKOOPAS_BBOX_HEIGHT - GREENKOOPAS_BBOX_HEIGHT_SHELL) / 2;
 		vx = 0;
 		vy = 0;
+		ay = 0;
 		break;
 	case GREENKOOPAS_STATE_WALKING:
 		vx = -KOOPAS_WALKING_SPEED;
+		ay = BROWNKOOPAS_GRAVITY;
 		break;
 	case GREENKOOPAS_STATE_SHELL_BOUNCING:
 		if (nx > 0)
@@ -119,10 +124,15 @@ void CGreenKoopas::SetState(int state, float nx)
 			vx = KOOPAS_BOUNCING_SPEED;
 		}
 		else
+		{
 			vx = -KOOPAS_BOUNCING_SPEED;
+		}
+		ay = BROWNKOOPAS_GRAVITY;
 		break;
 	case GREENKOOPAS_STATE_JUMP:
 		jump_start = GetTickCount64();
 		vy = -KOOPAS_JUMP_SPEED;
+		ay = BROWNKOOPAS_GRAVITY;
+		break;
 	}
 }
