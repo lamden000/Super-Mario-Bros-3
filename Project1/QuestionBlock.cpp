@@ -40,7 +40,7 @@ void CQuestionBlock::Reward()
             currentScene->AddObject(mushroom,1);
             mushroom->EscapeBlock();
         }
-        else if (level == MARIO_LEVEL_BIG)
+        else
         {
           CPlayScene* currentScene =(CPlayScene*) CGame::GetInstance()->GetCurrentScene();
           CLeaf* leaf = new CLeaf(x, y);

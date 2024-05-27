@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "GameObject.h"
+#include "Mario.h"
 
 #include "Animation.h"
 #include "Animations.h"
@@ -103,31 +103,13 @@
 
 #define LUIGI_UNTOUCHABLE_TIME 2500
 
-class CLuigi : public CGameObject
+class CLuigi : public CMario
 {
-	BOOLEAN isSitting;
-	float maxVx;
-	float ax;				// acceleration on x 
-	float ay;				// acceleration on y 
-	bool autoRunning;
-	int level;
-	int untouchable;
-	ULONGLONG untouchable_start;
-	BOOLEAN isOnPlatform;
-	D3DXVECTOR2 moveDirection;
-	D3DXVECTOR2 jumpDirection;
-
-	int coin;
-
-	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
-	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
-	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
-
+protected:
 	int GetAniIdBig();
 	int GetAniIdSmall();
-
 public:
-	CLuigi(float x, float y) : CGameObject(x, y)
+	CLuigi(float x, float y) : CMario(x, y)
 	{
 		isSitting = false;
 		maxVx = 0.0f;
@@ -141,7 +123,6 @@ public:
 		coin = 0;
 		nx = 1;
 	}
-	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
 	void SetState(int state);
 
@@ -151,9 +132,6 @@ public:
 	}
 
 	int IsBlocking() { return (state != LUIGI_STATE_DIE && untouchable == 0); }
-
-	void OnNoCollision(DWORD dt);
-	void OnCollisionWith(LPCOLLISIONEVENT e);
 	void JumpDeflect();
 
 	void SetLevel(int l);

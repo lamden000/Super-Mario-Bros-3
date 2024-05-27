@@ -358,7 +358,7 @@ void CPlayScene::Update(DWORD dt)
 {
 	vector<LPGAMEOBJECT>& coObjects = objects; 
 	if (!objects.empty()) {
-		LPGAMEOBJECT player = objects.front(); 
+		CMario* player = (CMario*)objects.front(); 
 		for (size_t i = 0; i < objects.size(); i++) {
 			objects[i]->Update(dt, &coObjects);
 		}
@@ -368,12 +368,14 @@ void CPlayScene::Update(DWORD dt)
 		float cx, cy;
 		player->GetPosition(cx, cy);
 		CGame* game = CGame::GetInstance();
-		float screenHeight = game->GetBackBufferHeight();
 		cx -= game->GetBackBufferWidth() / 2;
-		if (cy < -screenHeight)
-			cy -= screenHeight / 2;
+		int screenHeight = game->GetBackBufferHeight();
+		if (cy<-15+screenHeight/5)
+		{
+			cy -= screenHeight / 4;
+		}
 		else
-			cy = 0;
+			cy = -15;
 		if (cx < 0) cx = 0;
 		game->SetCamPos(cx, cy);
 	}

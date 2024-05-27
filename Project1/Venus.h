@@ -42,7 +42,7 @@ public:
 		isGoingUp = false;
 	}
 	void Render();
-	void Grow(DWORD dt);
+	void Grow(DWORD dt, float mario_x, float mario_y);
 	void Shoot(DWORD dt);
 	int IsBlocking() { return 0; }
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

@@ -4,6 +4,9 @@
 #include "Playscene.h"
 #include "FireBall.h"
 
+#define SCREEN_WIDTH 320
+#define SCREEN_HEIGHT 202
+
 void CVenus::Render()
 {
     CAnimations* animations = CAnimations::GetInstance();
@@ -51,7 +54,13 @@ void CVenus::Render()
 
 void CVenus::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-    Grow(dt);
+
+    CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+    float mario_x, mario_y;
+    mario->GetPosition(mario_x, mario_y);
+    if (abs(mario_x - x) > SCREEN_WIDTH/2 || abs(mario_y - y) > SCREEN_HEIGHT/2)
+        return;
+    Grow(dt,mario_x,mario_y);
     x += vx * dt;
     y += vy * dt;
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -83,11 +92,8 @@ void CVenus::Shoot(DWORD dt)
     }
 }
 
-void CVenus::Grow(DWORD dt)
+void CVenus::Grow(DWORD dt,float mario_x,float mario_y)
 {
-    CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-    float mario_x, mario_y;
-    mario->GetPosition(mario_x, mario_y);
     if (type == VENUS_TYPE_GREEN)
     {
         if (abs(y_start - y) >= GREEN_VENUS_GROWN_HEIGHT)

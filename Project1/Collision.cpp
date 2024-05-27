@@ -3,7 +3,7 @@
 
 #include "debug.h"
 
-#define BLOCK_PUSH_FACTOR 0.4f
+#define BLOCK_PUSH_FACTOR 0.3f
 
 CCollision* CCollision::__instance = NULL;
 

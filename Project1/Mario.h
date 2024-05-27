@@ -10,13 +10,15 @@
 #define MARIO_WALKING_SPEED		0.1f
 #define MARIO_RUNNING_SPEED		0.2f
 
-#define MARIO_ACCEL_WALK_X	0.0005f
-#define MARIO_ACCEL_RUN_X	0.0007f
+#define MARIO_ACCEL_WALK_X	0.0002f
+#define MARIO_ACCEL_RUN_X	0.0004f
 
 #define MARIO_JUMP_SPEED_Y		0.5f
 #define MARIO_JUMP_RUN_SPEED_Y	0.6f
+#define RACOON_MARIO_FLY_SPEED	0.35f
 
-#define MARIO_GRAVITY			0.002f
+#define MARIO_GRAVITY			0.0015f
+#define RACOON_MARIO_FALLING_SPEED	0.08f
 
 #define MARIO_JUMP_DEFLECT_SPEED  0.4f
 
@@ -91,29 +93,35 @@
 #define ID_ANI_MARIO_SMALL_HOLD_OBJECT_MOVING_RIGHT 1800
 #define ID_ANI_MARIO_SMALL_HOLD_OBJECT_MOVING_LEFT 1801
 
-//FOX MARIO
-#define ID_ANI_MARIO_FOX_IDLE_RIGHT 430
-#define ID_ANI_MARIO_FOX_IDLE_LEFT 431
+//RACOON MARIO
+#define ID_ANI_MARIO_RACOON_IDLE_RIGHT 430
+#define ID_ANI_MARIO_RACOON_IDLE_LEFT 431
 
-#define ID_ANI_MARIO_FOX_WALKING_RIGHT 530
-#define ID_ANI_MARIO_FOX_WALKING_LEFT 531
+#define ID_ANI_MARIO_RACOON_WALKING_RIGHT 530
+#define ID_ANI_MARIO_RACOON_WALKING_LEFT 531
 
-#define ID_ANI_MARIO_FOX_RUNNING_RIGHT 630
-#define ID_ANI_MARIO_FOX_RUNNING_LEFT 631
+#define ID_ANI_MARIO_RACOON_RUNNING_RIGHT 630
+#define ID_ANI_MARIO_RACOON_RUNNING_LEFT 631
 
-#define ID_ANI_MARIO_FOX_JUMP_WALK_RIGHT 730
-#define ID_ANI_MARIO_FOX_JUMP_WALK_LEFT 731
+#define ID_ANI_MARIO_RACOON_JUMP_WALK_RIGHT 730
+#define ID_ANI_MARIO_RACOON_JUMP_WALK_LEFT 731
 
-#define ID_ANI_MARIO_FOX_JUMP_RUN_RIGHT 830
-#define ID_ANI_MARIO_FOX_JUMP_RUN_LEFT 831
+#define ID_ANI_MARIO_RACOON_JUMP_RUN_RIGHT 830
+#define ID_ANI_MARIO_RACOON_JUMP_RUN_LEFT 831
 
-#define ID_ANI_MARIO_FOX_SIT_RIGHT 930
-#define ID_ANI_MARIO_FOX_SIT_LEFT 931
+#define ID_ANI_MARIO_RACOON_SIT_RIGHT 930
+#define ID_ANI_MARIO_RACOON_SIT_LEFT 931
 
-#define ID_ANI_MARIO_FOX_BRACE_RIGHT 1030
-#define ID_ANI_MARIO_FOX_BRACE_LEFT 1031
+#define ID_ANI_MARIO_RACOON_BRACE_RIGHT 1030
+#define ID_ANI_MARIO_RACOON_BRACE_LEFT 1031
 
-#define ID_ANI_FOX_MARIO_DIE 939
+#define ID_ANI_MARIO_JUMP_FALLING_RIGHT 1040
+#define ID_ANI_MARIO_FALLING_RIGHT 1041
+
+#define ID_ANI_MARIO_JUMP_FALLING_LEFT 1050
+#define ID_ANI_MARIO_FALLING_LEFT 1051
+
+#define ID_ANI_RACOON_MARIO_DIE 939
 
 #pragma endregion
 
@@ -124,7 +132,7 @@
 
 #define	MARIO_LEVEL_SMALL	1
 #define	MARIO_LEVEL_BIG		2
-#define	MARIO_LEVEL_FOX		3
+#define	MARIO_LEVEL_RACOON		3
 
 #define MARIO_BIG_BBOX_WIDTH  11
 #define MARIO_BIG_BBOX_HEIGHT 24
@@ -136,11 +144,13 @@
 #define MARIO_SMALL_BBOX_WIDTH  13
 #define MARIO_SMALL_BBOX_HEIGHT 12
 
-
+#define MARIO_ALOW_FLY_RUN_TIME 2000
+#define MARIO_MAX_FLY_TIME 3000
 #define MARIO_UNTOUCHABLE_TIME 2500
 
 class CMario : public CGameObject
 {
+protected:
 	BOOLEAN isSitting;
 	float maxVx;
 	float ax;				// acceleration on x 
@@ -149,6 +159,9 @@ class CMario : public CGameObject
 	bool isHolding;
 	int level;
 	int untouchable;
+
+	DWORD runTime;
+	DWORD flyTime;
 	LPGAMEOBJECT holdedObject;
 	ULONGLONG untouchable_start;
 	BOOLEAN isOnPlatform;
@@ -170,7 +183,7 @@ class CMario : public CGameObject
 
 	int GetAniIdBig();
 	int GetAniIdSmall();
-	int GetAniIdFox();
+	int GetAniIdRacoon();
 
 public:
 	CMario(float x, float y,int level= MARIO_LEVEL_SMALL) : CGameObject(x, y)
@@ -187,7 +200,9 @@ public:
 		isHolding = false;
 		coin = 0;
 		nx = 1;
+		runTime = 0;
 		holdedObject = NULL;
+		flyTime = 0;
 	}
 
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -212,6 +227,7 @@ public:
 
 	void SetLevel(int l);
 	int GetLevel() { return level; }
+	DWORD GetRunTime() { return runTime; }
 	void EarnCoin() {coin++;}
 
 	void SetAutoRunning(bool isAutoRunning) {

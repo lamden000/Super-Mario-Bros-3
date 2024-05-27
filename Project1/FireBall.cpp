@@ -36,7 +36,6 @@ CFireBall::CFireBall(float x, float y) :CGameObject(x, y)
         else
             t = FIREBALL_MID_LOW_TRAJECTORY_T;
     }
-    DebugOut(L"%f\n", y_start - FIREBALL_MID_TRAJECTORY_RANGE_Y);
     
 }
 
