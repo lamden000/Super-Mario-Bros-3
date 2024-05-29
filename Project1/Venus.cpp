@@ -94,54 +94,33 @@ void CVenus::Shoot(DWORD dt)
 
 void CVenus::Grow(DWORD dt,float mario_x,float mario_y)
 {
+    float growHeight;
     if (type == VENUS_TYPE_GREEN)
+        growHeight = GREEN_VENUS_GROWN_HEIGHT;
+    else 
+        growHeight = RED_VENUS_GROWN_HEIGHT;
+
+    if (abs(y_start - y) >= growHeight)
     {
-        if (abs(y_start - y) >= GREEN_VENUS_GROWN_HEIGHT)
+        vy = -vy;
+        if (y < y_start)
         {
-            vy = -vy;
-            if (y < y_start)
-            {
-                Shoot(dt);
-                isGoingUp = false;
-            }
-            else {
-                isGoingUp = true;
-            }
-        }
-        else if ((x - VENUS_BBOX_WIDTH < mario_x && mario_x < x + VENUS_BBOX_WIDTH) && y > (y_start + GREEN_VENUS_BBOX_HEIGHT / 2))
-        {
-            vy = 0;
+            Shoot(dt);
+            isGoingUp = false;
         }
         else {
-            if (isGoingUp)
-                vy = -VENUS_GROW_SPEED;
-            else
-                vy = VENUS_GROW_SPEED;
+            isGoingUp = true;
         }
     }
+    else if ((x - VENUS_BBOX_WIDTH < mario_x && mario_x < x + VENUS_BBOX_WIDTH) && y > (y_start + GREEN_VENUS_BBOX_HEIGHT / 2))
+    {
+        vy = 0;
+    }
     else {
-        if (abs(y_start - y) >= RED_VENUS_GROWN_HEIGHT)
-        {
-            vy = -vy;
-            if (y < y_start)
-            {
-                Shoot(dt);
-                isGoingUp = false;
-            }
-            else {
-                isGoingUp = true;
-            }
-        }
-        else if ((x - VENUS_BBOX_WIDTH < mario_x && mario_x < x + VENUS_BBOX_WIDTH) && y > (y_start + RED_VENUS_BBOX_HEIGHT / 2))
-        {
-            vy = 0;
-        }
-        else {
-            if (isGoingUp)
-                vy = -VENUS_GROW_SPEED;
-            else
-                vy = VENUS_GROW_SPEED;
-        }
+        if (isGoingUp)
+            vy = -VENUS_GROW_SPEED;
+        else
+            vy = VENUS_GROW_SPEED;
     }
 
 }

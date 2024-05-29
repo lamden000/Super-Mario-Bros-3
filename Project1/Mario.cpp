@@ -54,7 +54,7 @@ void CMario::HoldObject()
 	if (dynamic_cast<CBrownKoopas*>(holdedObject))
 	{
 		CBrownKoopas* koopas = dynamic_cast<CBrownKoopas*>(holdedObject);
-		if (koopas->GetState() == BROWNKOOPAS_STATE_WALKING)
+		if (koopas->GetState() == KOOPAS_STATE_WALKING)
 		{
 			ReleaseHold();
 		}
@@ -71,7 +71,7 @@ void CMario::ReleaseHold() {
 				holdedObject->SetPosition(x + MARIO_BIG_BBOX_WIDTH, y - MARIO_BIG_BBOX_HEIGHT/2);
 			else
 				holdedObject->SetPosition(x - MARIO_BIG_BBOX_WIDTH, y - MARIO_BIG_BBOX_HEIGHT/2);
-			if(koopas->GetState() != BROWNKOOPAS_STATE_WALKING)
+			if(koopas->GetState() != KOOPAS_STATE_WALKING)
 				koopas->SetState(BROWNKOOPAS_STATE_SHELL_BOUNCING,nx);
 		}
 	}
@@ -97,7 +97,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	}
 	else if (e->nx != 0 && e->obj->IsBlocking())
 	{
-			vx = 0;
+		vx = 0;
+		runTime = 0;
 	}
 
 	if (dynamic_cast<CGoomba*>(e->obj))
@@ -133,7 +134,6 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 		if (goomba->GetState() != GOOMBA_STATE_DIE)
 		{
 			goomba->DecreaseLevel();
-			new CPoint(x, y, 100);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
 	}
@@ -179,17 +179,24 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 {
 	CBrownKoopas* koopas = dynamic_cast<CBrownKoopas*>(e->obj);
 
-	if ((e->ny < 0) && koopas->GetState() ==BROWNKOOPAS_STATE_WALKING )
+	if ((e->ny < 0))
 	{
-		koopas->DecreaseLevel();
-		new CPoint(x, y, 100);
-		vy = -MARIO_JUMP_DEFLECT_SPEED;
+		if (koopas->GetState() == KOOPAS_STATE_WALKING)
+		{
+			koopas->DecreaseLevel();
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
+		}
+		else if (koopas->GetState() == BROWNKOOPAS_STATE_SHELL_BOUNCING)
+		{
+			koopas->SetState(KOOPAS_STATE_SHELL);
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
+		}
 	}
 	else
 	{
 		if (untouchable == 0)
 		{
-			if (koopas->GetState() != KOOPAS_STATE_SHELL&& koopas->GetState() != BROWNKOOPAS_STATE_REVIVING)
+			if (koopas->GetState() != KOOPAS_STATE_SHELL&& koopas->GetState() != KOOPAS_STATE_REVIVING)
 			{
 				if (level > MARIO_LEVEL_SMALL)
 				{
@@ -237,7 +244,6 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 {
 	if(level<MARIO_LEVEL_RACOON)
 		SetLevel(MARIO_LEVEL_RACOON);
-	new CPoint(x, y, 1000);
 	e->obj->Delete();
 }
 
@@ -251,7 +257,7 @@ void CMario::OnCollisionWithSpawnPoint(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
 	e->obj->Delete();
-	coin++;
+	CGame::GetInstance()->AddCoin();
 }
 
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)

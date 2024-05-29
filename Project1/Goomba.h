@@ -41,7 +41,7 @@ protected:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 
-	virtual int IsCollidable() { return 1; };
+	virtual int IsCollidable() { return  state != GOOMBA_STATE_DIE; };
 	virtual int IsBlocking() { return state!=GOOMBA_STATE_DIE; }
 	virtual void OnNoCollision(DWORD dt);
 

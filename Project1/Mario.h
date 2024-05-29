@@ -145,7 +145,7 @@
 #define MARIO_SMALL_BBOX_HEIGHT 12
 
 #define MARIO_ALOW_FLY_RUN_TIME 2000
-#define MARIO_MAX_FLY_TIME 3000
+#define MARIO_MAX_FLY_TIME 2000
 #define MARIO_UNTOUCHABLE_TIME 2500
 
 class CMario : public CGameObject
@@ -168,7 +168,6 @@ protected:
 	D3DXVECTOR2 moveDirection;
 	D3DXVECTOR2 jumpDirection;
 
-	int coin;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopas(LPCOLLISIONEVENT e);
@@ -198,7 +197,6 @@ public:
 		untouchable_start = -1;
 		isOnPlatform = false;
 		isHolding = false;
-		coin = 0;
 		nx = 1;
 		runTime = 0;
 		holdedObject = NULL;
@@ -228,7 +226,7 @@ public:
 	void SetLevel(int l);
 	int GetLevel() { return level; }
 	DWORD GetRunTime() { return runTime; }
-	void EarnCoin() {coin++;}
+	DWORD GetFlyTime() { return flyTime; }
 
 	void SetAutoRunning(bool isAutoRunning) {
 		autoRunning = isAutoRunning;

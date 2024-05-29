@@ -22,6 +22,7 @@
 #include "Pipe.h"
 #include "Venus.h"
 #include "Point.h"
+#include "InGameUI.h"
 #include "Box.h"
 
 #include "KeyEventHandlerForMario.h"
@@ -29,11 +30,13 @@
 
 using namespace std;
 
+#define MAIN_CAMERA_HEIGHT -15
 
-CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
+CPlayScene::CPlayScene(int id, LPCWSTR filePath,DWORD timeLimit) :
 	CScene(id, filePath)
 {
 	player = NULL;
+	this->timeLimit = timeLimit;
 }
 
 #define SCENE_SECTION_UNKNOWN -1
@@ -163,6 +166,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_LEAF: obj = new CLeaf(x, y); break;
 	case OBJECT_TYPE_MUSHROOM: obj = new CMushroom(x, y); break;
 	case OBJECT_TYPE_BACKGROUND_CLOUD:	obj = new CCloud(x, y); break;
+	case OBJECT_TYPE_SCENE_UI:	obj = new CInGameUI(); break;
 	case OBJECT_TYPE_KOOPAS:
 	{
 		int level = 1;
@@ -370,15 +374,16 @@ void CPlayScene::Update(DWORD dt)
 		CGame* game = CGame::GetInstance();
 		cx -= game->GetBackBufferWidth() / 2;
 		int screenHeight = game->GetBackBufferHeight();
-		if (cy<-15+screenHeight/5)
+		if (cy< MAIN_CAMERA_HEIGHT +screenHeight/5&&player->GetLevel()==MARIO_LEVEL_RACOON)
 		{
 			cy -= screenHeight / 4;
 		}
 		else
-			cy = -15;
+			cy =MAIN_CAMERA_HEIGHT;
 		if (cx < 0) cx = 0;
 		game->SetCamPos(cx, cy);
 	}
+	timeLimit -= dt;
 
 	PurgeDeletedObjects();
 }

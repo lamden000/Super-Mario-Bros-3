@@ -17,6 +17,7 @@ sprites\fireball.txt
 sprites\point.txt
 sprites\platform.txt
 sprites\box.txt
+sprites\ui.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -24,7 +25,10 @@ sprites\box.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO
-0	1000	100
+0	0	100
+
+#State board
+22	2	3
 
 #question block
 14	209	87	1
@@ -112,5 +116,6 @@ sprites\box.txt
 15	750	50
 15	735	50
 15	720	50
+
 
 

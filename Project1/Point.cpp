@@ -6,7 +6,9 @@ CPoint::CPoint(float x, float y, int value) :CGameObject(x, y)
 	vy = -POINT_SPEED_Y;
 	timeOut = 0;
 	this->value = value;
-	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	CGame* game = CGame::GetInstance();
+	game->AddPoint(value);
+	CPlayScene* scene = (CPlayScene*)game->GetCurrentScene();
 	scene->AddObject(this,5);
 };
 

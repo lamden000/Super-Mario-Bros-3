@@ -155,7 +155,6 @@ void CLuigi::Render()
 		animations->Get(aniId)->Render(x, y, 0.7, 0.7);
 	}
 	//RenderBoundingBox();
-	DebugOutTitle(L"Coins: %d", coin);
 }
 
 void CLuigi::SetState(int state)

@@ -33,6 +33,8 @@ void CGoomba::DecreaseLevel()
 	level--;
 	if (level == 0)
 		SetState(GOOMBA_STATE_DIE);
+	else
+	new CPoint(x, y, 100);
 }
 
 void CGoomba::OnNoCollision(DWORD dt)
@@ -92,6 +94,7 @@ void CGoomba::SetState(int state)
 		vx = 0;
 		vy = 0;
 		ay = 0;
+		new CPoint(x, y, 100);
 		break;
 	case GOOMBA_STATE_WALKING:
 		vx = -GOOMBA_WALKING_SPEED;

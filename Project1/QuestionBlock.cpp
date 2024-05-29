@@ -50,11 +50,12 @@ void CQuestionBlock::Reward()
     }
     else if (this->type == QUESTIONBLOCK_TYPE_COIN)
     {
-        CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+        CGame* game = CGame::GetInstance();
+        CPlayScene* currentScene = (CPlayScene*)game->GetCurrentScene();
         CCoin* coin = new CCoin(x, y);
         currentScene->AddObject(coin,1);
         coin->EscapeBlock();
-        mario->EarnCoin();
+        game->AddCoin();
     }
     else if (this->type == QUESTIONBLOCK_TYPE_GREEN_MUSHROOM)
     {

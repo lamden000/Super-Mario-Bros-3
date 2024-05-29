@@ -189,6 +189,9 @@
     <ClCompile Include="Box.cpp">
       <Filter>Source Files\Object\WorldBlock</Filter>
     </ClCompile>
+    <ClCompile Include="InGameUI.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -325,6 +328,9 @@
     </ClInclude>
     <ClInclude Include="Box.h">
       <Filter>Header Files\Object\WorldBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="InGameUI.h">
+      <Filter>Header Files\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

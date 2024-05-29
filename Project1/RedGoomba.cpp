@@ -2,6 +2,7 @@
 
 #include "RedGoomba.h"
 #include "debug.h"
+#include "Point.h"
 #include "Playscene.h"
 
 CRedGoomba::CRedGoomba(float x, float y, int level) :CGoomba(x, y,level)
@@ -67,7 +68,7 @@ void CRedGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		return;
 	}
 
-	if (level == GOOMBA_LEVEL_WINGS)
+	if (level == GOOMBA_LEVEL_WINGS&& state != GOOMBA_STATE_DIE)
 	{
 		Hop();
 		ChasePlayer();
@@ -112,25 +113,25 @@ void CRedGoomba::ChasePlayer()
 
 void CRedGoomba::Render()
 {
-	int aniId = ID_ANI_GOOMBA_WALKING;
+	int aniId = ID_ANI_RED_GOOMBA_WALKING;
 	if (state == GOOMBA_STATE_DIE)
 	{
-		aniId = ID_ANI_GOOMBA_DIE;
+		aniId = ID_ANI_RED_GOOMBA_DIE;
 	}
 	if (level == GOOMBA_LEVEL_WINGS)
 	{
-		aniId = ID_ANI_GOOMBA_WALKING_WITH_WINGS;
+		aniId = ID_ANI_RED_GOOMBA_WALKING_WITH_WINGS;
 		if (state == GOOMBA_STATE_JUMP_READY)
 		{
-			aniId = ID_ANI_GOOMBA_JUMP_READY;
+			aniId = ID_ANI_RED_GOOMBA_JUMP_READY;
 		}
 		else if (state == GOOMBA_STATE_JUMP_READY)
 		{
-			aniId = ID_ANI_GOOMBA_JUMP_READY;
+			aniId = ID_ANI_RED_GOOMBA_JUMP_READY;
 		}
 		else if (state == GOOMBA_STATE_JUMP)
 		{
-			aniId = ID_ANI_GOOMBA_JUMP;
+			aniId = ID_ANI_RED_GOOMBA_JUMP;
 		}
 	}
 
@@ -150,6 +151,7 @@ void CRedGoomba::SetState(int state)
 		vx = 0;
 		vy = 0;
 		ay = 0;
+		new CPoint(x, y, 100);
 		break;
 	case GOOMBA_STATE_WALKING:
 		vx = GOOMBA_WALKING_SPEED;

@@ -59,6 +59,11 @@ class CGame
 	void _ParseSection_SETTINGS(string line);
 	void _ParseSection_SCENES(string line);
 
+	int coin;
+	int point;
+	int life;
+	int time;
+
 public:
 	// Init DirectX, Sprite Handler
 	void Init(HWND hWnd, HINSTANCE hInstance);
@@ -112,6 +117,18 @@ public:
 	void InitiateSwitchScene(int scene_id);
 
 	void _ParseSection_TEXTURES(string line);
+	void AddCoin() { coin++; }
+	void AddPoint(int point){this->point+=point;}
+	void AddLife(int life) { this->life += life; }
+	void DecreaseLife() { life--; }
+	int GetCoin() { return coin; }
+	int GetPoint() { return point; }
+	int GetLife() { return life; }
+	void ResetGame() {
+		coin = 0;
+		point = 0;
+		life = 4;
+	}
 
 
 	~CGame();

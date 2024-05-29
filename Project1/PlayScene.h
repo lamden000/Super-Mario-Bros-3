@@ -13,7 +13,7 @@
 class CPlayScene : public CScene
 {
 protected:
-
+	DWORD timeLimit;
 	// A play scene has to have player, right? 
 	LPGAMEOBJECT player;
 
@@ -27,7 +27,7 @@ protected:
 	void LoadAssets(LPCWSTR assetFile);
 
 public:
-	CPlayScene(int id, LPCWSTR filePath);
+	CPlayScene(int id, LPCWSTR filePath, DWORD timeLimit = 300000);
 	virtual void AddObject(LPGAMEOBJECT object, int id = -1);
 	virtual void Load();
 	virtual void Update(DWORD dt);
@@ -35,6 +35,7 @@ public:
 	virtual void Unload();
 
 	LPGAMEOBJECT GetPlayer() { return player; }
+	DWORD GetTimeLimit(){ return timeLimit; }
 
 	void Clear();
 	void PurgeDeletedObjects();

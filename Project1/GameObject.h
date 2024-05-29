@@ -40,7 +40,6 @@ public:
 	void GetPosition(float& x, float& y) { x = this->x; y = this->y; }
 	void GetSpeed(float& vx, float& vy) { vx = this->vx; vy = this->vy; }
 
-	int GetState() { return this->state; }
 	virtual void Delete() { isDeleted = true; }
 	bool IsDeleted() { return isDeleted; }
 	void RenderBoundingBox();
@@ -53,6 +52,7 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL) {};
 	virtual void Render() = 0;
 	virtual void SetState(int state) { this->state = state; }
+	int GetState() { return this->state; }
 
 	//
 	// Collision ON or OFF ? This can change depending on object's state. For example: die

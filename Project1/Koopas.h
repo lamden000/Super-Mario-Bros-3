@@ -14,8 +14,8 @@
 #define BROWNKOOPAS_LEVEL_NORMAL 1
 #define BROWNKOOPAS_LEVEL_WINGS 2
 
-#define BROWNKOOPAS_STATE_WALKING 100
-#define BROWNKOOPAS_STATE_REVIVING 200
+#define KOOPAS_STATE_WALKING 100
+#define KOOPAS_STATE_REVIVING 200
 #define KOOPAS_STATE_SHELL 300
 #define BROWNKOOPAS_STATE_SHELL_BOUNCING 400
 
@@ -38,10 +38,11 @@
 class CBrownKoopas : public CGameObject
 {
 protected:
+	float start_x;
+	float start_y;
 	float ax;
 	float ay;
 	int level;
-	bool steppedBack = false;
 
 	ULONGLONG die_start;
 
@@ -61,6 +62,7 @@ public:
 	CBrownKoopas(float x, float y,int level);
 	virtual void DecreaseLevel();
 	virtual void SetState(int state,float nx=0);
+	virtual void Respawn();
 };
 
 

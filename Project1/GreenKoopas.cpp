@@ -18,7 +18,7 @@ void CGreenKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		vy = 0;
 		if(state==GREENKOOPAS_STATE_JUMP)
-			state = GREENKOOPAS_STATE_WALKING;
+			state = KOOPAS_STATE_WALKING;
 	}
 	else if (e->ny > 0)
 	{
@@ -38,7 +38,7 @@ void CGreenKoopas::Hop()
 {
 	if (GetTickCount64() - KOOPAS_JUMP_COOLDOWN >= jump_start)
 	{
-		if (state==GREENKOOPAS_STATE_WALKING)
+		if (state==KOOPAS_STATE_WALKING)
 			SetState(GREENKOOPAS_STATE_JUMP);
 	}
 }
@@ -48,8 +48,7 @@ void CGreenKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (level == GREENKOOPAS_LEVEL_WINGS)
 		Hop();
-	vy += ay * dt;
-	vx += ax * dt;
+
 	if ((state == KOOPAS_STATE_SHELL || state == GREENKOOPAS_STATE_REVIVING) && (GetTickCount64() - die_start > GREENKOOPAS_SHELL_TIME))
 	{
 		SetState(GREENKOOPAS_STATE_REVIVING);
@@ -60,6 +59,9 @@ void CGreenKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			die_start = 0;
 		}
 	}
+	Respawn();
+	vy += ay * dt;
+	vx += ax * dt;
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
