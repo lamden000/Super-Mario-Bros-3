@@ -9,7 +9,7 @@
 #include "debug.h"
 
 
-#define LUIGI_WALKING_SPEED		0.1f
+#define LUIGI_WALKING_SPEED		0.08f
 #define LUIGI_RUNNING_SPEED		0.2f
 
 #define LUIGI_ACCEL_WALK_X	0.0005f
@@ -115,7 +115,6 @@ public:
 		maxVx = 0.0f;
 		ax = 0.0f;
 		ay = LUIGI_GRAVITY;
-		autoRunning = false;
 		level = LUIGI_LEVEL_BIG;
 		untouchable = 0;
 		untouchable_start = -1;
@@ -137,11 +136,5 @@ public:
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	void SetAutoRunning(bool isAutoRunning) {
-		autoRunning = isAutoRunning;
-	}
 
-	bool GetAutoRunning() {
-		return autoRunning;
-	}
 };

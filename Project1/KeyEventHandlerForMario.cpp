@@ -83,7 +83,7 @@ void CSampleKeyHandler::KeyState(BYTE* states)
 		else
 			mario->SetState(MARIO_STATE_WALKING_LEFT);
 	}
-	else
+	else if(mario->GetState()!=MARIO_STATE_JUMP&&mario->GetFlyTime()<=0)
 		mario->SetState(MARIO_STATE_IDLE);
 }
 

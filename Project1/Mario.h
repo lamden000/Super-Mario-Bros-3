@@ -15,7 +15,7 @@
 
 #define MARIO_JUMP_SPEED_Y		0.5f
 #define MARIO_JUMP_RUN_SPEED_Y	0.6f
-#define RACOON_MARIO_FLY_SPEED	0.35f
+#define RACOON_MARIO_FLY_SPEED_Y 0.35f
 
 #define MARIO_GRAVITY			0.0015f
 #define RACOON_MARIO_FALLING_SPEED	0.08f
@@ -145,7 +145,7 @@
 #define MARIO_SMALL_BBOX_HEIGHT 12
 
 #define MARIO_ALOW_FLY_RUN_TIME 2000
-#define MARIO_MAX_FLY_TIME 2000
+#define MARIO_MAX_FLY_TIME 3000
 #define MARIO_UNTOUCHABLE_TIME 2500
 
 class CMario : public CGameObject
@@ -155,7 +155,6 @@ protected:
 	float maxVx;
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
-	bool autoRunning;
 	bool isHolding;
 	int level;
 	int untouchable;
@@ -191,7 +190,6 @@ public:
 		maxVx = 0.0f;
 		ax = 0.0f;
 		ay = MARIO_GRAVITY;
-		autoRunning = false;
 		this->level = level;
 		untouchable = 0;
 		untouchable_start = -1;
@@ -227,15 +225,7 @@ public:
 	int GetLevel() { return level; }
 	DWORD GetRunTime() { return runTime; }
 	DWORD GetFlyTime() { return flyTime; }
-
-	void SetAutoRunning(bool isAutoRunning) {
-		autoRunning = isAutoRunning;
-	}
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	bool GetAutoRunning() {
-		return autoRunning;
-	}
-
 };

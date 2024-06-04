@@ -1,10 +1,9 @@
 #pragma once
 #include "GameObject.h"
 
-#define KOOPAS_GRAVITY 0.002f
+#define KOOPAS_GRAVITY 0.0015f
 #define KOOPAS_WALKING_SPEED 0.05f
 #define KOOPAS_BOUNCING_SPEED 0.15f;
-#define BROWNKOOPAS_GRAVITY 0.002f;
 
 #define BROWNKOOPAS_BBOX_WIDTH 10
 #define BROWNKOOPAS_BBOX_HEIGHT 23
@@ -17,7 +16,7 @@
 #define KOOPAS_STATE_WALKING 100
 #define KOOPAS_STATE_REVIVING 200
 #define KOOPAS_STATE_SHELL 300
-#define BROWNKOOPAS_STATE_SHELL_BOUNCING 400
+#define KOOPAS_STATE_SHELL_BOUNCING 400
 
 #define ID_ANI_BROWNKOOPAS_WALKING_RIGHT 12
 #define ID_ANI_BROWNKOOPAS_WALKING_RIGHT_WITH_WINGS 18
@@ -40,9 +39,11 @@ class CBrownKoopas : public CGameObject
 protected:
 	float start_x;
 	float start_y;
+	float start_level;
 	float ax;
 	float ay;
 	int level;
+	bool isHolded;
 
 	ULONGLONG die_start;
 
@@ -51,7 +52,7 @@ protected:
 	virtual void Render();
 
 	virtual int IsCollidable() { return 1; }
-	virtual int IsBlocking() { return 0; }
+	virtual int IsBlocking() { return !isHolded; }
 	virtual void OnNoCollision(DWORD dt);
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
@@ -61,6 +62,7 @@ protected:
 public:
 	CBrownKoopas(float x, float y,int level);
 	virtual void DecreaseLevel();
+	virtual void SetIsHolded(bool isHolded) { this->isHolded = isHolded; }
 	virtual void SetState(int state,float nx=0);
 	virtual void Respawn();
 };

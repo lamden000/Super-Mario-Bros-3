@@ -31,7 +31,7 @@ void CBox::Render()
         scaleX = width / SPRITE_BOX_GREEN_WIDTH;
         spriteId = ID_SPRITE_BOX_GREEN;
     }
-    sprites->Get(ID_SPRITE_BOX_SHADOW)->Draw(x + width / 1.8, y + height /5.5, scaleX, scaleY);
+    sprites->Get(ID_SPRITE_BOX_SHADOW)->Draw(x + width / 2, y + height /5.5, 0.4, scaleY);
     sprites->Get(spriteId)->Draw(x, y, scaleX, scaleY);  
    // RenderBoundingBox();
 }

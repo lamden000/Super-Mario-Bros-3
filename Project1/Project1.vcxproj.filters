@@ -192,6 +192,9 @@
     <ClCompile Include="InGameUI.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
+    <ClCompile Include="MenuKeyEventHandler.cpp">
+      <Filter>Source Files\Object\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -331,6 +334,9 @@
     </ClInclude>
     <ClInclude Include="InGameUI.h">
       <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuKeyEventHandler.h">
+      <Filter>Header Files\Object\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

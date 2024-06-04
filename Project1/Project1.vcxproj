@@ -154,6 +154,7 @@
     <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="Logo.cpp" />
     <ClCompile Include="Luigi.cpp" />
+    <ClCompile Include="MenuKeyEventHandler.cpp" />
     <ClCompile Include="Mushroom.cpp" />
     <ClCompile Include="KeyEventHandlerForMario.cpp" />
     <ClCompile Include="main.cpp" />
@@ -204,6 +205,7 @@
     <ClInclude Include="Logo.h" />
     <ClInclude Include="Luigi.h" />
     <ClInclude Include="Mario.h" />
+    <ClInclude Include="MenuKeyEventHandler.h" />
     <ClInclude Include="Mushroom.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="Platform.h" />

@@ -4,6 +4,7 @@
 #include "AssetIDs.h"
 
 #include "PlayScene.h"
+#include "MenuKeyEventHandler.h"
 #include "Utils.h"
 #include "Textures.h"
 #include "Sprites.h"
@@ -17,6 +18,7 @@
 #include "Leaf.h"
 #include "Bush.h"
 #include "Point.h"
+#include "GreenKoopas.h"
 
 #include "KeyEventHandlerForMario.h"
 #include "KeyHandlerForLuigi.h"
@@ -26,11 +28,12 @@ CIntro::CIntro(int id, LPCWSTR filePath) :
 {
 	player = NULL;
 	action = 0;
+	key_handler = new CMenuKeyEventHandler(this);
+	introTimer = 0;
 }
 
 void CIntro::Render()
 {
-	static DWORD introStartTime = GetTickCount();
 
 	CGame* g = CGame::GetInstance();
 	ID3D10Device* pD3DDevice = g->GetDirect3DDevice();
@@ -38,14 +41,11 @@ void CIntro::Render()
 	ID3D10RenderTargetView* pRenderTargetView = g->GetRenderTargetView();
 	ID3DX10Sprite* spriteHandler = g->GetSpriteHandler();
 
-	DWORD currentTime = GetTickCount64();
-	DWORD passedTime = currentTime - introStartTime;
-
-	if ((passedTime >= 7000&& passedTime<7600)|| passedTime>7800)
+	if ((introTimer >= 7000&& introTimer<7600)|| introTimer>7800)
 	{
 		pD3DDevice->ClearRenderTargetView(pRenderTargetView, INTRO_BACKGROUND_COLOR_2);
 	}
-	else if (passedTime >= 7600 && passedTime <=7800)
+	else if (introTimer >= 7600 &&introTimer<=7800)
 	{
 		pD3DDevice->ClearRenderTargetView(pRenderTargetView, INTRO_BACKGROUND_COLOR_3);
 	}
@@ -59,19 +59,22 @@ void CIntro::Render()
 	objects[STAGE_ID]->Render();
 	for (int i = 1; i < objects.size(); i++)
 	{
-		if (i==CURTAIN_ID||i==STAGE_ID) continue;
+		if (i==CURTAIN_ID||i==STAGE_ID||i==LUIGI_ID) continue;
 			objects[i]->Render();
 	}
-	objects[MARIO_ID]->Render();
+	if (introTimer>1700)
+	{
+		objects[MARIO_ID]->Render();
+		objects[LUIGI_ID]->Render();
+	}
 	objects[CURTAIN_ID]->Render();
 	pSwapChain->Present(0, 0);
 }
 
 void CIntro::Update(DWORD dt)
 {
-	static bool waitFinished = false;
-	WaitForIntro(dt, 1000, waitFinished);
-	if (!waitFinished) return;
+	introTimer += dt;
+	if (introTimer <1000) return;
 
 	vector<LPGAMEOBJECT> coObjects;
 	for (size_t i = 1; i < objects.size(); i++)
@@ -80,10 +83,7 @@ void CIntro::Update(DWORD dt)
 	}
 
 	objects[CURTAIN_ID]->Update(dt, &coObjects);
-
-	waitFinished = false;
-	WaitForIntro(dt, 3000, waitFinished);
-	if (!waitFinished) return;
+	if (introTimer<2000) return;
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
@@ -92,33 +92,38 @@ void CIntro::Update(DWORD dt)
 		objects[i]->Update(dt, &coObjects);
 	}
 
-	if (this->action == ACTION_1)
+	if (this->action == 1)
 	{
 		float a, b, x, y;
 		objects[MARIO_ID]->GetPosition(a, b);
 		objects[LUIGI_ID]->GetPosition(x, y);
 		if (a - x <= 115)
-		{
-			AutoRun(ACTION_2);
-		}
+			AutoRun(2);
 	}
-	else if (this->action == ACTION_2) {
-		waitFinished = false;
-		WaitForIntro(dt, 9000, waitFinished);
-		if (waitFinished)
-			AutoRun(ACTION_3);
+	else if (this->action == 2) {
+		if (introTimer>5000)
+			AutoRun(3);
 	}
-	else if (this->action == ACTION_3)
+	else if (this->action == 3)
+	{
+		if (introTimer>5500)
+			AutoRun(4);
+	}
+	else if (this->action == 4)
 	{
 		float a, b, x, y;
 		objects[MARIO_ID]->GetPosition(a, b);
 		objects[LEAF_ID]->GetPosition(x, y);
-		if (b-y<=80)
-			AutoRun(ACTION_4);
+		if (b - y <= 80)
+			AutoRun(5);
 	}
-	else if (this->action == ACTION_4)
+	else if (this->action == 5)
 	{
-		
+		float vx, vy;
+		player->GetSpeed(vx, vy);
+		if (vy>0.25 )
+			objects[MARIO_ID]->SetState(MARIO_STATE_JUMP);
+
 	}
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
@@ -127,21 +132,48 @@ void CIntro::Update(DWORD dt)
 	PurgeDeletedObjects();
 }
 
-
-void CIntro::WaitForIntro(DWORD dt, DWORD introDuration, bool& waitFinished)
+void CIntro::AutoRun(int action)
 {
-	static DWORD introTimer = 0;
-
-	if (!waitFinished)
+	if (action == 1)
 	{
-		introTimer += dt;
-
-		if (introTimer >= introDuration)
-		{
-			waitFinished = true;
-		}
+		CMario* mario = dynamic_cast<CMario*>(objects[MARIO_ID]);
+		CLuigi* luigi = dynamic_cast<CLuigi*>(objects[LUIGI_ID]);
+		luigi->SetState(LUIGI_STATE_WALKING_RIGHT);
+		mario->SetState(MARIO_STATE_WALKING_LEFT);
 	}
+	else if (action == 2)
+	{
+		objects[LUIGI_ID]->SetState(LUIGI_STATE_JUMP);
+	}
+	else if (action == 3)
+	{
+		objects[MARIO_ID]->SetState(MARIO_STATE_SIT_RELEASE);
+	}
+	else if (action == 4)
+	{
+		CGreenKoopas* koopas1=new CGreenKoopas(160,0,1);
+		koopas1->SetState(KOOPAS_STATE_SHELL);
+		objects.push_back(koopas1);
+
+		CBush* bush1 = new CBush(15, 158, 4, 2026, 2026, 2027);
+		CBush* bush2 = new CBush(30, 158, 2, 2026, 2026, 2027);
+		CBush* bush3 = new CBush(286, 158, 5, 2026, 2026, 2027);
+		CBush* bush4 = new CBush(269, 158, 3, 2026, 2026, 2027);
+		CBush* bush5 = new CBush(252, 158, 1, 2027, 2026, 2026);
+		objects.push_back(bush1);
+		objects.push_back(bush2);
+		objects.push_back(bush3);
+		objects.push_back(bush4);
+		objects.push_back(bush5);
+	}
+	else if (action == 5)
+	{
+		objects[MARIO_ID]->SetState(MARIO_STATE_JUMP);
+		objects[MARIO_ID]->SetState(MARIO_STATE_WALKING_LEFT);
+	}
+	this->action = action;
 }
+
 
 void CIntro::_ParseSection_OBJECTS(string line)
 {
@@ -159,12 +191,11 @@ void CIntro::_ParseSection_OBJECTS(string line)
 	{
 	case OBJECT_TYPE_MARIO:
 		obj = new CMario(x, y,MARIO_LEVEL_BIG);
+		player = (CMario*)obj;
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
 	case OBJECT_TYPE_LUIGI:
-		key_handler = new CKeyHandlerForLuigi(this);
 		obj = new CLuigi(x, y);
-		player = (CLuigi*)obj;
 
 		CGame::GetInstance()->SetKeyHandler(key_handler);
 		break;
@@ -175,8 +206,6 @@ void CIntro::_ParseSection_OBJECTS(string line)
 			level = (int)atof(tokens[3].c_str());
 		obj = new CGoomba(x, y, level); break;
 	}
-	case OBJECT_TYPE_BRICK: obj = new CBrick(x, y); break;
-	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
 	case OBJECT_TYPE_BROWNCURTAIN: obj = new CBrownCurtain(x, y); break;
 	case OBJECT_TYPE_STAGE: obj = new CStage(x, y); break;
 	case OBJECT_TYPE_LOGO: obj = new CLogo(x, y); break;
@@ -190,7 +219,6 @@ void CIntro::_ParseSection_OBJECTS(string line)
 		obj = new CBush(x, y, height, sprite_begin, sprite_middle, sprite_end);
 		break;
 	}
-
 	case OBJECT_TYPE_PORTAL:
 	{
 		float r = (float)atof(tokens[3].c_str());
@@ -221,32 +249,3 @@ void CIntro::AddObject(LPGAMEOBJECT object,int id)
 	}
 }
 
-void CIntro::AutoRun(int action)
-{
-	if (action == ACTION_1)
-	{
-		CMario* mario = dynamic_cast<CMario*>(objects[MARIO_ID]);
-		CLuigi* luigi = dynamic_cast<CLuigi*>(objects[LUIGI_ID]);
-		mario->SetAutoRunning(true);
-		luigi->SetAutoRunning(true);
-		luigi->SetState(LUIGI_STATE_WALKING_RIGHT);
-		mario->SetState(MARIO_STATE_WALKING_LEFT);
-	}
-	else if (action == ACTION_2)
-	{
-		objects[LUIGI_ID]->SetState(LUIGI_STATE_JUMP);		
-	}
-	else if (action == ACTION_3)
-	{
-		objects[MARIO_ID]->SetState(MARIO_STATE_SIT_RELEASE);
-	}
-	else if (action == ACTION_4)
-	{
-		objects[MARIO_ID]->SetState(MARIO_STATE_JUMP);
-	}
-	else if (action == ACTION_5)
-	{
-		
-	}
-	this->action = action;
-}

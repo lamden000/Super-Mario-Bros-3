@@ -48,6 +48,8 @@ void CGreenKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (level == GREENKOOPAS_LEVEL_WINGS)
 		Hop();
+	if (isHolded)
+		ay = 0;
 
 	if ((state == KOOPAS_STATE_SHELL || state == GREENKOOPAS_STATE_REVIVING) && (GetTickCount64() - die_start > GREENKOOPAS_SHELL_TIME))
 	{
@@ -90,7 +92,7 @@ void CGreenKoopas::Render()
 	{
 		aniId = ID_ANI_GREENKOOPAS_REVIVING;
 	}
-	else if (state == GREENKOOPAS_STATE_SHELL_BOUNCING)
+	else if (state == KOOPAS_STATE_SHELL_BOUNCING)
 	{
 		aniId = ID_ANI_GREENKOOPAS_SHELL_BOUNCING;
 	}
@@ -114,13 +116,12 @@ void CGreenKoopas::SetState(int state, float nx)
 		y += (GREENKOOPAS_BBOX_HEIGHT - GREENKOOPAS_BBOX_HEIGHT_SHELL) / 2;
 		vx = 0;
 		vy = 0;
-		ay = 0;
 		break;
 	case GREENKOOPAS_STATE_WALKING:
 		vx = -KOOPAS_WALKING_SPEED;
-		ay = BROWNKOOPAS_GRAVITY;
+		ay = KOOPAS_GRAVITY;
 		break;
-	case GREENKOOPAS_STATE_SHELL_BOUNCING:
+	case KOOPAS_STATE_SHELL_BOUNCING:
 		if (nx > 0)
 		{
 			vx = KOOPAS_BOUNCING_SPEED;
@@ -129,12 +130,12 @@ void CGreenKoopas::SetState(int state, float nx)
 		{
 			vx = -KOOPAS_BOUNCING_SPEED;
 		}
-		ay = BROWNKOOPAS_GRAVITY;
+		ay = KOOPAS_GRAVITY;
 		break;
 	case GREENKOOPAS_STATE_JUMP:
 		jump_start = GetTickCount64();
 		vy = -KOOPAS_JUMP_SPEED;
-		ay = BROWNKOOPAS_GRAVITY;
+		ay = KOOPAS_GRAVITY;
 		break;
 	}
 }

@@ -535,7 +535,7 @@ void CGame::SwitchScene()
 		CIntro* introPtr = dynamic_cast<CIntro*>(s);
 		introPtr->Load();
 		this->SetKeyHandler(introPtr->GetKeyEventHandler());
-		introPtr->AutoRun(ACTION_1);
+		introPtr->AutoRun(1);
 	}
 	else {
 		s->Load();

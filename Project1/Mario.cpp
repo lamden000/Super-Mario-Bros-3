@@ -22,8 +22,6 @@
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	vy += ay * dt;
-	vx += ax * dt;
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
 
 	if (holdedObject != NULL)
@@ -41,6 +39,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		untouchable_start = 0;
 		untouchable = 0;
 	}
+	vy += ay * dt;
+	vx += ax * dt;
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 
 }
@@ -72,7 +72,8 @@ void CMario::ReleaseHold() {
 			else
 				holdedObject->SetPosition(x - MARIO_BIG_BBOX_WIDTH, y - MARIO_BIG_BBOX_HEIGHT/2);
 			if(koopas->GetState() != KOOPAS_STATE_WALKING)
-				koopas->SetState(BROWNKOOPAS_STATE_SHELL_BOUNCING,nx);
+				koopas->SetState(KOOPAS_STATE_SHELL_BOUNCING,nx);
+			koopas->SetIsHolded(false);
 		}
 	}
 	isHolding = false;
@@ -186,10 +187,14 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 			koopas->DecreaseLevel();
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
-		else if (koopas->GetState() == BROWNKOOPAS_STATE_SHELL_BOUNCING)
+		else if (koopas->GetState() == KOOPAS_STATE_SHELL_BOUNCING)
 		{
 			koopas->SetState(KOOPAS_STATE_SHELL);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
+		}
+		else if (koopas->GetState() == KOOPAS_STATE_SHELL)
+		{
+			koopas->SetState(KOOPAS_STATE_SHELL_BOUNCING, nx);
 		}
 	}
 	else
@@ -212,12 +217,13 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 			else {
 				if (!isHolding)
 				{
-					koopas->SetState(BROWNKOOPAS_STATE_SHELL_BOUNCING, nx);
+					koopas->SetState(KOOPAS_STATE_SHELL_BOUNCING, nx);
 					new CPoint(x, y, 200);
 				}			
 				else
 				{
 					SetHoldedObject(koopas);
+					koopas->SetIsHolded(true);
 				}
 			}
 		}
@@ -597,15 +603,18 @@ void CMario::SetState(int state)
 			if (level == MARIO_LEVEL_RACOON && runTime >= MARIO_ALOW_FLY_RUN_TIME)
 			{
 				flyTime = MARIO_MAX_FLY_TIME;
-				runTime = 0;
 			}
+			runTime = 0;
 		}
-		else if(level==MARIO_LEVEL_RACOON)
+		else if (level == MARIO_LEVEL_RACOON)
 		{
 			if (flyTime <= 0)
 				vy = -RACOON_MARIO_FALLING_SPEED;
-			else 
-				vy = -RACOON_MARIO_FLY_SPEED;
+			else
+			{
+				vy = -RACOON_MARIO_FLY_SPEED_Y;
+				vx = MARIO_WALKING_SPEED*nx;
+			}
 			runTime = 0;
 		}
 		break;
@@ -635,6 +644,7 @@ void CMario::SetState(int state)
 	case MARIO_STATE_IDLE:
 		ax = 0.0f;
 		vx = 0.0f;
+		runTime = 0;
 		break;
 
 	case MARIO_STATE_DIE:

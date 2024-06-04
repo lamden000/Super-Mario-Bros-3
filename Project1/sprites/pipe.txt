@@ -1,14 +1,14 @@
 # id	left	top	right	bottom	texture_id
 [SPRITES]
-#cell
+#vertical cell
 20002	12	168	123	216	70
-#head
+#vertical head
 20003	12	115	123	178	70
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
 #cell
-10003	20002	1000
+#10003	20002	1000
 
 #head
-10004	20003	1000
+#10004	20003	1000
