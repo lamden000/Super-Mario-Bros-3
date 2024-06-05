@@ -6,7 +6,6 @@
 #define INTRO_BACKGROUND_COLOR_1 D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f)
 #define INTRO_BACKGROUND_COLOR_2 D3DXCOLOR(247.0f / 255.0f, 215.0f / 255.0f, 164.0f / 255.0f, 1.0f)
 #define INTRO_BACKGROUND_COLOR_3 D3DXCOLOR(247.0f / 255.0f - 0.05f, 215.0f / 255.0f - 0.05f, 164.0f / 255.0f - 0.05f, 1.0f)
-#define MARIO_ID 0
 #define CURTAIN_ID 2
 #define LOGO_ID 4
 #define LEAF_ID 5

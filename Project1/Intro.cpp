@@ -9,13 +9,14 @@
 #include "Textures.h"
 #include "Sprites.h"
 #include "Portal.h"
-#include "Coin.h"
+#include "IntroGoomba.h"
 #include "Platform.h"
 #include "Intro_BrownCurtain.h"
 #include "Intro_Stage.h"
 #include "Luigi.h"
 #include "Logo.h"
 #include "Leaf.h"
+#include "Mushroom.h"
 #include "Bush.h"
 #include "Point.h"
 #include "GreenKoopas.h"
@@ -57,14 +58,16 @@ void CIntro::Render()
 	pD3DDevice->OMSetBlendState(g->GetAlphaBlending(), NewBlendFactor, 0xffffffff);
 
 	objects[STAGE_ID]->Render();
+	if(introTimer>21500)
+		player->Render();
 	for (int i = 1; i < objects.size(); i++)
 	{
 		if (i==CURTAIN_ID||i==STAGE_ID||i==LUIGI_ID) continue;
 			objects[i]->Render();
 	}
-	if (introTimer>1700)
+	if (introTimer>1700&&introTimer<21500)
 	{
-		objects[MARIO_ID]->Render();
+		player->Render();
 		objects[LUIGI_ID]->Render();
 	}
 	objects[CURTAIN_ID]->Render();
@@ -73,6 +76,8 @@ void CIntro::Render()
 
 void CIntro::Update(DWORD dt)
 {
+	if (player == NULL) return;
+
 	introTimer += dt;
 	if (introTimer <1000) return;
 
@@ -95,7 +100,7 @@ void CIntro::Update(DWORD dt)
 	if (this->action == 1)
 	{
 		float a, b, x, y;
-		objects[MARIO_ID]->GetPosition(a, b);
+		player->GetPosition(a, b);
 		objects[LUIGI_ID]->GetPosition(x, y);
 		if (a - x <= 115)
 			AutoRun(2);
@@ -112,22 +117,82 @@ void CIntro::Update(DWORD dt)
 	else if (this->action == 4)
 	{
 		float a, b, x, y;
-		objects[MARIO_ID]->GetPosition(a, b);
+		player->GetPosition(a, b);
 		objects[LEAF_ID]->GetPosition(x, y);
 		if (b - y <= 80)
 			AutoRun(5);
 	}
 	else if (this->action == 5)
 	{
-		float vx, vy;
+		float vx, vy,mx,my;
 		player->GetSpeed(vx, vy);
 		if (vy>0.25 )
-			objects[MARIO_ID]->SetState(MARIO_STATE_JUMP);
-
+			player->SetState(MARIO_STATE_JUMP);
+		if(vy==0)
+			player->SetState(MARIO_STATE_WALKING_RIGHT);
+		if (introTimer > 10800)
+		{
+			player->SetState(MARIO_STATE_IDLE);
+			AutoRun(6);
+		}	
 	}
-
+	else if (this->action == 6)
+	{
+		if (introTimer > 12000)
+			AutoRun(7);
+	}
+	else if (this->action == 7)
+	{
+		if (introTimer > 12800)
+			AutoRun(8);
+	}
+	else if (this->action == 8)
+	{
+		float mx, my, kx, ky;
+		objects[objects.size() - 1]->GetPosition(kx, ky);
+		player->GetPosition(mx, my);	
+		if (kx - mx <= 40 && kx > mx)
+			player->SetState(MARIO_STATE_JUMP);
+		if (kx > mx && kx < mx + MARIO_BIG_BBOX_WIDTH +5)
+			AutoRun(9);
+	}
+	else if (this->action == 9)
+	{
+		if (introTimer > 14000 && introTimer < 15000)
+		{
+			CMario* mario = (CMario*)player;
+			mario->SetState(MARIO_STATE_WALKING_RIGHT);
+			mario->Hold();
+		}
+		else if (introTimer >= 15300)
+		{
+			AutoRun(10);
+			objects[LUIGI_ID]->SetState(LUIGI_STATE_WALKING_RIGHT);
+		}
+	}
+	else if (this->action == 10)
+	{
+		if (introTimer > 17000)
+			AutoRun(11);
+	}
+	else if (this->action == 11)
+	{
+		float mx, my, kx, ky;
+		objects[objects.size() - 1]->GetPosition(kx, ky);
+		player->GetPosition(mx, my);
+		if (mx - kx <= 20 && kx < mx)
+			AutoRun(12);
+	}
+	else if (this->action == 12)
+	{
+		if (introTimer > 19000 && introTimer < 20500)
+			player->SetState(MARIO_STATE_WALKING_RIGHT);
+		else if (introTimer >= 20500 && introTimer < 21500)
+			player->SetState(MARIO_STATE_WALKING_LEFT);
+		else if (introTimer >= 21500)
+			AutoRun(13);
+	}
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
-	if (player == NULL) return;
 
 	PurgeDeletedObjects();
 }
@@ -136,10 +201,8 @@ void CIntro::AutoRun(int action)
 {
 	if (action == 1)
 	{
-		CMario* mario = dynamic_cast<CMario*>(objects[MARIO_ID]);
-		CLuigi* luigi = dynamic_cast<CLuigi*>(objects[LUIGI_ID]);
-		luigi->SetState(LUIGI_STATE_WALKING_RIGHT);
-		mario->SetState(MARIO_STATE_WALKING_LEFT);
+		objects[LUIGI_ID]->SetState(LUIGI_STATE_WALKING_RIGHT);
+		player->SetState(MARIO_STATE_WALKING_LEFT);
 	}
 	else if (action == 2)
 	{
@@ -147,14 +210,10 @@ void CIntro::AutoRun(int action)
 	}
 	else if (action == 3)
 	{
-		objects[MARIO_ID]->SetState(MARIO_STATE_SIT_RELEASE);
+		player->SetState(MARIO_STATE_SIT_RELEASE);
 	}
 	else if (action == 4)
 	{
-		CGreenKoopas* koopas1=new CGreenKoopas(160,0,1);
-		koopas1->SetState(KOOPAS_STATE_SHELL);
-		objects.push_back(koopas1);
-
 		CBush* bush1 = new CBush(15, 158, 4, 2026, 2026, 2027);
 		CBush* bush2 = new CBush(30, 158, 2, 2026, 2026, 2027);
 		CBush* bush3 = new CBush(286, 158, 5, 2026, 2026, 2027);
@@ -165,11 +224,65 @@ void CIntro::AutoRun(int action)
 		objects.push_back(bush3);
 		objects.push_back(bush4);
 		objects.push_back(bush5);
+		CIntroGoomba* goomba = new CIntroGoomba(100, -150, 1);
+		CGreenKoopas* koopas1 = new CGreenKoopas(150, 0, 1);
+		CMushroom* greenMushroom = new CMushroom(250, -50, 2);
+		CMushroom* redMushroom = new CMushroom(50, -50, 1);
+		koopas1->SetState(KOOPAS_STATE_SHELL);
+		objects.push_back(goomba);
+		objects.push_back(redMushroom);
+		objects.push_back(greenMushroom);
+		objects.push_back(koopas1);
 	}
 	else if (action == 5)
 	{
-		objects[MARIO_ID]->SetState(MARIO_STATE_JUMP);
-		objects[MARIO_ID]->SetState(MARIO_STATE_WALKING_LEFT);
+		player->SetState(MARIO_STATE_JUMP);
+		player->SetState(MARIO_STATE_WALKING_LEFT);
+	}
+	else if (action == 6)
+	{
+		CLuigi* luigi = (CLuigi*)objects[LUIGI_ID];
+		CGreenKoopas* koopas= (CGreenKoopas*)objects[objects.size() - 1];
+		luigi->SetPosition(400, 100);
+		luigi->SetHoldedObject(koopas);
+		koopas->SetIsHolded(true);
+		koopas->SetState(KOOPAS_STATE_SHELL);
+		luigi->SetState(LUIGI_STATE_WALKING_LEFT);
+
+	}
+	else if (action == 7)
+	{
+		objects[LUIGI_ID]->SetState(LUIGI_STATE_IDLE);
+		player->SetState(MARIO_STATE_WALKING_LEFT);
+	}
+	else if (action == 8)
+	{
+		CLuigi* luigi = (CLuigi*)objects[LUIGI_ID];
+		luigi->ReleaseHold();
+	}
+	else if (action == 9)
+	{
+		player->SetState(MARIO_STATE_RELEASE_JUMP);
+	}
+	else if (action == 10)
+	{
+		CMario* mario = (CMario*)player;
+		mario->SetState(MARIO_STATE_IDLE);
+		mario->ReleaseHold();
+	}
+	else if (action == 11)
+	{
+		objects[objects.size() - 1]->SetPosition(-40,130);
+	}
+	else if (action == 12)
+	{
+		CMario* mario = (CMario*)player;
+		mario->SetLevel(MARIO_LEVEL_BIG);
+	}
+	else if (action == 13)
+	{
+		player->SetState(MARIO_STATE_WALKING_RIGHT);
+		objects[objects.size() - 1]->Delete();
 	}
 	this->action = action;
 }
@@ -236,7 +349,6 @@ void CIntro::_ParseSection_OBJECTS(string line)
 
 	// General object setup
 	obj->SetPosition(x, y);
-
 
 	objects.push_back(obj);
 }

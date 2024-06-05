@@ -50,9 +50,6 @@ protected:
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
-
-	virtual int IsCollidable() { return 1; }
-	virtual int IsBlocking() { return !isHolded; }
 	virtual void OnNoCollision(DWORD dt);
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
@@ -64,7 +61,10 @@ public:
 	virtual void DecreaseLevel();
 	virtual void SetIsHolded(bool isHolded) { this->isHolded = isHolded; }
 	virtual void SetState(int state,float nx=0);
-	virtual void Respawn();
+	virtual bool Respawn();
+	virtual int IsBlocking() { return !isHolded; }
+	virtual int IsCollidable() { return 1; }
+	virtual void DropCollision();
 };
 
 

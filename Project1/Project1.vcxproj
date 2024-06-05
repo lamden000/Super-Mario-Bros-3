@@ -139,6 +139,7 @@
     <ClCompile Include="FireBall.cpp" />
     <ClCompile Include="GreenKoopas.cpp" />
     <ClCompile Include="InGameUI.cpp" />
+    <ClCompile Include="IntroGoomba.cpp" />
     <ClCompile Include="Intro_Cloud.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Collision.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="FireBall.h" />
     <ClInclude Include="GreenKoopas.h" />
     <ClInclude Include="InGameUI.h" />
+    <ClInclude Include="IntroGoomba.h" />
     <ClInclude Include="Intro_Cloud.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="Collision.h" />

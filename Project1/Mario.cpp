@@ -217,8 +217,15 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 			else {
 				if (!isHolding)
 				{
-					koopas->SetState(KOOPAS_STATE_SHELL_BOUNCING, nx);
-					new CPoint(x, y, 200);
+					if (e->ny > 0)
+					{
+						koopas->DropCollision();
+					}
+					else {
+						koopas->SetState(KOOPAS_STATE_SHELL_BOUNCING, nx);
+						new CPoint(x, y, 200);
+					}
+
 				}			
 				else
 				{

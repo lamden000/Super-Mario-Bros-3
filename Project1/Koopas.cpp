@@ -20,25 +20,34 @@ CBrownKoopas::CBrownKoopas(float x, float y, int level) :CGameObject(x, y)
 
 void CBrownKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	Respawn();
-	if (isHolded)
-		ay = 0;
-
-	if ((state == KOOPAS_STATE_SHELL || state == KOOPAS_STATE_REVIVING) && (GetTickCount64() - die_start > BROWNKOOPAS_SHELL_TIME))
+	if(!Respawn())
 	{
-		SetState(KOOPAS_STATE_REVIVING);
-		if ((GetTickCount64() - die_start > BROWNKOOPAS_SHELL_TIME + BROWNKOOPAS_REVIVE_TIME))
+		if (isHolded)
+			ay = 0;
+
+		if ((state == KOOPAS_STATE_SHELL || state == KOOPAS_STATE_REVIVING) && (GetTickCount64() - die_start > BROWNKOOPAS_SHELL_TIME))
 		{
-			SetState(KOOPAS_STATE_WALKING);
-			y -= (BROWNKOOPAS_BBOX_HEIGHT - BROWNKOOPAS_BBOX_HEIGHT_SHELL) / 2;
-			die_start = 0;
+			SetState(KOOPAS_STATE_REVIVING);
+			if ((GetTickCount64() - die_start > BROWNKOOPAS_SHELL_TIME + BROWNKOOPAS_REVIVE_TIME))
+			{
+				SetState(KOOPAS_STATE_WALKING);
+				y -= (BROWNKOOPAS_BBOX_HEIGHT - BROWNKOOPAS_BBOX_HEIGHT_SHELL) / 2;
+				die_start = 0;
+			}
 		}
+		vy += ay * dt;
+		vx += ax * dt;
+		CCollision::GetInstance()->Process(this, dt, coObjects);
 	}
-	vy += ay * dt;
-	vx += ax * dt;
-	CCollision::GetInstance()->Process(this, dt, coObjects);
+
 }
 
+void CBrownKoopas::DropCollision()
+{
+	vx = -0.15;
+	vy = 0;
+	DebugOut(L">>> Mario DIE >>> \n");
+}
 
 void CBrownKoopas::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
@@ -57,6 +66,7 @@ void CBrownKoopas::GetBoundingBox(float& left, float& top, float& right, float& 
 	}
 }
 
+
 void CBrownKoopas::OnNoCollision(DWORD dt)
 {
 	if (state == KOOPAS_STATE_WALKING)
@@ -73,7 +83,7 @@ void CBrownKoopas::OnNoCollision(DWORD dt)
 	}
 };
 
-void CBrownKoopas::Respawn()
+bool CBrownKoopas::Respawn()
 {
 	CGame* game = CGame::GetInstance();
 	CPlayScene* scene = (CPlayScene*)game->GetCurrentScene();
@@ -82,16 +92,15 @@ void CBrownKoopas::Respawn()
 	float mx, my;
 	player->GetPosition(mx, my);
 	screenWidth = game->GetBackBufferWidth();
-	if (abs(mx - x) > screenWidth/1.9 )
+	if (abs(mx - x) > screenWidth/1.9 && abs(mx - start_x) > screenWidth / 1.9)
 	{
-		if (abs(mx - start_x) > screenWidth/2 )
-		{
-			SetState(KOOPAS_STATE_WALKING);
-			x = start_x;
-			y = start_y;
-			level = start_level;
-		}
+		SetState(KOOPAS_STATE_WALKING);
+		x = start_x;
+		y = start_y;
+		level = start_level;
+		return true;
 	}
+	return false;
 }
 
 void CBrownKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
@@ -173,12 +182,12 @@ void CBrownKoopas::Render()
 
 void CBrownKoopas::SetState(int state,float nx)
 {
-	CGameObject::SetState(state);
 	switch (state)
 	{
 	case KOOPAS_STATE_SHELL:
 		die_start = GetTickCount64();
-		y += (BROWNKOOPAS_BBOX_HEIGHT - BROWNKOOPAS_BBOX_HEIGHT_SHELL) / 2;
+		if(this->state!=KOOPAS_STATE_SHELL_BOUNCING)
+			y += (BROWNKOOPAS_BBOX_HEIGHT - BROWNKOOPAS_BBOX_HEIGHT_SHELL) / 2;
 		vx = 0;
 		vy = 0;
 		break;
@@ -196,4 +205,5 @@ void CBrownKoopas::SetState(int state,float nx)
 		ay = KOOPAS_GRAVITY;
 		break;
 	}
+	CGameObject::SetState(state);
 }
