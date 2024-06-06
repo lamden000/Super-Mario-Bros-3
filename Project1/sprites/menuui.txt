@@ -1,0 +1,6 @@
+# id	left	top	right	bottom	texture_id
+[SPRITES]
+#mode board
+81000	68	244	181	290	30
+#pointer
+81001	53	244	64	256	30

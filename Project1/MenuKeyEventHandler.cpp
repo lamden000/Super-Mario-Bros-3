@@ -1,15 +1,27 @@
 #include "MenuKeyEventHandler.h"
 
-#include "debug.h"
 #include "Game.h"
-#include "PlayScene.h"
+#include "Intro.h"
+#include "MenuUI.h"
 
 #define INTRO_ID 6
 
 void CMenuKeyEventHandler::OnKeyDown(int KeyCode)
 {
+	CGame* game = CGame::GetInstance();
+	CIntro* intro= (CIntro*)game->GetCurrentScene();	
+	if (!dynamic_cast<CMenuUI*>(intro->GetPlayer()))
+		return;
+	CMenuUI* ui= (CMenuUI*) intro->GetPlayer();
 	switch (KeyCode)
 	{
+		case DIK_Q:
+			ui->SetMode();
+			break;
+		case DIK_W:
+			game->InitiateSwitchScene(1);
+			game->SwitchScene();
+			break;
 	}
 }
 
@@ -22,11 +34,4 @@ void CMenuKeyEventHandler::OnKeyUp(int KeyCode)
 
 void CMenuKeyEventHandler::KeyState(BYTE* states)
 {
-	CGame* game = CGame::GetInstance();
-	if (game->IsKeyDown(DIK_RIGHT))
-	{
-	}
-	else if (game->IsKeyDown(DIK_LEFT))
-	{
-	}
 }

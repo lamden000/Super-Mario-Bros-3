@@ -6,10 +6,10 @@ height	240
 #id	file
 [SCENES]
 0	intro.txt
+6	intro.txt
 1	world11.txt
 2	scene02.txt
 5	scene0005.txt
-6	intro.txt
 # id	file 
 [TEXTURES]
 -100	textures\bbox.png

@@ -125,8 +125,3 @@ vector<int> CInGameUI::getDigits(DWORD number) {
 
 	return digits;
 }
-
-void CInGameUI::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
-{
-
-}

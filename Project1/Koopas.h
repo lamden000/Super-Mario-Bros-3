@@ -60,7 +60,7 @@ public:
 	CBrownKoopas(float x, float y,int level);
 	virtual void DecreaseLevel();
 	virtual void SetIsHolded(bool isHolded) { this->isHolded = isHolded; }
-	virtual void SetState(int state,float nx=0);
+	virtual void SetState(int state,float nx=-1);
 	virtual bool Respawn();
 	virtual int IsBlocking() { return !isHolded; }
 	virtual int IsCollidable() { return 1; }

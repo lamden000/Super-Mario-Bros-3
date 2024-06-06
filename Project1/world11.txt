@@ -17,7 +17,7 @@ sprites\fireball.txt
 sprites\point.txt
 sprites\platform.txt
 sprites\box.txt
-sprites\ui.txt
+sprites\ingameui.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type

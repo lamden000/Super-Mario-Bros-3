@@ -8,6 +8,7 @@ sprites\koopas.txt
 sprites\mushroom.txt
 sprites\bush.txt
 sprites\leaf.txt
+sprites\menuui.txt
 [OBJECTS]
 # type	x	y	extra_settings per object type
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas, 6=Brown Curtain, 7= Stage, 8=Luigi, 9=logo
@@ -31,11 +32,4 @@ sprites\leaf.txt
 #leaf
 10	150	-120
 
-# Bush
-#12 	15	158	4	2026	2026	2027
-#12 	30	158	2	2026	2026	2027
-
-#12 	286	158	5	2026	2026	2027
-#12 	269	158	3	2026	2026	2027
-#12 	252	158	1	2027	2026	2026
 

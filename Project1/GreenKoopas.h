@@ -14,7 +14,6 @@
 #define GREENKOOPAS_LEVEL_NORMAL 1
 #define GREENKOOPAS_LEVEL_WINGS 2
 
-#define GREENKOOPAS_STATE_WALKING 100
 #define GREENKOOPAS_STATE_REVIVING 200
 #define KOOPAS_STATE_SHELL 300
 #define GREENKOOPAS_STATE_JUMP	500
@@ -47,7 +46,7 @@ protected:
 
 public:
 	CGreenKoopas(float x, float y, int level):CBrownKoopas(x, y, level) { jump_start = 1500; };
-	virtual void SetState(int state, float nx = 0);
+	virtual void SetState(int state, float nx = -1);
 	virtual void Hop();
 };
 

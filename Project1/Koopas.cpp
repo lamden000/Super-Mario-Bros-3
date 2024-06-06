@@ -12,7 +12,7 @@ CBrownKoopas::CBrownKoopas(float x, float y, int level) :CGameObject(x, y)
 	this->ax = 0;
 	this->ay = KOOPAS_GRAVITY;
 	die_start = -1;
-	SetState(KOOPAS_STATE_WALKING);
+	SetState(KOOPAS_STATE_WALKING,-1);
 	isHolded = false;
 	this->level = level;
 }
@@ -30,7 +30,7 @@ void CBrownKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			SetState(KOOPAS_STATE_REVIVING);
 			if ((GetTickCount64() - die_start > BROWNKOOPAS_SHELL_TIME + BROWNKOOPAS_REVIVE_TIME))
 			{
-				SetState(KOOPAS_STATE_WALKING);
+				SetState(KOOPAS_STATE_WALKING,-1);
 				y -= (BROWNKOOPAS_BBOX_HEIGHT - BROWNKOOPAS_BBOX_HEIGHT_SHELL) / 2;
 				die_start = 0;
 			}

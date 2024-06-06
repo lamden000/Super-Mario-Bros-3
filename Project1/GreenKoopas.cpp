@@ -60,7 +60,7 @@ void CGreenKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			SetState(GREENKOOPAS_STATE_REVIVING);
 			if ((GetTickCount64() - die_start > GREENKOOPAS_SHELL_TIME + GREENKOOPAS_REVIVE_TIME))
 			{
-				SetState(GREENKOOPAS_STATE_WALKING);
+				SetState(KOOPAS_STATE_WALKING,-1);
 				y -= (GREENKOOPAS_BBOX_HEIGHT - GREENKOOPAS_BBOX_HEIGHT_SHELL) / 2;
 				die_start = 0;
 			}
@@ -121,8 +121,14 @@ void CGreenKoopas::SetState(int state, float nx)
 		vx = 0;
 		vy = 0;
 		break;
-	case GREENKOOPAS_STATE_WALKING:
-		vx = -KOOPAS_WALKING_SPEED;
+	case KOOPAS_STATE_WALKING:
+		if (nx >= 0)
+		{
+			vx = KOOPAS_WALKING_SPEED;
+		}
+		else {
+			vx = -KOOPAS_WALKING_SPEED;
+		}
 		ay = KOOPAS_GRAVITY;
 		break;
 	case KOOPAS_STATE_SHELL_BOUNCING:

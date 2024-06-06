@@ -140,6 +140,7 @@
     <ClCompile Include="GreenKoopas.cpp" />
     <ClCompile Include="InGameUI.cpp" />
     <ClCompile Include="IntroGoomba.cpp" />
+    <ClCompile Include="IntroKoopas.cpp" />
     <ClCompile Include="Intro_Cloud.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Collision.cpp" />
@@ -156,6 +157,7 @@
     <ClCompile Include="Logo.cpp" />
     <ClCompile Include="Luigi.cpp" />
     <ClCompile Include="MenuKeyEventHandler.cpp" />
+    <ClCompile Include="MenuUI.cpp" />
     <ClCompile Include="Mushroom.cpp" />
     <ClCompile Include="KeyEventHandlerForMario.cpp" />
     <ClCompile Include="main.cpp" />
@@ -190,6 +192,7 @@
     <ClInclude Include="GreenKoopas.h" />
     <ClInclude Include="InGameUI.h" />
     <ClInclude Include="IntroGoomba.h" />
+    <ClInclude Include="IntroKoopas.h" />
     <ClInclude Include="Intro_Cloud.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="Collision.h" />
@@ -208,6 +211,7 @@
     <ClInclude Include="Luigi.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="MenuKeyEventHandler.h" />
+    <ClInclude Include="MenuUI.h" />
     <ClInclude Include="Mushroom.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="Platform.h" />

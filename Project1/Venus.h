@@ -42,6 +42,7 @@ public:
 		isGoingUp = false;
 	}
 	void Render();
+	int IsCollidable() { return 0; }
 	void Grow(DWORD dt, float mario_x, float mario_y);
 	void Shoot(DWORD dt);
 	int IsBlocking() { return 0; }

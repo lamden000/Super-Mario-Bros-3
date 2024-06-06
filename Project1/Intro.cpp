@@ -19,7 +19,8 @@
 #include "Mushroom.h"
 #include "Bush.h"
 #include "Point.h"
-#include "GreenKoopas.h"
+#include "IntroKoopas.h"
+#include "MenuUI.h"
 
 #include "KeyEventHandlerForMario.h"
 #include "KeyHandlerForLuigi.h"
@@ -58,7 +59,7 @@ void CIntro::Render()
 	pD3DDevice->OMSetBlendState(g->GetAlphaBlending(), NewBlendFactor, 0xffffffff);
 
 	objects[STAGE_ID]->Render();
-	if(introTimer>21500)
+	if(introTimer>=21500)
 		player->Render();
 	for (int i = 1; i < objects.size(); i++)
 	{
@@ -102,7 +103,7 @@ void CIntro::Update(DWORD dt)
 		float a, b, x, y;
 		player->GetPosition(a, b);
 		objects[LUIGI_ID]->GetPosition(x, y);
-		if (a - x <= 115)
+		if (a - x <= 120)
 			AutoRun(2);
 	}
 	else if (this->action == 2) {
@@ -187,13 +188,17 @@ void CIntro::Update(DWORD dt)
 	{
 		if (introTimer > 19000 && introTimer < 20500)
 			player->SetState(MARIO_STATE_WALKING_RIGHT);
-		else if (introTimer >= 20500 && introTimer < 21500)
+		else if (introTimer >= 20500 && introTimer < 21200)
 			player->SetState(MARIO_STATE_WALKING_LEFT);
-		else if (introTimer >= 21500)
+		else if (introTimer >= 21200)
 			AutoRun(13);
 	}
+	else if (this->action == 13)
+	{
+		if (introTimer >= 21800)
+			AutoRun(14);
+	}
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
-
 	PurgeDeletedObjects();
 }
 
@@ -248,6 +253,8 @@ void CIntro::AutoRun(int action)
 		koopas->SetIsHolded(true);
 		koopas->SetState(KOOPAS_STATE_SHELL);
 		luigi->SetState(LUIGI_STATE_WALKING_LEFT);
+		objects[objects.size() - 2]->Delete();
+		objects[objects.size() - 3]->Delete();
 
 	}
 	else if (action == 7)
@@ -283,6 +290,24 @@ void CIntro::AutoRun(int action)
 	{
 		player->SetState(MARIO_STATE_WALKING_RIGHT);
 		objects[objects.size() - 1]->Delete();
+	}
+	else if (action == 14)
+	{
+		CMenuUI* ui = new CMenuUI(155, 140);
+		CIntroKoopas* koopas1 = new CIntroKoopas(-30, 120,1);
+		CIntroKoopas* koopas2 = new CIntroKoopas(-80, 100, 1);
+		CIntroKoopas* koopas3 = new CIntroKoopas(-120, 100, 1);
+		CIntroKoopas* koopas4 = new CIntroKoopas(-400, 100, 1);
+		koopas1->SetState(KOOPAS_STATE_WALKING);
+		koopas2->SetState(KOOPAS_STATE_WALKING);
+		koopas3->SetState(KOOPAS_STATE_WALKING);
+		koopas4->SetState(KOOPAS_STATE_RUNNING);
+		objects.push_back(koopas1);
+		objects.push_back(koopas2);
+		objects.push_back(koopas3);
+		objects.push_back(koopas4);
+		objects.push_back(ui);
+		player = ui;
 	}
 	this->action = action;
 }

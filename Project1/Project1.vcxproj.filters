@@ -198,6 +198,12 @@
     <ClCompile Include="IntroGoomba.cpp">
       <Filter>Source Files\Object\IntroObject</Filter>
     </ClCompile>
+    <ClCompile Include="MenuUI.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="IntroKoopas.cpp">
+      <Filter>Source Files\Object\IntroObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -342,6 +348,12 @@
       <Filter>Header Files\Object\Player</Filter>
     </ClInclude>
     <ClInclude Include="IntroGoomba.h">
+      <Filter>Header Files\Object\IntroObject</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuUI.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="IntroKoopas.h">
       <Filter>Header Files\Object\IntroObject</Filter>
     </ClInclude>
   </ItemGroup>
