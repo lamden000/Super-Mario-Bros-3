@@ -1,7 +1,7 @@
-#include "InGameUI.h"
+#include "OverWorldUI.h"
 #include "PlayScene.h"
 
-void CInGameUI::Render()
+void COverWorldUI::Render()
 {
 	float cx, cy, xx, screenHeight;
 	int point, coin, life, runTimeSection;
@@ -17,9 +17,6 @@ void CInGameUI::Render()
 	point = game->GetPoint();
 	life = game->GetLife();
 	timeLimit = scene->GetTimeLimit();
-
-	x = cx + UI_CAMERA_DISTANCE_X;
-	y = cy + UI_CAMERA_DISTANCE_Y;
 
 	//Render main board
 	sprites->Get(ID_SPRITE_MAIN_BOARD)->Draw(x, y, 0.4, 0.4);
@@ -68,60 +65,16 @@ void CInGameUI::Render()
 
 	xx = x - 30;
 	int arrowWidth = 11;
-	CMario* mario = (CMario*)scene->GetPlayer();
-	//render mario's run arrows
-	runTimeSection = getMarioRunningTimeSection(mario->GetRunTime());
-	if (!mario->GetFlyTime())
+	for (int i = 0; i < 7; i++)
 	{
-		for (int i = 0; i < 7; i++)
+		if (i < 6)
 		{
-			if (i < 6)
-			{
-				if (runTimeSection < i + 2)
-					sprites->Get(ID_SPRITE_BLACK_ARROW)->Draw(xx, y - 4, 0.4, 0.4);
-				else
-					sprites->Get(ID_SPRITE_WHITE_ARROW)->Draw(xx, y - 4, 0.4, 0.4);
-			}
-			else
-			{
-				if (runTimeSection < 7)
-					sprites->Get(ID_SPRITE_BLACK_P)->Draw(xx + 2, y - 4, 0.4, 0.4);
-				else
-					sprites->Get(ID_SPRITE_WHITE_P)->Draw(xx + 2, y - 4, 0.4, 0.4);
-			}
-			xx += arrowWidth;
+			sprites->Get(ID_SPRITE_BLACK_ARROW)->Draw(xx, y - 4, 0.4, 0.4);
 		}
-	}
-	else
-		for (int i = 0; i < 7; i++)
+		else
 		{
-			if (i < 6)
-				sprites->Get(ID_SPRITE_WHITE_ARROW)->Draw(xx, y - 4, 0.4, 0.4);
-			else
-				CAnimations::GetInstance()->Get(ID_ANI_BLACK_WHITE_P)->Render(xx + 2, y - 4, 0.4, 0.4);
-			xx += arrowWidth;
+			sprites->Get(ID_SPRITE_BLACK_P)->Draw(xx + 2, y - 4, 0.4, 0.4);
 		}
-}
-
-int CInGameUI::getMarioRunningTimeSection(DWORD runTime) {
-
-	int section = runTime /333;
-	return section+1 ; 
-}
-
-
-vector<int> CInGameUI::getDigits(DWORD number) {
-	std::vector<int> digits;
-
-	if (number == 0) {
-		digits.push_back(0);
-		return digits;
+		xx += arrowWidth;
 	}
-
-	while (number > 0) {
-		digits.push_back(number % 10);
-		number /= 10;
-	}
-
-	return digits;
 }

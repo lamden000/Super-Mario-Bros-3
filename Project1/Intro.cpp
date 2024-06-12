@@ -3,7 +3,6 @@
 #include <fstream>
 #include "AssetIDs.h"
 
-#include "PlayScene.h"
 #include "MenuKeyEventHandler.h"
 #include "Utils.h"
 #include "Textures.h"
@@ -59,14 +58,14 @@ void CIntro::Render()
 	pD3DDevice->OMSetBlendState(g->GetAlphaBlending(), NewBlendFactor, 0xffffffff);
 
 	objects[STAGE_ID]->Render();
-	if(introTimer>=21500)
+	if(introTimer>=19500)
 		player->Render();
 	for (int i = 1; i < objects.size(); i++)
 	{
 		if (i==CURTAIN_ID||i==STAGE_ID||i==LUIGI_ID) continue;
 			objects[i]->Render();
 	}
-	if (introTimer>1700&&introTimer<21500)
+	if (introTimer>1700&&introTimer<19500)
 	{
 		player->Render();
 		objects[LUIGI_ID]->Render();
@@ -129,9 +128,12 @@ void CIntro::Update(DWORD dt)
 		player->GetSpeed(vx, vy);
 		if (vy>0.25 )
 			player->SetState(MARIO_STATE_JUMP);
-		if(vy==0)
+		if(vy==0&&introTimer<9050)
+		{
 			player->SetState(MARIO_STATE_WALKING_RIGHT);
-		if (introTimer > 10800)
+			player->SetSpeed(0, 0);
+		}
+		if (introTimer > 11100)
 		{
 			player->SetState(MARIO_STATE_IDLE);
 			AutoRun(6);
@@ -139,12 +141,12 @@ void CIntro::Update(DWORD dt)
 	}
 	else if (this->action == 6)
 	{
-		if (introTimer > 12000)
+		if (introTimer > 12500)
 			AutoRun(7);
 	}
 	else if (this->action == 7)
 	{
-		if (introTimer > 12800)
+		if (introTimer > 12900)
 			AutoRun(8);
 	}
 	else if (this->action == 8)
@@ -159,21 +161,18 @@ void CIntro::Update(DWORD dt)
 	}
 	else if (this->action == 9)
 	{
-		if (introTimer > 14000 && introTimer < 15000)
+		if (introTimer > 13500 && introTimer < 14500)
 		{
 			CMario* mario = (CMario*)player;
 			mario->SetState(MARIO_STATE_WALKING_RIGHT);
 			mario->Hold();
 		}
-		else if (introTimer >= 15300)
-		{
+		else if (introTimer >= 15000)
 			AutoRun(10);
-			objects[LUIGI_ID]->SetState(LUIGI_STATE_WALKING_RIGHT);
-		}
 	}
 	else if (this->action == 10)
 	{
-		if (introTimer > 17000)
+		if (introTimer > 16200)
 			AutoRun(11);
 	}
 	else if (this->action == 11)
@@ -186,16 +185,16 @@ void CIntro::Update(DWORD dt)
 	}
 	else if (this->action == 12)
 	{
-		if (introTimer > 19000 && introTimer < 20500)
+		if (introTimer > 17200 && introTimer < 18200)
 			player->SetState(MARIO_STATE_WALKING_RIGHT);
-		else if (introTimer >= 20500 && introTimer < 21200)
+		else if (introTimer >= 18200 && introTimer < 19500)
 			player->SetState(MARIO_STATE_WALKING_LEFT);
-		else if (introTimer >= 21200)
+		else if (introTimer >= 19500)
 			AutoRun(13);
 	}
 	else if (this->action == 13)
 	{
-		if (introTimer >= 21800)
+		if (introTimer >= 21500)
 			AutoRun(14);
 	}
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
@@ -248,10 +247,11 @@ void CIntro::AutoRun(int action)
 	{
 		CLuigi* luigi = (CLuigi*)objects[LUIGI_ID];
 		CGreenKoopas* koopas= (CGreenKoopas*)objects[objects.size() - 1];
-		luigi->SetPosition(400, 100);
+		luigi->SetPosition(400, 150);
 		luigi->SetHoldedObject(koopas);
 		koopas->SetIsHolded(true);
 		koopas->SetState(KOOPAS_STATE_SHELL);
+		luigi->SetSpeed(0, 0);
 		luigi->SetState(LUIGI_STATE_WALKING_LEFT);
 		objects[objects.size() - 2]->Delete();
 		objects[objects.size() - 3]->Delete();
@@ -276,6 +276,7 @@ void CIntro::AutoRun(int action)
 		CMario* mario = (CMario*)player;
 		mario->SetState(MARIO_STATE_IDLE);
 		mario->ReleaseHold();
+		objects[LUIGI_ID]->SetState(LUIGI_STATE_WALKING_RIGHT);
 	}
 	else if (action == 11)
 	{
@@ -302,11 +303,11 @@ void CIntro::AutoRun(int action)
 		koopas2->SetState(KOOPAS_STATE_WALKING);
 		koopas3->SetState(KOOPAS_STATE_WALKING);
 		koopas4->SetState(KOOPAS_STATE_RUNNING);
+		objects.push_back(ui);
 		objects.push_back(koopas1);
 		objects.push_back(koopas2);
 		objects.push_back(koopas3);
 		objects.push_back(koopas4);
-		objects.push_back(ui);
 		player = ui;
 	}
 	this->action = action;

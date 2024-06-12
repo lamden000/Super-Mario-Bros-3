@@ -6,8 +6,8 @@
 
 #include "Texture.h"
 #include "Animations.h"
-#include "PlayScene.h"
 #include "Intro.h"
+#include "OverWorld.h"
 
 CGame* CGame::__instance = NULL;
 
@@ -462,6 +462,10 @@ void CGame::_ParseSection_SCENES(string line)
 	if (id == INTRO_ID)
 	{
 		scene = new CIntro(id, path);
+	}
+	else if (id == OVERWORLD_ID)
+	{
+		scene = new COverWorld(id,path);
 	}
 	else
 	{

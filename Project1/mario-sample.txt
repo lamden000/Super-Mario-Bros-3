@@ -7,13 +7,14 @@ height	240
 [SCENES]
 0	intro.txt
 6	intro.txt
+7	overworldscene.txt
 1	world11.txt
-2	scene02.txt
 5	scene0005.txt
 # id	file 
 [TEXTURES]
 -100	textures\bbox.png
 0	textures\mario.png
+1	textures\mario_2.png
 10	textures\enemies_left.png
 11	textures\enemies_right.png
 20	textures\misc_right.png
@@ -24,3 +25,6 @@ height	240
 60	textures\world-1-1.png
 70	textures\pipe.png
 80	textures\ui.png
+90	textures\overworld_x3.png
+91	textures\overworld-1.png
+100	textures\owbackground.png

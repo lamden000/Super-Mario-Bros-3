@@ -67,6 +67,12 @@
     <Filter Include="Source Files\UI">
       <UniqueIdentifier>{0c84c7d4-e75a-47e2-a5d2-c7c37432f574}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Object\OverWorld">
+      <UniqueIdentifier>{7fe9113e-53f3-4721-a82d-41bc8fa19d58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\OverWorld">
+      <UniqueIdentifier>{0c66ccd2-9ade-4555-ba79-2337eab4212e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -203,6 +209,21 @@
     </ClCompile>
     <ClCompile Include="IntroKoopas.cpp">
       <Filter>Source Files\Object\IntroObject</Filter>
+    </ClCompile>
+    <ClCompile Include="OverWorldMario.cpp">
+      <Filter>Source Files\Object\OverWorld</Filter>
+    </ClCompile>
+    <ClCompile Include="OverWorld.cpp">
+      <Filter>Source Files\Object\OverWorld</Filter>
+    </ClCompile>
+    <ClCompile Include="OverWorldKeyEventHandler.cpp">
+      <Filter>Source Files\Object\OverWorld</Filter>
+    </ClCompile>
+    <ClCompile Include="StopPoint.cpp">
+      <Filter>Source Files\Object\OverWorld</Filter>
+    </ClCompile>
+    <ClCompile Include="OverWorldUI.cpp">
+      <Filter>Source Files\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -355,6 +376,21 @@
     </ClInclude>
     <ClInclude Include="IntroKoopas.h">
       <Filter>Header Files\Object\IntroObject</Filter>
+    </ClInclude>
+    <ClInclude Include="OverWorldMario.h">
+      <Filter>Header Files\Object\OverWorld</Filter>
+    </ClInclude>
+    <ClInclude Include="OverWorld.h">
+      <Filter>Header Files\Object\OverWorld</Filter>
+    </ClInclude>
+    <ClInclude Include="OverWorldKeyEventHandler.h">
+      <Filter>Header Files\Object\OverWorld</Filter>
+    </ClInclude>
+    <ClInclude Include="StopPoint.h">
+      <Filter>Header Files\Object\OverWorld</Filter>
+    </ClInclude>
+    <ClInclude Include="OverWorldUI.h">
+      <Filter>Header Files\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

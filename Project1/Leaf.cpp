@@ -48,4 +48,3 @@ void CLeaf::Render()
 {
 	CAnimations::GetInstance()->Get(ANIID)->Render(x, y);
 }
-

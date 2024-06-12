@@ -3,7 +3,6 @@
 #stats board
 80000	33	381	494	468	80
 ####NUMBERS######
-##number width 33, distance 30
 #0	
 90000	91	66	124	97	80
 #1
@@ -39,3 +38,5 @@
 90103	297	482	345	508	80	
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
+#black and white p
+90104	90103	200	90102	200

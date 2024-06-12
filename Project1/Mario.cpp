@@ -22,8 +22,6 @@
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (abs(vx) > abs(maxVx)) vx = maxVx;
-
 	if (holdedObject != NULL)
 		HoldObject();
 	if (isHolding)
@@ -41,6 +39,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	vy += ay * dt;
 	vx += ax * dt;
+	if (abs(vx) > abs(maxVx)) vx = maxVx;
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 
 }
@@ -124,6 +123,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithVenus(e);
 
 }
+
 #pragma region collision_with
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
@@ -258,6 +258,7 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 	if(level<MARIO_LEVEL_RACOON)
 		SetLevel(MARIO_LEVEL_RACOON);
 	e->obj->Delete();
+	new CPoint(x, y, 1000);
 }
 
 void CMario::OnCollisionWithSpawnPoint(LPCOLLISIONEVENT e)
@@ -538,6 +539,11 @@ int CMario::GetAniIdRacoon()
 	return aniId;
 }
 
+void CMario::DecreaseLevel()
+{
+	level--;
+}
+
 void CMario::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
@@ -568,6 +574,7 @@ void CMario::SetState(int state)
 {
 	// DIE is the end state, cannot be changed! 
 	if (this->state == MARIO_STATE_DIE) return;
+	CGameObject::SetState(state);
 	switch (state)
 	{
 	case MARIO_STATE_RUNNING_RIGHT:
@@ -620,7 +627,6 @@ void CMario::SetState(int state)
 			else
 			{
 				vy = -RACOON_MARIO_FLY_SPEED_Y;
-				vx = MARIO_WALKING_SPEED*nx;
 			}
 			runTime = 0;
 		}
@@ -660,8 +666,6 @@ void CMario::SetState(int state)
 		ax = 0;
 		break;
 	}
-
-	CGameObject::SetState(state);
 }
 
 void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom)

@@ -59,7 +59,6 @@ void CSampleKeyHandler::KeyState(BYTE* states)
 {
 	LPGAME game = CGame::GetInstance();
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-
 	if (mario == nullptr)
 		return;
 
@@ -83,7 +82,9 @@ void CSampleKeyHandler::KeyState(BYTE* states)
 		else
 			mario->SetState(MARIO_STATE_WALKING_LEFT);
 	}
-	else if(mario->GetState()!=MARIO_STATE_JUMP&&mario->GetFlyTime()<=0)
+	else 
+	{
 		mario->SetState(MARIO_STATE_IDLE);
+	}
 }
 

@@ -1,0 +1,19 @@
+# list of object assets to load in this scene
+[ASSETS]
+sprites\overworld.txt
+sprites\ingameui.txt
+#
+[OBJECTS]
+# type	x	y	extra_settings per object type
+# type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
+# See OBJECT_TYPE constants in AssetIDs.h
+
+# MARIO
+100	200	100
+#State board
+22	115	185
+
+#Start Point x,y, level,alow move direction(1 up, 2 right,3 down, 4 left)
+#type=101; level:0 yellow point, 100 start, 200 mushroom house, 300 castle
+101	80	80	100	1
+101	80	50	1	3

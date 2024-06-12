@@ -145,7 +145,7 @@
 #define MARIO_SMALL_BBOX_HEIGHT 12
 
 #define MARIO_ALOW_FLY_RUN_TIME 2000
-#define MARIO_MAX_FLY_TIME 3000
+#define MARIO_MAX_FLY_TIME 3500
 #define MARIO_UNTOUCHABLE_TIME 2500
 
 class CMario : public CGameObject
@@ -226,6 +226,7 @@ public:
 	DWORD GetRunTime() { return runTime; }
 	DWORD GetFlyTime() { return flyTime; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
+	void DecreaseLevel();
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };

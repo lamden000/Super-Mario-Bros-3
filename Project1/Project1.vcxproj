@@ -162,6 +162,10 @@
     <ClCompile Include="KeyEventHandlerForMario.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mario.cpp" />
+    <ClCompile Include="OverWorld.cpp" />
+    <ClCompile Include="OverWorldKeyEventHandler.cpp" />
+    <ClCompile Include="OverWorldMario.cpp" />
+    <ClCompile Include="OverWorldUI.cpp" />
     <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="PlayScene.cpp" />
@@ -172,6 +176,7 @@
     <ClCompile Include="SpawnPoint.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Sprites.cpp" />
+    <ClCompile Include="StopPoint.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Venus.cpp" />
@@ -213,6 +218,10 @@
     <ClInclude Include="MenuKeyEventHandler.h" />
     <ClInclude Include="MenuUI.h" />
     <ClInclude Include="Mushroom.h" />
+    <ClInclude Include="OverWorld.h" />
+    <ClInclude Include="OverWorldKeyEventHandler.h" />
+    <ClInclude Include="OverWorldMario.h" />
+    <ClInclude Include="OverWorldUI.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="Platform.h" />
     <ClInclude Include="PlayScene.h" />
@@ -225,6 +234,7 @@
     <ClInclude Include="SpawnPoint.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Sprites.h" />
+    <ClInclude Include="StopPoint.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Utils.h" />

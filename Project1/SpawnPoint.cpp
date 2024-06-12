@@ -225,5 +225,5 @@ void CSpawnPoint::_ParseSection_OBJECTS(string line)
 	obj->SetPosition(x, y);
 
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
-	scene->AddObject(obj, 1);
+	scene->AddObject(obj, 2);
 }

@@ -4,7 +4,7 @@
 #include "Intro.h"
 #include "MenuUI.h"
 
-#define INTRO_ID 6
+#define OVERWORLD_ID 7
 
 void CMenuKeyEventHandler::OnKeyDown(int KeyCode)
 {
@@ -19,19 +19,9 @@ void CMenuKeyEventHandler::OnKeyDown(int KeyCode)
 			ui->SetMode();
 			break;
 		case DIK_W:
-			game->InitiateSwitchScene(1);
+			game->InitiateSwitchScene(OVERWORLD_ID);
+			game->ResetGame();
 			game->SwitchScene();
 			break;
 	}
-}
-
-void CMenuKeyEventHandler::OnKeyUp(int KeyCode)
-{
-	switch (KeyCode)
-	{
-	}
-}
-
-void CMenuKeyEventHandler::KeyState(BYTE* states)
-{
 }
