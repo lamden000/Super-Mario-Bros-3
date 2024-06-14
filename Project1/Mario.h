@@ -227,6 +227,5 @@ public:
 	DWORD GetFlyTime() { return flyTime; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 	void DecreaseLevel();
-
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };

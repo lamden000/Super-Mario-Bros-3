@@ -29,7 +29,7 @@ void COverWorld::Render()
 	pD3DDevice->ClearRenderTargetView(pRenderTargetView, OVERWORLD_BACKGROUND_COLOR);
 	pD3DDevice->OMSetBlendState(g->GetAlphaBlending(), NewBlendFactor, 0xffffffff);
 	
-	CSprites::GetInstance()->Get(ID_SPRITE_OVERWORLD_BACKGROUND)->Draw(150,90,0.25,0.22);
+	CSprites::GetInstance()->Get(ID_SPRITE_OVERWORLD_BACKGROUND)->Draw(150,86,0.25,0.23);
 	for (int i = objects.size()-1; i >=0 ; i--)
 	{
 		objects[i]->Render();

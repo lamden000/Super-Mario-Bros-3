@@ -36,6 +36,7 @@ public:
 
 	LPGAMEOBJECT GetPlayer() { return player; }
 	DWORD GetTimeLimit(){ return timeLimit; }
+	virtual void SetTimeLimit(DWORD timeLimit) { this->timeLimit = timeLimit; }
 
 	void Clear();
 	void PurgeDeletedObjects();

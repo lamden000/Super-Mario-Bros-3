@@ -543,6 +543,7 @@ void CGame::SwitchScene()
 	}
 	else {
 		s->Load();
+		s->SetTimeLimit(300000);
 		this->SetKeyHandler(s->GetKeyEventHandler());
 	}
 }

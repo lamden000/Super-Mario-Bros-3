@@ -26,6 +26,7 @@ public:
 	virtual void Unload() = 0;
 	virtual void Update(DWORD dt) = 0;
 	virtual void Render() = 0;
+	virtual void SetTimeLimit(DWORD timeLimit) = 0;
 };
 typedef CScene* LPSCENE;
 

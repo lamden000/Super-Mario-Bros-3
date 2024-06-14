@@ -9,8 +9,8 @@ void COverWorldMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void COverWorldMario::Render()
 {
-	CAnimations::GetInstance()->Get(ID_ANI_OVERWORLD_MARIO)->Render(x,y,0.3,0.3);
-	RenderBoundingBox();
+	CAnimations::GetInstance()->Get(ID_ANI_OVERWORLD_MARIO)->Render(x,y,0.35,0.35);
+	//RenderBoundingBox();
 }
 
 void COverWorldMario::SetState(int state)

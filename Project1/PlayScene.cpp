@@ -361,27 +361,27 @@ void CPlayScene::Update(DWORD dt)
 {
 	vector<LPGAMEOBJECT>& coObjects = objects; 
 	if (!objects.empty()) {
-		CMario* player = (CMario*)objects.front(); 
+		CMario* player = (CMario*)objects.front();
+
 		for (size_t i = 0; i < objects.size(); i++) {
 			objects[i]->Update(dt, &coObjects);
 		}
-
-		if (player == NULL)
-			return;
 		float cx, cy;
 		player->GetPosition(cx, cy);
 		CGame* game = CGame::GetInstance();
 		cx -= game->GetBackBufferWidth() / 2;
 		int screenHeight = game->GetBackBufferHeight();
+
 		if (cy< MAIN_CAMERA_HEIGHT +screenHeight/5&&player->GetLevel()==MARIO_LEVEL_RACOON)
-		{
 			cy -= screenHeight / 4;
-		}
 		else
 			cy =MAIN_CAMERA_HEIGHT;
-		if (cx < 0) cx = 0;
+
+		if (cx < 0)
+			cx = 0;
 		game->SetCamPos(cx, cy);
-	}
+
+	}	
 	timeLimit -= dt;
 
 	PurgeDeletedObjects();

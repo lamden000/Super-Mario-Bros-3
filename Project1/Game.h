@@ -62,7 +62,6 @@ class CGame
 	int coin;
 	int point;
 	int life;
-	int time;
 
 public:
 	// Init DirectX, Sprite Handler

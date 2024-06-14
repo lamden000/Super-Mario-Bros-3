@@ -34,12 +34,14 @@ protected:
 	int type;
 	float y_start;
 	bool isGoingUp;
+	DWORD shooting_Time;
 public:
 	CVenus(float x, float y,int type) : CGameObject(x, y) {
 		this->type = type;
 		this->y_start = y;
 		this->vy = VENUS_GROW_SPEED;
 		isGoingUp = false;
+		shooting_Time = 0;
 	}
 	void Render();
 	int IsCollidable() { return 0; }

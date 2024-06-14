@@ -17,11 +17,29 @@
 #include "QuestionBlock.h"
 #include "Venus.h"
 #include "FireBall.h"
+#include "Intro.h"
 
 #include "Collision.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	// reset untouchable timer if untouchable time has passed
+	if (GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
+	{
+		untouchable_start = 0;
+		untouchable = 0;
+		if (state == MARIO_STATE_DIE)
+		{
+			CGame* game = CGame::GetInstance();
+			if (game->GetCurrentScene()->GetId() != INTRO_ID)
+			{
+				game->DecreaseLife();
+				game->InitiateSwitchScene(7);
+				game->SwitchScene();
+				return;
+			}
+		}
+	}
 	if (holdedObject != NULL)
 		HoldObject();
 	if (isHolding)
@@ -30,18 +48,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		flyTime -= dt;
 	if (x < 10)
 		x = 10;
-
-	// reset untouchable timer if untouchable time has passed
-	if (GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
-	{
-		untouchable_start = 0;
-		untouchable = 0;
-	}
 	vy += ay * dt;
 	vx += ax * dt;
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
 	CCollision::GetInstance()->Process(this, dt, coObjects);
-
 }
 
 void CMario::HoldObject()
@@ -144,16 +154,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 		{
 			if (goomba->GetState() != GOOMBA_STATE_DIE)
 			{
-				if (level > MARIO_LEVEL_SMALL)
-				{
-					level--;
-					StartUntouchable();
-				}
-				else
-				{
-					DebugOut(L">>> Mario DIE >>> \n");
-					SetState(MARIO_STATE_DIE);
-				}
+				DecreaseLevel();
 			}
 		}
 	}
@@ -163,16 +164,7 @@ void CMario::OnCollisionWithVenus(LPCOLLISIONEVENT e)
 {
 	if (untouchable == 0)
 	{
-		if (level > MARIO_LEVEL_SMALL)
-		{
-			level--;
-			StartUntouchable();
-		}
-		else
-		{
-			DebugOut(L">>> Mario DIE >>> \n");
-			SetState(MARIO_STATE_DIE);
-		}
+		DecreaseLevel();
 	}
 }
 
@@ -203,16 +195,7 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 		{
 			if (koopas->GetState() != KOOPAS_STATE_SHELL&& koopas->GetState() != KOOPAS_STATE_REVIVING)
 			{
-				if (level > MARIO_LEVEL_SMALL)
-				{
-					level--;
-					StartUntouchable();
-				}
-				else
-				{
-					DebugOut(L">>> Mario DIE >>> \n");
-					SetState(MARIO_STATE_DIE);
-				}
+				DecreaseLevel();
 			}
 			else {
 				if (!isHolding)
@@ -303,6 +286,15 @@ void CMario::OnCollisionWithQestionBlock(LPCOLLISIONEVENT e)
 	}
 }
 #pragma endregion
+
+void CMario::DecreaseLevel()
+{
+	if (level > MARIO_LEVEL_SMALL)
+		level--;
+	else 
+		SetState(MARIO_STATE_DIE);
+	StartUntouchable();
+}
 //
 // Get animation ID for small Mario
 //
@@ -538,12 +530,6 @@ int CMario::GetAniIdRacoon()
 
 	return aniId;
 }
-
-void CMario::DecreaseLevel()
-{
-	level--;
-}
-
 void CMario::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
