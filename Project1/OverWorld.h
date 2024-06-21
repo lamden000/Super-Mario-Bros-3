@@ -14,6 +14,7 @@ protected:
 public:
 	COverWorld(int id, LPCWSTR filePath);
 	void Render();
+	void RenderTree();
 	void Update(DWORD dt);
 	//void AddObject(LPGAMEOBJECT object, int id);
 };

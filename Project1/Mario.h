@@ -9,13 +9,14 @@
 
 #define MARIO_WALKING_SPEED		0.1f
 #define MARIO_RUNNING_SPEED		0.2f
+#define MARIO_ATTACK_SPEED_X	0.01f
 
 #define MARIO_ACCEL_WALK_X	0.0002f
 #define MARIO_ACCEL_RUN_X	0.0004f
 
 #define MARIO_JUMP_SPEED_Y		0.5f
 #define MARIO_JUMP_RUN_SPEED_Y	0.6f
-#define RACOON_MARIO_FLY_SPEED_Y 0.35f
+#define RACOON_MARIO_FLY_SPEED_Y 0.45f
 
 #define MARIO_GRAVITY			0.0015f
 #define RACOON_MARIO_FALLING_SPEED	0.08f
@@ -121,13 +122,12 @@
 #define ID_ANI_MARIO_JUMP_FALLING_LEFT 1050
 #define ID_ANI_MARIO_FALLING_LEFT 1051
 
+#define ID_ANI_MARIO_ATTACK_LEFT 1060
+#define ID_ANI_MARIO_ATTACK_RIGHT 1061
+
 #define ID_ANI_RACOON_MARIO_DIE 939
 
 #pragma endregion
-
-#define GROUND_Y 160.0f
-
-
 
 
 #define	MARIO_LEVEL_SMALL	1
@@ -136,6 +136,8 @@
 
 #define MARIO_BIG_BBOX_WIDTH  11
 #define MARIO_BIG_BBOX_HEIGHT 24
+#define MARIO_RACCOON_BBOX_WIDTH  18
+
 #define MARIO_BIG_SITTING_BBOX_WIDTH  14
 #define MARIO_BIG_SITTING_BBOX_HEIGHT 16
 
@@ -147,6 +149,8 @@
 #define MARIO_ALOW_FLY_RUN_TIME 2000
 #define MARIO_MAX_FLY_TIME 3500
 #define MARIO_UNTOUCHABLE_TIME 2500
+#define MARIO_TAIL_ATTACK_TIME 300
+#define MARIO_TAIL_ATTACK_COOLDOWN 450
 
 class CMario : public CGameObject
 {
@@ -161,6 +165,7 @@ protected:
 
 	DWORD runTime;
 	DWORD flyTime;
+	int attackTime;
 	LPGAMEOBJECT holdedObject;
 	ULONGLONG untouchable_start;
 	BOOLEAN isOnPlatform;
@@ -199,22 +204,26 @@ public:
 		runTime = 0;
 		holdedObject = NULL;
 		flyTime = 0;
+		attackTime = 0;
 	}
 
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
 	void SetState(int state);
 	void Hold() { isHolding = true; }
+	void Attack() {
+		if (attackTime + MARIO_TAIL_ATTACK_COOLDOWN > 0)
+			return;
+		vx += MARIO_ATTACK_SPEED_X * nx;
+		attackTime = MARIO_TAIL_ATTACK_TIME;
+	}
 	void SetHoldedObject(LPGAMEOBJECT object) { this->holdedObject = object; };
 	void HoldObject();
 
 	LPGAMEOBJECT GetHoldedObject() { return holdedObject; }
 	void ReleaseHold();
 
-	int IsCollidable()
-	{
-		return (state != MARIO_STATE_DIE);
-	}
+	int IsCollidable() { return (state != MARIO_STATE_DIE); }
 
 	int IsBlocking() { return (state != MARIO_STATE_DIE && untouchable == 0); }
 

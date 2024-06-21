@@ -6,6 +6,10 @@
 #define GOOMBA_ACEL_X 0.0001f
 #define GOOMBA_JUMP_SPEED 0.45f
 #define GOOMBA_JUMP_READY_SPEED 0.15f
+
+#define GOOMBA_ATTACKED_SPEED_X 0.05f;
+#define GOOMBA_ATTACKED_SPEED_Y 0.4f;
+
 #define GOOMBA_JUMP_COOLDOWN 1300
 #define GOOMBA_JUMP_READY_TIME 900
 
@@ -51,4 +55,5 @@ public:
 	CGoomba(float x, float y, int level = 1);
 	virtual void DecreaseLevel();
 	virtual void SetState(int state);
+	virtual void GetAttacked(int nx);
 };

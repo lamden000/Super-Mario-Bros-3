@@ -28,6 +28,13 @@ void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& botto
 	}
 }
 
+void CGoomba::GetAttacked(int nx)
+{
+	vx =nx* GOOMBA_ATTACKED_SPEED_X ;
+	vy = GOOMBA_ATTACKED_SPEED_Y;
+	SetState(GOOMBA_STATE_DIE);
+}
+
 void CGoomba::DecreaseLevel()
 {
 	level--;

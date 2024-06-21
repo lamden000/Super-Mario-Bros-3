@@ -15,26 +15,30 @@ CBrownKoopas::CBrownKoopas(float x, float y, int level) :CGameObject(x, y)
 	SetState(KOOPAS_STATE_WALKING,-1);
 	isHolded = false;
 	this->level = level;
+	isUpsideDown = false;
+	isDead=false;
 }
 
 
 void CBrownKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (isDead && (GetTickCount64() - die_start > KOOPAS_DIE_TIMEOUT))
+		Delete();
+
 	if(!Respawn())
 	{
-		if (isHolded)
-			ay = 0;
-
 		if ((state == KOOPAS_STATE_SHELL || state == KOOPAS_STATE_REVIVING) && (GetTickCount64() - die_start > BROWNKOOPAS_SHELL_TIME))
 		{
 			SetState(KOOPAS_STATE_REVIVING);
 			if ((GetTickCount64() - die_start > BROWNKOOPAS_SHELL_TIME + BROWNKOOPAS_REVIVE_TIME))
 			{
-				SetState(KOOPAS_STATE_WALKING,-1);
-				y -= (BROWNKOOPAS_BBOX_HEIGHT - BROWNKOOPAS_BBOX_HEIGHT_SHELL) / 2;
-				die_start = 0;
+					SetState(KOOPAS_STATE_WALKING, -1);
+					y -= (BROWNKOOPAS_BBOX_HEIGHT - BROWNKOOPAS_BBOX_HEIGHT_SHELL) / 2;
+					die_start = 0;
 			}
 		}
+		if (isHolded)
+			ay = 0;
 		vy += ay * dt;
 		vx += ax * dt;
 		CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -42,11 +46,20 @@ void CBrownKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 }
 
+
+void CBrownKoopas::GetAttacked(int nx) 
+{
+	vy = -KOOPAS_ATTACKED_SPEED_Y;
+	vx = nx*KOOPAS_ATTACKED_SPEED_X;
+	level = BROWNKOOPAS_LEVEL_NORMAL;
+	isUpsideDown = true;
+	SetState(KOOPAS_STATE_SHELL);
+}
+
 void CBrownKoopas::DropCollision()
 {
 	vx = -0.15;
 	vy = 0;
-	DebugOut(L">>> Mario DIE >>> \n");
 }
 
 void CBrownKoopas::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -110,6 +123,8 @@ void CBrownKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (e->ny != 0)
 	{
 		vy = 0;
+		if (state == KOOPAS_STATE_SHELL)
+			vx = 0;
 	}
 	else if (e->nx != 0)
 	{
@@ -120,6 +135,8 @@ void CBrownKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithQestionBlock(e);
 	else if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
+	else if (dynamic_cast<CBrownKoopas*>(e->obj))
+		OnCollisionWithKoopas(e);
 }
 
 void CBrownKoopas::OnCollisionWithQestionBlock(LPCOLLISIONEVENT e)
@@ -133,6 +150,14 @@ void CBrownKoopas::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	if (state != KOOPAS_STATE_SHELL_BOUNCING) return;
 	CGoomba* goomba = (CGoomba*)e->obj;
 	goomba->SetState(GOOMBA_STATE_DIE);
+}
+
+void CBrownKoopas::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
+{
+	if (e->obj->GetState() != KOOPAS_STATE_SHELL_BOUNCING) return;
+	
+	GetAttacked(e->nx);
+	isDead = true;
 }
 
 
@@ -166,11 +191,17 @@ void CBrownKoopas::Render()
 	}
 	if (state == KOOPAS_STATE_SHELL)
 	{
-		aniId = ID_ANI_BROWNKOOPAS_SHELL;
+		if(!isUpsideDown)
+			aniId = ID_ANI_BROWNKOOPAS_SHELL;
+		else
+			aniId = ID_ANI_BROWNKOOPAS_SHELL_UPSIDE_DOWN;
 	}
 	else if(state == KOOPAS_STATE_REVIVING)
 	{
-		aniId = ID_ANI_BROWNKOOPAS_REVIVING;
+		if(!isUpsideDown)
+			aniId = ID_ANI_BROWNKOOPAS_REVIVING;
+		else
+			aniId= ID_ANI_BROWNKOOPAS_REVIVING_UPSIDE_DOWN;
 	}
 	else if (state == KOOPAS_STATE_SHELL_BOUNCING)
 	{
@@ -188,11 +219,10 @@ void CBrownKoopas::SetState(int state,float nx)
 		die_start = GetTickCount64();
 		if(this->state!=KOOPAS_STATE_SHELL_BOUNCING)
 			y += (BROWNKOOPAS_BBOX_HEIGHT - BROWNKOOPAS_BBOX_HEIGHT_SHELL) / 2;
-		vx = 0;
-		vy = 0;
 		break;
 	case KOOPAS_STATE_WALKING:
 		vx = -KOOPAS_WALKING_SPEED;
+		isUpsideDown = false;
 		ay = KOOPAS_GRAVITY;
 		break;
 	case KOOPAS_STATE_SHELL_BOUNCING:

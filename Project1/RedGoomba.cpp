@@ -118,7 +118,7 @@ void CRedGoomba::Render()
 	{
 		aniId = ID_ANI_RED_GOOMBA_DIE;
 	}
-	if (level == GOOMBA_LEVEL_WINGS)
+	else if (level == GOOMBA_LEVEL_WINGS)
 	{
 		aniId = ID_ANI_RED_GOOMBA_WALKING_WITH_WINGS;
 		if (state == GOOMBA_STATE_JUMP_READY)

@@ -34,6 +34,8 @@ void CGreenKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithQestionBlock(e);
 	else if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
+	else if (dynamic_cast<CBrownKoopas*>(e->obj))
+		OnCollisionWithKoopas(e);
 }
 
 void CGreenKoopas::Hop()
@@ -48,6 +50,9 @@ void CGreenKoopas::Hop()
 
 void CGreenKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (isDead && (GetTickCount64() - die_start > KOOPAS_DIE_TIMEOUT))
+		Delete();
+
 	if (!Respawn())
 	{
 		if (level == GREENKOOPAS_LEVEL_WINGS)
@@ -60,11 +65,12 @@ void CGreenKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			SetState(GREENKOOPAS_STATE_REVIVING);
 			if ((GetTickCount64() - die_start > GREENKOOPAS_SHELL_TIME + GREENKOOPAS_REVIVE_TIME))
 			{
-				SetState(KOOPAS_STATE_WALKING,-1);
+				SetState(KOOPAS_STATE_WALKING, -1);
 				y -= (GREENKOOPAS_BBOX_HEIGHT - GREENKOOPAS_BBOX_HEIGHT_SHELL) / 2;
 				die_start = 0;
 			}
 		}
+
 		vy += ay * dt;
 		vx += ax * dt;
 		CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -90,11 +96,17 @@ void CGreenKoopas::Render()
 	}
 	if (state == KOOPAS_STATE_SHELL)
 	{
-		aniId = ID_ANI_GREENKOOPAS_SHELL;
+		if (!isUpsideDown)
+			aniId = ID_ANI_GREENKOOPAS_SHELL;
+		else
+			aniId = ID_ANI_GREENKOOPAS_SHELL_UPSIDE_DOWN;
 	}
 	else if (state == GREENKOOPAS_STATE_REVIVING)
 	{
-		aniId = ID_ANI_GREENKOOPAS_REVIVING;
+		if(!isUpsideDown)
+			aniId = ID_ANI_GREENKOOPAS_REVIVING;
+		else
+			aniId = ID_ANI_GREENKOOPAS_REVIVING_UPSIDE_DOWN;
 	}
 	else if (state == KOOPAS_STATE_SHELL_BOUNCING)
 	{
@@ -104,7 +116,8 @@ void CGreenKoopas::Render()
 	{
 		if(vx<0)
 			aniId = ID_ANI_GREENKOOPAS_JUMP_LEFT;
-		else aniId = ID_ANI_GREENKOOPAS_JUMP_RIGHT;
+		else 
+			aniId = ID_ANI_GREENKOOPAS_JUMP_RIGHT;
 	}
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y, GREENKOOPAS_SCALEX, GREENKOOPAS_SCALEY);
 	//RenderBoundingBox();
@@ -118,8 +131,6 @@ void CGreenKoopas::SetState(int state, float nx)
 		die_start = GetTickCount64();
 		if (this->state != KOOPAS_STATE_SHELL_BOUNCING)
 			y += (GREENKOOPAS_BBOX_HEIGHT - GREENKOOPAS_BBOX_HEIGHT_SHELL) / 2;		
-		vx = 0;
-		vy = 0;
 		break;
 	case KOOPAS_STATE_WALKING:
 		if (nx >= 0)
@@ -129,6 +140,7 @@ void CGreenKoopas::SetState(int state, float nx)
 		else {
 			vx = -KOOPAS_WALKING_SPEED;
 		}
+		isUpsideDown = false;
 		ay = KOOPAS_GRAVITY;
 		break;
 	case KOOPAS_STATE_SHELL_BOUNCING:

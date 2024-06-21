@@ -58,7 +58,7 @@ void CInGameUI::Render()
 	}
 
 	//Render time limit
-	xx = x + 65;
+	xx = x + 63;
 	digits = getDigits(timeLimit);
 	for (int i = digits.size() - 1; i >= 3; i--)
 	{

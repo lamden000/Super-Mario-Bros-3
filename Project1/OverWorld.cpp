@@ -9,6 +9,8 @@
 #include "OverWorldUI.h"
 #include "StopPoint.h"
 
+#define ID_ANI_OVERWORLD_TREE 90106
+
 COverWorld::COverWorld(int id, LPCWSTR filePath):CPlayScene(id, filePath)
 {
 	player = NULL;
@@ -30,10 +32,14 @@ void COverWorld::Render()
 	pD3DDevice->OMSetBlendState(g->GetAlphaBlending(), NewBlendFactor, 0xffffffff);
 	
 	CSprites::GetInstance()->Get(ID_SPRITE_OVERWORLD_BACKGROUND)->Draw(150,86,0.25,0.23);
-	for (int i = objects.size()-1; i >=0 ; i--)
+
+	RenderTree();
+
+	for (int i = objects.size() - 1; i >= 0; i--)
 	{
 		objects[i]->Render();
 	}
+
 	pSwapChain->Present(0, 0);
 }
 
@@ -100,4 +106,65 @@ void COverWorld::Update(DWORD dt)
 		game->SetCamPos(0, 0);
 	}
 	PurgeDeletedObjects();
+}
+
+void COverWorld::RenderTree() {
+	CAnimation* treeAnimation = CAnimations::GetInstance()->Get(ID_ANI_OVERWORLD_TREE);
+
+	treeAnimation->Render(42, 21, 0.35, 0.35);
+	treeAnimation->Render(58, 21, 0.35, 0.35);
+	treeAnimation->Render(74, 21, 0.35, 0.35);
+	treeAnimation->Render(42, 38, 0.35, 0.35);
+	treeAnimation->Render(58, 38, 0.35, 0.35);
+	treeAnimation->Render(74, 38, 0.35, 0.35);
+
+	treeAnimation->Render(214, 36, 0.35, 0.35);
+	treeAnimation->Render(198, 36, 0.35, 0.35);
+	treeAnimation->Render(182, 36, 0.35, 0.35);
+
+	treeAnimation->Render(42, 71, 0.35, 0.35);
+	treeAnimation->Render(58, 71, 0.35, 0.35);
+	treeAnimation->Render(74, 71, 0.35, 0.35);
+	treeAnimation->Render(42, 88, 0.35, 0.35);
+	treeAnimation->Render(58, 88, 0.35, 0.35);
+	treeAnimation->Render(74, 88, 0.35, 0.35);
+	treeAnimation->Render(42, 105, 0.35, 0.35);
+
+	treeAnimation->Render(110, 38, 0.35, 0.35);
+	treeAnimation->Render(126, 38, 0.35, 0.35);
+	treeAnimation->Render(142, 38, 0.35, 0.35);
+	treeAnimation->Render(110, 55, 0.35, 0.35);
+	treeAnimation->Render(126, 55, 0.35, 0.35);
+	treeAnimation->Render(142, 55, 0.35, 0.35);
+	treeAnimation->Render(110, 71, 0.35, 0.35);
+	treeAnimation->Render(126, 71, 0.35, 0.35);
+	treeAnimation->Render(142, 71, 0.35, 0.35);
+
+	treeAnimation->Render(126, 100, 0.35, 0.35);
+	treeAnimation->Render(142, 100, 0.35, 0.35);
+	treeAnimation->Render(158, 100, 0.35, 0.35);
+
+	treeAnimation->Render(246, 21, 0.35, 0.35);
+	treeAnimation->Render(262, 21, 0.35, 0.35);
+	treeAnimation->Render(246, 38, 0.35, 0.35);
+	treeAnimation->Render(262, 38, 0.35, 0.35);
+	treeAnimation->Render(246, 55, 0.35, 0.35);
+	treeAnimation->Render(262, 55, 0.35, 0.35);
+	treeAnimation->Render(246,71, 0.35, 0.35);
+	treeAnimation->Render(262, 71, 0.35, 0.35);
+
+	treeAnimation->Render(230, 71, 0.35, 0.35);
+	treeAnimation->Render(214, 71, 0.35, 0.35);
+	treeAnimation->Render(198, 71, 0.35, 0.35);
+	treeAnimation->Render(182, 71, 0.35, 0.35);
+
+	treeAnimation->Render(198, 87, 0.35, 0.35);
+	treeAnimation->Render(182, 87, 0.35, 0.35);
+
+	treeAnimation->Render(262, 88, 0.35, 0.35);
+	treeAnimation->Render(262, 105, 0.35, 0.35);
+	treeAnimation->Render(262, 122, 0.35, 0.35);
+	treeAnimation->Render(262, 139, 0.35, 0.35);
+	treeAnimation->Render(262,156, 0.35, 0.35);
+
 }

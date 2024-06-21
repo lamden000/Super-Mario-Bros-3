@@ -34,7 +34,7 @@ protected:
 	int type;
 	float y_start;
 	bool isGoingUp;
-	DWORD shooting_Time;
+	int shooting_Time;
 public:
 	CVenus(float x, float y,int type) : CGameObject(x, y) {
 		this->type = type;

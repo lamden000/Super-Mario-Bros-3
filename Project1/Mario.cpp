@@ -42,12 +42,19 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	if (holdedObject != NULL)
 		HoldObject();
+
 	if (isHolding)
 		runTime += dt;
+
 	if (flyTime > 0)
 		flyTime -= dt;
+
+	if (attackTime + MARIO_TAIL_ATTACK_COOLDOWN > 0)
+		attackTime -= dt;
+
 	if (x < 10)
 		x = 10;
+
 	vy += ay * dt;
 	vx += ax * dt;
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
@@ -154,7 +161,12 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 		{
 			if (goomba->GetState() != GOOMBA_STATE_DIE)
 			{
-				DecreaseLevel();
+				if(attackTime<=0)
+					DecreaseLevel();
+				else
+				{
+					goomba->GetAttacked(nx);
+				}
 			}
 		}
 	}
@@ -193,29 +205,31 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 	{
 		if (untouchable == 0)
 		{
-			if (koopas->GetState() != KOOPAS_STATE_SHELL&& koopas->GetState() != KOOPAS_STATE_REVIVING)
-			{
-				DecreaseLevel();
-			}
+			if (attackTime > 0)
+				koopas->GetAttacked(nx);
 			else {
-				if (!isHolding)
+				if (koopas->GetState() != KOOPAS_STATE_SHELL && koopas->GetState() != KOOPAS_STATE_REVIVING)
 				{
-					if (e->ny > 0)
-					{
-						koopas->DropCollision();
-					}
-					else {
-						koopas->SetState(KOOPAS_STATE_SHELL_BOUNCING, nx);
-						new CPoint(x, y, 200);
-					}
-
-				}			
-				else
-				{
-					SetHoldedObject(koopas);
-					koopas->SetIsHolded(true);
+					DecreaseLevel();
 				}
-			}
+				else {
+					if (!isHolding)
+					{
+						if (e->ny > 0)
+							koopas->DropCollision();
+						else {
+							koopas->SetState(KOOPAS_STATE_SHELL_BOUNCING, nx);
+							new CPoint(x, y, 200);
+						}
+
+					}
+					else
+					{
+						SetHoldedObject(koopas);
+						koopas->SetIsHolded(true);
+					}
+				}
+			}		
 		}
 	}
 	float x, y;
@@ -279,11 +293,12 @@ void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithQestionBlock(LPCOLLISIONEVENT e)
 {
-	if (e->ny > 0)
+	if (e->ny > 0||(e->ny>=0&&attackTime>0))
 	{
 		CQuestionBlock* block = (CQuestionBlock*)e->obj;
 		block->Reward();	
 	}
+
 }
 #pragma endregion
 
@@ -525,6 +540,13 @@ int CMario::GetAniIdRacoon()
 					aniId = ID_ANI_MARIO_RACOON_WALKING_LEFT;
 				}
 			}
+	if (attackTime > 0)
+	{
+		if (nx > 0)
+			aniId = ID_ANI_MARIO_ATTACK_RIGHT;
+		else
+			aniId = ID_ANI_MARIO_ATTACK_LEFT;
+	}
 
 	if (aniId == -1) aniId =ID_ANI_MARIO_RACOON_IDLE_RIGHT;
 
@@ -552,8 +574,6 @@ void CMario::Render()
 	animations->Get(aniId)->Render(x, y);
 
 	//RenderBoundingBox();
-
-	//DebugOutTitle(L"Coins: %f", y);
 }
 
 void CMario::SetState(int state)
@@ -656,7 +676,7 @@ void CMario::SetState(int state)
 
 void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (level == MARIO_LEVEL_BIG||level==MARIO_LEVEL_RACOON)
+	if (level>MARIO_LEVEL_SMALL)
 	{
 		if (isSitting)
 		{
@@ -667,9 +687,17 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 		}
 		else
 		{
-			left = x - MARIO_BIG_BBOX_WIDTH / 2;
+			if (level == MARIO_LEVEL_RACOON)
+			{
+				left = x - MARIO_RACCOON_BBOX_WIDTH / 2;
+				right = left + MARIO_RACCOON_BBOX_WIDTH;
+			}
+			else
+			{
+				left = x - MARIO_BIG_BBOX_WIDTH / 2;
+				right = left + MARIO_BIG_BBOX_WIDTH;
+			}
 			top = y - MARIO_BIG_BBOX_HEIGHT / 2;
-			right = left + MARIO_BIG_BBOX_WIDTH;
 			bottom = top + MARIO_BIG_BBOX_HEIGHT;
 		}
 	}

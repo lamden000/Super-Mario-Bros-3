@@ -56,7 +56,7 @@ void CSpawnPoint::RenderBoundingBox()
 
 void CSpawnPoint::Render()
 {
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 

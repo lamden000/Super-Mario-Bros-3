@@ -371,12 +371,20 @@ void CPlayScene::Update(DWORD dt)
 		CGame* game = CGame::GetInstance();
 		cx -= game->GetBackBufferWidth() / 2;
 		int screenHeight = game->GetBackBufferHeight();
+		
+		if (player->GetState() == MARIO_STATE_DIE)
+			return;
+
+		if (cy > MAIN_CAMERA_HEIGHT + screenHeight)
+		{
+			player->SetState(MARIO_STATE_DIE);
+			player->StartUntouchable();
+		}
 
 		if (cy< MAIN_CAMERA_HEIGHT +screenHeight/5&&player->GetLevel()==MARIO_LEVEL_RACOON)
 			cy -= screenHeight / 4;
 		else
 			cy =MAIN_CAMERA_HEIGHT;
-
 		if (cx < 0)
 			cx = 0;
 		game->SetCamPos(cx, cy);
