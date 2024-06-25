@@ -35,6 +35,7 @@ void CCoin::OnNoCollision(DWORD dt)
 }
 
 void CCoin::EscapeBlock() {
+	CGame::GetInstance()->AddCoin();
 	vy = -COIN_ESCAPE_BLOCK_SPEED_Y;
 	isFromBlock = true;
 }

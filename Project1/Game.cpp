@@ -8,6 +8,7 @@
 #include "Animations.h"
 #include "Intro.h"
 #include "OverWorld.h"
+#include "Point.h"
 
 CGame* CGame::__instance = NULL;
 
@@ -582,3 +583,8 @@ CGame* CGame::GetInstance()
 	return __instance;
 }
 
+void CGame::AddPoint(int point)
+{
+	if (point != POINT_LEVEL_UP_VALUE)
+		this->point += point;
+}

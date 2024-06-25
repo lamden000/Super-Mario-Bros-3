@@ -117,8 +117,8 @@ public:
 
 	void _ParseSection_TEXTURES(string line);
 	void AddCoin() { coin++; }
-	void AddPoint(int point){this->point+=point;}
-	void AddLife(int life) { this->life += life; }
+	void AddPoint(int point);
+	void AddLife(int amount) { life += amount; }
 	void DecreaseLife() { life--; }
 	int GetCoin() { return coin; }
 	int GetPoint() { return point; }

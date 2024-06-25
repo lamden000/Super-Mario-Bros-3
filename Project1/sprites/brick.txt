@@ -1,7 +1,20 @@
 # id	left	top	right	bottom	texture_id
 [SPRITES]
+#brick
 20001	372	153	387	168	21
-
+#wood block
+20002	407	224	424	240	21
+#gold brick
+21000	299	134	316	151	21
+21001	317	134	333	151	21
+21002	336	134	352	151	21
+21003	371	134	388	151	21
+#debris
+22000	0	0	33	37	110
+22001	34	2	73	36	110
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
+#brick
 10000	20001	1000
+#gold brick
+10001	21000	100	21001	100	21002	100	21003	100

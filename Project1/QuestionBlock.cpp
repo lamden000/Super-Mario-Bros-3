@@ -55,7 +55,6 @@ void CQuestionBlock::Reward()
         CCoin* coin = new CCoin(x, y);
         currentScene->AddObject(coin,1);
         coin->EscapeBlock();
-        game->AddCoin();
     }
     else if (this->type == QUESTIONBLOCK_TYPE_GREEN_MUSHROOM)
     {

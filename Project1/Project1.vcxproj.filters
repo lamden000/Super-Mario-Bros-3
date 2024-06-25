@@ -225,6 +225,12 @@
     <ClCompile Include="OverWorldUI.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
+    <ClCompile Include="GoldBlock.cpp">
+      <Filter>Source Files\Object\WorldBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="Debris.cpp">
+      <Filter>Source Files\Object\BackgroundObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -391,6 +397,12 @@
     </ClInclude>
     <ClInclude Include="OverWorldUI.h">
       <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="GoldBlock.h">
+      <Filter>Header Files\Object\WorldBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="Debris.h">
+      <Filter>Header Files\Object\BackgroundObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

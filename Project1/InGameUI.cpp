@@ -42,7 +42,7 @@ void CInGameUI::Render()
 	//Render coin
 	xx = x + 73;
 	digits = getDigits(coin);
-	for (int i = 0; i < digits.size(); i++)
+	for (int i = digits.size() - 1; i >=0; i--)
 	{
 		sprites->Get(ID_SPRITE_NUMBER_BASE + digits[i])->Draw(xx, y - 5, 0.4, 0.4);
 		xx += numberWidth;

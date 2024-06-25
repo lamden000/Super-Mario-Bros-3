@@ -54,6 +54,7 @@ void CBrownKoopas::GetAttacked(int nx)
 	level = BROWNKOOPAS_LEVEL_NORMAL;
 	isUpsideDown = true;
 	SetState(KOOPAS_STATE_SHELL);
+	new CPoint(x, y, 200);
 }
 
 void CBrownKoopas::DropCollision()

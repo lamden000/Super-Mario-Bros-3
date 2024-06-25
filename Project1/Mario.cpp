@@ -287,6 +287,7 @@ void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 	}
 	else if(mushroom->GetType() == MUSHROOM_TYPE_GREEN){
 		new CPoint(x, y, POINT_LEVEL_UP_VALUE);
+		CGame::GetInstance()->AddLife(1);
 	}
 	e->obj->Delete();
 }

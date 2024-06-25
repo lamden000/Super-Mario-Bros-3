@@ -230,12 +230,15 @@ void CIntro::AutoRun(int action)
 		objects.push_back(bush5);
 		CIntroGoomba* goomba = new CIntroGoomba(100, -150, 1);
 		CGreenKoopas* koopas1 = new CGreenKoopas(150, 0, 1);
+		CGreenKoopas* koopas2 = new CGreenKoopas(230, 0, 1);
 		CMushroom* greenMushroom = new CMushroom(250, -50, 2);
 		CMushroom* redMushroom = new CMushroom(50, -50, 1);
 		koopas1->SetState(KOOPAS_STATE_SHELL);
+		koopas2->SetState(KOOPAS_STATE_SHELL);
 		objects.push_back(goomba);
 		objects.push_back(redMushroom);
 		objects.push_back(greenMushroom);
+		objects.push_back(koopas2);
 		objects.push_back(koopas1);
 	}
 	else if (action == 5)

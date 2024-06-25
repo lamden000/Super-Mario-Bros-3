@@ -24,9 +24,9 @@
 #include "Point.h"
 #include "InGameUI.h"
 #include "Box.h"
+#include "GoldBlock.h"
 
 #include "KeyEventHandlerForMario.h"
-#include "KeyHandlerForLuigi.h"
 
 using namespace std;
 
@@ -136,14 +136,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			player = (CMario*)obj;
 		}
 		break;
-	case OBJECT_TYPE_LUIGI:
-		obj = new CLuigi(x, y);
-		if (player == NULL)
-		{
-			key_handler = new CKeyHandlerForLuigi(this);
-			player = (CLuigi*)obj;
-		}
-		break;
 	case OBJECT_TYPE_REDGOOMBA:
 	{
 		int level = 1;
@@ -158,6 +150,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		if (tokens.size() > 3)
 			type = (int)atof(tokens[3].c_str());
 		obj = new CVenus(x, y, type);
+		break;
+	}
+	case OBJECT_TYPE_GOLD_BLOCK:
+	{
+		int type = (int)atof(tokens[3].c_str());
+		obj = new CGoldBlock(x, y, type);
 		break;
 	}
 	case OBJECT_TYPE_GOOMBA:obj = new CGoomba(x, y); break;
