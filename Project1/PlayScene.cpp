@@ -16,15 +16,14 @@
 #include "Koopas.h"
 #include "GreenKoopas.h"
 #include "SpawnPoint.h"
-#include "QuestionBlock.h"
 #include "Cloud.h"
 #include "RedGoomba.h"
 #include "Pipe.h"
-#include "Venus.h"
+#include "Piranha.h"
 #include "Point.h"
 #include "InGameUI.h"
 #include "Box.h"
-#include "GoldBlock.h"
+#include "P_Switch.h"
 
 #include "KeyEventHandlerForMario.h"
 
@@ -104,7 +103,7 @@ void CPlayScene::_ParseSection_ANIMATIONS(string line)
 	CAnimations::GetInstance()->Add(ani_id, ani);
 }
 
-void CPlayScene::AddObject(LPGAMEOBJECT object,int id)
+void CPlayScene::AddObject(LPGAMEOBJECT object, int id)
 {
 
 	if (id == -1)
@@ -112,7 +111,6 @@ void CPlayScene::AddObject(LPGAMEOBJECT object,int id)
 	else
 		objects.insert(objects.begin() + id, object);
 }
-
 /*
 	Parse a line in section [OBJECTS]
 */
@@ -152,10 +150,30 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CVenus(x, y, type);
 		break;
 	}
+	case OBJECT_TYPE_PIRANHA:
+	{
+		int type = 1;
+		if (tokens.size() > 3)
+			type = (int)atof(tokens[3].c_str());
+		obj = new CPiranha(x, y, type);
+		break;
+	}
+	case OBJECT_TYPE_P_SWITCH:
+	{
+		obj = new CPSwitch(x, y);
+		break;
+	}
 	case OBJECT_TYPE_GOLD_BLOCK:
 	{
 		int type = (int)atof(tokens[3].c_str());
-		obj = new CGoldBlock(x, y, type);
+		CGoldBlock* block = new CGoldBlock(x, y, type);
+		obj = block;
+		if (tokens.size()>4)
+		{
+			int PWitch_Id = (int)atof(tokens[4].c_str());
+			CPSwitch* _switch =(CPSwitch*) objects[PWitch_Id];
+			_switch->GetBrick(block);
+		}
 		break;
 	}
 	case OBJECT_TYPE_GOOMBA:obj = new CGoomba(x, y); break;
@@ -396,7 +414,7 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
-	for (int i = objects.size()-1; i >=0 ; i--)
+	for (int i = objects.size()-1; i >=0; i--)
 	{
 		objects[i]->Render();
 	}
@@ -433,6 +451,11 @@ void CPlayScene::Unload()
 }
 
 bool CPlayScene::IsGameObjectDeleted(const LPGAMEOBJECT& o) { return o == NULL; }
+
+bool CPlayScene::IsObjectStillThere(const LPGAMEOBJECT& o)
+{
+	return std::find(objects.begin(), objects.end(), o) != objects.end();
+}
 
 void CPlayScene::PurgeDeletedObjects()
 {

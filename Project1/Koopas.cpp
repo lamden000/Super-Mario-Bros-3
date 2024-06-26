@@ -124,6 +124,7 @@ void CBrownKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (e->ny != 0)
 	{
 		vy = 0;
+		//didStepBack = false;
 		if (state == KOOPAS_STATE_SHELL)
 			vx = 0;
 	}
@@ -181,14 +182,14 @@ void CBrownKoopas::Render()
 	{
 		if (level == BROWNKOOPAS_LEVEL_NORMAL)
 			aniId = ID_ANI_BROWNKOOPAS_WALKING_RIGHT;
-		else
-			aniId = ID_ANI_BROWNKOOPAS_WALKING_RIGHT_WITH_WINGS;
+		//else
+		//	aniId = ID_ANI_BROWNKOOPAS_WALKING_RIGHT_WITH_WINGS;
 	}
 	else if (vx <0) {
 		if (level == BROWNKOOPAS_LEVEL_NORMAL)
 			aniId = ID_ANI_BROWNKOOPAS_WALKING_LEFT;
-		else
-			aniId = ID_ANI_BROWNKOOPAS_WALKING_LEFT_WITH_WINGS;
+		//else
+		//	aniId = ID_ANI_BROWNKOOPAS_WALKING_LEFT_WITH_WINGS;
 	}
 	if (state == KOOPAS_STATE_SHELL)
 	{

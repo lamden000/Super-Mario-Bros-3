@@ -37,7 +37,7 @@ void CQuestionBlock::Reward()
         {
             CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
             CMushroom* mushroom = new CMushroom(x, y);
-            currentScene->AddObject(mushroom,1);
+            currentScene->AddObject(mushroom,2);
             mushroom->EscapeBlock();
         }
         else

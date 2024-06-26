@@ -28,7 +28,7 @@ protected:
 
 public:
 	CPlayScene(int id, LPCWSTR filePath, DWORD timeLimit = 300000);
-	virtual void AddObject(LPGAMEOBJECT object, int id = -1);
+	virtual void AddObject(LPGAMEOBJECT object, int id=-1);
 	virtual void Load();
 	virtual void Update(DWORD dt);
 	virtual void Render();
@@ -42,6 +42,7 @@ public:
 	void PurgeDeletedObjects();
 
 	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);
+	bool IsObjectStillThere(const LPGAMEOBJECT& o);
 };
 
 typedef CPlayScene* LPPLAYSCENE;

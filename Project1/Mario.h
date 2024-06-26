@@ -9,7 +9,7 @@
 
 #define MARIO_WALKING_SPEED		0.1f
 #define MARIO_RUNNING_SPEED		0.2f
-#define MARIO_ATTACK_SPEED_X	0.01f
+#define MARIO_ATTACK_SPEED_X	0.02f
 
 #define MARIO_ACCEL_WALK_X	0.0002f
 #define MARIO_ACCEL_RUN_X	0.0004f
@@ -181,8 +181,9 @@ protected:
 	void OnCollisionWithLeaf(LPCOLLISIONEVENT e);
 	void OnCollisionWithMushroom(LPCOLLISIONEVENT e);
 	void OnCollisionWithSpawnPoint(LPCOLLISIONEVENT e);
-	void OnCollisionWithQestionBlock(LPCOLLISIONEVENT e);
+	void OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e);
 	void OnCollisionWithVenus(LPCOLLISIONEVENT e);
+	void OnCollisionWithPSwitch(LPCOLLISIONEVENT e);
 
 	int GetAniIdBig();
 	int GetAniIdSmall();

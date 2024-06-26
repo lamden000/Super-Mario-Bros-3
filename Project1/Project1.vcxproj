@@ -169,10 +169,12 @@
     <ClCompile Include="OverWorldMario.cpp" />
     <ClCompile Include="OverWorldUI.cpp" />
     <ClCompile Include="Pipe.cpp" />
+    <ClCompile Include="Piranha.cpp" />
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="Portal.cpp" />
+    <ClCompile Include="P_Switch.cpp" />
     <ClCompile Include="QuestionBlock.cpp" />
     <ClCompile Include="RedGoomba.cpp" />
     <ClCompile Include="SpawnPoint.cpp" />
@@ -227,11 +229,13 @@
     <ClInclude Include="OverWorldMario.h" />
     <ClInclude Include="OverWorldUI.h" />
     <ClInclude Include="Pipe.h" />
+    <ClInclude Include="Piranha.h" />
     <ClInclude Include="Platform.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="KeyEventHandlerForMario.h" />
+    <ClInclude Include="P_Switch.h" />
     <ClInclude Include="QuestionBlock.h" />
     <ClInclude Include="RedGoomba.h" />
     <ClInclude Include="Scene.h" />

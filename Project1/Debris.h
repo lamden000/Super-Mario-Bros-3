@@ -2,13 +2,13 @@
 #include "GameObject.h"
 
 #define DEBRIS_GRAVITY 0.0005f
-#define	DEBRIS_VX	0.08f
-#define DEBRIS_VY	0.05f;
+#define	DEBRIS_VX	0.1f
+#define DEBRIS_VY	0.1f;
 
 #define SPRITE_ID_DEBRIS_1	22000
 #define SPRITE_ID_DEBRIS_2	22001
 
-#define DEBRIS_TIME_OUT 500
+#define DEBRIS_TIME_OUT 1000
 
 class CDebris : public CGameObject {
 protected:

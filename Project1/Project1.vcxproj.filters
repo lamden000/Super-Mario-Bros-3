@@ -231,6 +231,12 @@
     <ClCompile Include="Debris.cpp">
       <Filter>Source Files\Object\BackgroundObject</Filter>
     </ClCompile>
+    <ClCompile Include="P_Switch.cpp">
+      <Filter>Source Files\Object\WorldBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="Piranha.cpp">
+      <Filter>Source Files\Object\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -403,6 +409,12 @@
     </ClInclude>
     <ClInclude Include="Debris.h">
       <Filter>Header Files\Object\BackgroundObject</Filter>
+    </ClInclude>
+    <ClInclude Include="P_Switch.h">
+      <Filter>Header Files\Object\WorldBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="Piranha.h">
+      <Filter>Header Files\Object\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

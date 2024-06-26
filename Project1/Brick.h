@@ -4,7 +4,8 @@
 #include "Animation.h"
 #include "Animations.h"
 
-#define ID_ANI_BRICK 10000
+#define ID_ANI_BRICK_ORDINARY 10000
+#define ID_ANI_BRICK_WOOD 10003
 #define BRICK_WIDTH 16
 #define BRICK_BBOX_WIDTH 16
 #define BRICK_BBOX_HEIGHT 16

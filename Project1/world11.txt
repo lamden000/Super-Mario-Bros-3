@@ -18,6 +18,8 @@ sprites\point.txt
 sprites\platform.txt
 sprites\box.txt
 sprites\ingameui.txt
+sprites\pswitch.txt
+sprites\piranha.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -25,7 +27,7 @@ sprites\ingameui.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO
-0	10	100
+0	1900	100
 
 #State board
 22	2	3
@@ -42,8 +44,27 @@ sprites\ingameui.txt
 
 14	1610	95	2
 
-#Gold brick		type: 0: empty and breakable, 1: coin, 2: green mushroom
+#####Gold brick	
+#type: 0: empty and breakable, 1: coin, 2: green mushroom	#ID of P Switch that turn the brick to gold(optional)
 24	1550	-135	2
+
+#wood brick
+1	1655	65
+1	1671	65
+
+1	1765	128
+1	1749	128
+1	1733	128
+1	1765	112
+1	1749	112
+1	1765	96
+
+1	1829	128
+1	1845	128
+1	1861	128
+1	1829	112
+1	1845	112
+1	1829	96
 
 #Platform
 #type	x	y	width	height	number	sprite	sprite	sprite	scale	scale
@@ -51,6 +72,8 @@ sprites\ingameui.txt
 5	0	150	29	28	22	200	200	200	0.3	0.3	
 5	638	135	29	28	18	200	200	200	0.3	0.3
 5	1250	150	29	28	14	200	200	200	0.3	0.3
+5	1700	150	29	28	3	200	200	200	0.3	0.3
+5	1835	150	29	28	20	200	200	200	0.3	0.3
 
 5	1600	-90	15	15	13	54000	54000	54000	1	1
 5	1520	-70	15	15	4	54000	54000	54000	1	1
@@ -107,8 +130,16 @@ sprites\ingameui.txt
 #pipe
 18 	370	106	30	14	2	20003	20002	20002	3
 
+18 	2000	115	30	14	2	20003	20002	20002	2
+18 	2060	107	30	14	2	20003	20002	20002	3
+
 #venus
 19	370	106	2
+
+19	2060	107	1
+#piranha
+26	2000	115	1
+
 ####enemies with spawnpoint
 #koopas					#object detail
 13	390	0	400	500	3	560	90	1
@@ -145,6 +176,10 @@ sprites\ingameui.txt
 12 	1016	111	2	2026	2026	2027
 12 	993	111	3	2026	2026	2027
 
+12 	2095	128	1	2027	2026	2026
+12 	2133	128	2	2026	2026	2027
+12 	2112	128	3	2026	2026	2027
+
 #small bush
 12 	195	125	1	2028	2026	2026
 12 	215	125	1	2028	2026	2026
@@ -164,6 +199,10 @@ sprites\ingameui.txt
 12 	1304	125	1	2028	2026	2026
 12 	1323	125	1	2028	2026	2026
 
+12 	1906	125	1	2028	2026	2026	
+12 	1924	125	1	2028	2026	2026
+12 	1942	125	1	2028	2026	2026
+
 # cloud
 15	185	40
 15	170	40
@@ -176,5 +215,6 @@ sprites\ingameui.txt
 
 15	1250	0
 
-
-
+15	1891	0
+15	1876	0
+15	1861	0

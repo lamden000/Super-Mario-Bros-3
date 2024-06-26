@@ -9,7 +9,7 @@ CPoint::CPoint(float x, float y, int value) :CGameObject(x, y)
 	CGame* game = CGame::GetInstance();
 	game->AddPoint(value);
 	CPlayScene* scene = (CPlayScene*)game->GetCurrentScene();
-	scene->AddObject(this,5);
+	scene->AddObject(this,3);
 };
 
 void CPoint::Render()

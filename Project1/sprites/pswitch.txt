@@ -1,0 +1,6 @@
+# id	left	top	right	bottom	texture_id
+[SPRITES]
+#Enable
+99999	1264	795	1321	847	60
+#Unable
+99998	1348	834	1401	864	60

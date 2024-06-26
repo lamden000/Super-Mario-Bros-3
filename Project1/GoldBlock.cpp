@@ -1,8 +1,17 @@
 #include"GoldBlock.h"
+
 #include"Mushroom.h"
 #include "PlayScene.h"
 #include "Coin.h"
 #include "Debris.h"
+
+CGoldBlock::CGoldBlock(float x, float y, int type) : CQuestionBlock(x, y, type) {
+	isEmpty = false;
+	ay = GOLD_BLOCK_GRAVITY;
+	start_y = y;
+	p_switch_time = 0;
+	generated_coin = false;
+}
 
 void CGoldBlock::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -46,7 +55,7 @@ void CGoldBlock::Reward()
 		{
 			CMushroom* mushroom = new CMushroom(x, y, 2);
 			mushroom->EscapeBlock();
-			scene->AddObject(mushroom, 1);
+			scene->AddObject(mushroom,1);
 			isEmpty = true;
 		}
 		else if (type == GOLD_BLOCK_TYPE_COIN)
@@ -60,7 +69,7 @@ void CGoldBlock::Reward()
 			{
 				CCoin* coin = new CCoin(x, y);
 				coin->EscapeBlock();
-				scene->AddObject(coin, 1);
+				scene->AddObject(coin,3);
 				vy = -0.1;
 			}
 		}
@@ -69,12 +78,18 @@ void CGoldBlock::Reward()
 			new CBrickDebris(x, y);
 			Delete();
 		}
+		else if (type == GOLD_BLOCK_TYPE_P_SWITCH)
+		{
+			isEmpty = true;
+		}
 	}
 }
 
 void CGoldBlock::TurnIntoCoin() {
-	CCoin* coin = new CCoin(x,y);
+	if (type == GOLD_BLOCK_TYPE_P_SWITCH)
+		return;
+	CCoin* coin = new CCoin(x, y);
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
-	scene->AddObject(coin);
+	scene->AddObject(coin,1);
 	Delete();
 }

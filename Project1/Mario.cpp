@@ -14,7 +14,7 @@
 #include "Mushroom.h"
 #include "SpawnPoint.h"
 #include "PlayScene.h"
-#include "QuestionBlock.h"
+#include "P_Switch.h"
 #include "Venus.h"
 #include "FireBall.h"
 #include "Intro.h"
@@ -134,10 +134,14 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithMushroom(e);
 	else if (dynamic_cast<CSpawnPoint*>(e->obj))
 		OnCollisionWithSpawnPoint(e);
-	else if (dynamic_cast<CQuestionBlock*>(e->obj))
-		OnCollisionWithQestionBlock(e);
+	else if (dynamic_cast<CVenus*>(e->obj) || dynamic_cast<CFireBall*>(e->obj))
+		OnCollisionWithVenus(e);
 	else if (dynamic_cast<CVenus*>(e->obj)|| dynamic_cast<CFireBall*>(e->obj))
 		OnCollisionWithVenus(e);
+	else if (dynamic_cast<CPSwitch*>(e->obj))
+		OnCollisionWithPSwitch(e);
+	else if (dynamic_cast<CQuestionBlock*>(e->obj))
+		OnCollisionWithQuestionBlock(e);
 
 }
 
@@ -292,7 +296,7 @@ void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 	e->obj->Delete();
 }
 
-void CMario::OnCollisionWithQestionBlock(LPCOLLISIONEVENT e)
+void CMario::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e)
 {
 	if (e->ny > 0||(e->ny>=0&&attackTime>0))
 	{
@@ -301,6 +305,19 @@ void CMario::OnCollisionWithQestionBlock(LPCOLLISIONEVENT e)
 	}
 
 }
+
+void CMario::OnCollisionWithPSwitch(LPCOLLISIONEVENT e)
+{
+	CPSwitch* pSwitch = (CPSwitch*)e->obj;
+	if (e->ny > 0 || (e->ny >= 0 && attackTime > 0))
+	{
+		pSwitch->Reveal();
+	}
+	else if(e->nx==0) {
+		pSwitch->BreakBrick();
+	}
+}
+
 #pragma endregion
 
 void CMario::DecreaseLevel()

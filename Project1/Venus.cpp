@@ -77,7 +77,7 @@ void CVenus::Shoot(DWORD dt)
         CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
         float fireBall_y = y - 5;
         CFireBall* fireBall = new CFireBall(x, fireBall_y);
-        scene->AddObject(fireBall, 2);
+        scene->AddObject(fireBall,2);
         shot = true;
     }
 
