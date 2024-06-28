@@ -172,6 +172,7 @@
     <ClCompile Include="Piranha.cpp" />
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="PlayScene.cpp" />
+    <ClCompile Include="PlaySceneBackground.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="P_Switch.cpp" />
@@ -232,6 +233,7 @@
     <ClInclude Include="Piranha.h" />
     <ClInclude Include="Platform.h" />
     <ClInclude Include="PlayScene.h" />
+    <ClInclude Include="PlaySceneBackground.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="KeyEventHandlerForMario.h" />

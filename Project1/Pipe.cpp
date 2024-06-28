@@ -42,7 +42,12 @@ void CPipe::Render()
 		yy += this->cellHeight;
 	}
 	if (height > 1)
-		s->Get(this->spriteIdEnd)->Draw(x, yy, PIPE_SCALEX, PIPE_SCALEY);
+	{
+		if(orientation == PIPE_ORIENTATION_UP)
+			s->Get(this->spriteIdEnd)->Draw(x, yy, PIPE_SCALEX, PIPE_SCALEY);
+		else if (orientation == PIPE_ORIENTATION_DOWN)
+			s->Get(this->spriteIdEnd)->Draw(x, yy, -PIPE_SCALEX, -PIPE_SCALEY);
+	}
 //	RenderBoundingBox();
 }
 

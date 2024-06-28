@@ -237,6 +237,9 @@
     <ClCompile Include="Piranha.cpp">
       <Filter>Source Files\Object\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="PlaySceneBackground.cpp">
+      <Filter>Source Files\Object\BackgroundObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -415,6 +418,9 @@
     </ClInclude>
     <ClInclude Include="Piranha.h">
       <Filter>Header Files\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="PlaySceneBackground.h">
+      <Filter>Header Files\Object\BackgroundObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

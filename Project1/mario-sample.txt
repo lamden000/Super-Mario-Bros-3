@@ -29,3 +29,4 @@ height	240
 91	textures\overworld-1.png
 100	textures\owbackground.png
 110	textures\brick-debris.png
+120	textures\levelend.png

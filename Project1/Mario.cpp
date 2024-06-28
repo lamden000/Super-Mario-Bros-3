@@ -40,8 +40,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 		}
 	}
-	if (holdedObject != NULL)
-		HoldObject();
 
 	if (isHolding)
 		runTime += dt;
@@ -57,8 +55,14 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	vy += ay * dt;
 	vx += ax * dt;
+
+	if (holdedObject != NULL)
+		HoldObject();
+
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
 	CCollision::GetInstance()->Process(this, dt, coObjects);
+
+//	DebugOut(L"%f\n", y);
 }
 
 void CMario::HoldObject()
@@ -135,8 +139,6 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (dynamic_cast<CSpawnPoint*>(e->obj))
 		OnCollisionWithSpawnPoint(e);
 	else if (dynamic_cast<CVenus*>(e->obj) || dynamic_cast<CFireBall*>(e->obj))
-		OnCollisionWithVenus(e);
-	else if (dynamic_cast<CVenus*>(e->obj)|| dynamic_cast<CFireBall*>(e->obj))
 		OnCollisionWithVenus(e);
 	else if (dynamic_cast<CPSwitch*>(e->obj))
 		OnCollisionWithPSwitch(e);
@@ -278,7 +280,8 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 {
 	CPortal* p = (CPortal*)e->obj;
-	CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
+	p->SetAtive(true);
+	portal = p;
 }
 
 void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
@@ -591,7 +594,7 @@ void CMario::Render()
 
 	animations->Get(aniId)->Render(x, y);
 
-	//RenderBoundingBox();
+//	RenderBoundingBox();
 }
 
 void CMario::SetState(int state)
@@ -606,16 +609,12 @@ void CMario::SetState(int state)
 		maxVx = MARIO_RUNNING_SPEED;
 		ax = MARIO_ACCEL_RUN_X;
 		nx = 1;
-		if (vx < 0)
-			runTime = 0;
 		break;
 	case MARIO_STATE_RUNNING_LEFT:
 		if (isSitting) break;
 		maxVx = -MARIO_RUNNING_SPEED;
 		ax = -MARIO_ACCEL_RUN_X;
 		nx = -1;
-		if (vx > 0)
-			runTime = 0;
 		break;
 	case MARIO_STATE_WALKING_RIGHT:
 		if (isSitting) break;
@@ -658,6 +657,7 @@ void CMario::SetState(int state)
 
 	case MARIO_STATE_RELEASE_JUMP:
 		if (vy < 0) vy = 0;
+		ay = MARIO_GRAVITY;
 		break;
 
 	case MARIO_STATE_SIT:
@@ -688,6 +688,20 @@ void CMario::SetState(int state)
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 		vx = 0;
 		ax = 0;
+		break;
+	case MARIO_STATE_TRAVELLING_DOWN:
+		ay = 0;
+		vx = 0;
+		ax = 0;
+		vy = MARIO_TRAVEL_GRAVITY;
+		y += 3;
+		break;
+	case MARIO_STATE_TRAVELLING_UP:
+		ay = 0;
+		vx = 0;
+		ax = 0;
+		vy = -MARIO_TRAVEL_GRAVITY;
+		y -= 3;
 		break;
 	}
 }

@@ -17,6 +17,7 @@ CBrownKoopas::CBrownKoopas(float x, float y, int level) :CGameObject(x, y)
 	this->level = level;
 	isUpsideDown = false;
 	isDead=false;
+	didStepBack = false;
 }
 
 
@@ -83,13 +84,15 @@ void CBrownKoopas::GetBoundingBox(float& left, float& top, float& right, float& 
 
 void CBrownKoopas::OnNoCollision(DWORD dt)
 {
-	if (state == KOOPAS_STATE_WALKING)
+	if (state == KOOPAS_STATE_WALKING&&!didStepBack)
 	{
 		if (vx > 0)
 			x -= 5;
 		else
 			x += 5;
 		vx = -vx;
+		didStepBack =true;
+		ay = KOOPAS_GRAVITY;
 	}
 	else {
 		x += vx * dt;
@@ -121,10 +124,10 @@ void CBrownKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (!e->obj->IsBlocking()) return;
 
-	if (e->ny != 0)
+	if (e->ny <0)
 	{
 		vy = 0;
-		//didStepBack = false;
+		didStepBack = false;
 		if (state == KOOPAS_STATE_SHELL)
 			vx = 0;
 	}
@@ -221,11 +224,11 @@ void CBrownKoopas::SetState(int state,float nx)
 		die_start = GetTickCount64();
 		if(this->state!=KOOPAS_STATE_SHELL_BOUNCING)
 			y += (BROWNKOOPAS_BBOX_HEIGHT - BROWNKOOPAS_BBOX_HEIGHT_SHELL) / 2;
+		ay = KOOPAS_GRAVITY;
 		break;
 	case KOOPAS_STATE_WALKING:
 		vx = -KOOPAS_WALKING_SPEED;
 		isUpsideDown = false;
-		ay = KOOPAS_GRAVITY;
 		break;
 	case KOOPAS_STATE_SHELL_BOUNCING:
 		if (nx > 0)

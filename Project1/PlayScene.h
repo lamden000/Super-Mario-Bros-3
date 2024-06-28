@@ -9,11 +9,11 @@
 #include "Goomba.h"
 //#include "Koopas.h"
 
-
 class CPlayScene : public CScene
 {
 protected:
 	DWORD timeLimit;
+	bool isLevelEnded;
 	// A play scene has to have player, right? 
 	LPGAMEOBJECT player;
 
@@ -43,6 +43,7 @@ public:
 
 	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);
 	bool IsObjectStillThere(const LPGAMEOBJECT& o);
+	void EndLevel() { isLevelEnded = true; }
 };
 
 typedef CPlayScene* LPPLAYSCENE;

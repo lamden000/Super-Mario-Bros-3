@@ -71,7 +71,7 @@ void CInGameUI::Render()
 	CMario* mario = (CMario*)scene->GetPlayer();
 	//render mario's run arrows
 	runTimeSection = getMarioRunningTimeSection(mario->GetRunTime());
-	if (!mario->GetFlyTime())
+	if (mario->GetFlyTime()<=0)
 	{
 		for (int i = 0; i < 7; i++)
 		{

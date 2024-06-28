@@ -1,10 +1,11 @@
 #include "Portal.h"
-#include "Game.h"
-#include "Textures.h"
+#include "PlayScene.h"
 
-CPortal::CPortal(float l, float t, float r, float b, int scene_id)
+CPortal::CPortal(float l, float t, float r, float b, float tele_x, float tele_y)
 {
-	this->scene_id = scene_id;
+	this->tele_x = tele_x;
+	this->tele_y = tele_y;
+	isActive = false;
 	x = l;
 	y = t;
 	width = r - l;
@@ -34,13 +35,58 @@ void CPortal::RenderBoundingBox()
 
 void CPortal::Render()
 {
-	RenderBoundingBox();
+	//RenderBoundingBox();
+}
+
+void CPortal::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+{
+	if (isActive)
+	{
+		//check if mario is in side the bounding box
+		CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+		float ml, mt,mb,mr;
+		int mState;
+		CMario* mario = (CMario*)scene->GetPlayer();
+		mState = mario->GetState();
+		mario->GetBoundingBox(ml, mt,mr,mb);
+		float l, t, b, r;
+		GetBoundingBox(l, t, r, b);
+
+		if (mState == MARIO_STATE_TRAVELLING_UP || mState == MARIO_STATE_TRAVELLING_DOWN)
+		{
+			static int travelTime = 0;
+			static bool teleported = false;
+			travelTime += dt;
+
+			if ((travelTime >= PORTAL_MAX_TRAVEL_TIME / 2 && travelTime <= PORTAL_MAX_TRAVEL_TIME)&&!teleported)
+			{
+				if (mState == MARIO_STATE_TRAVELLING_UP)
+					mario->SetIsUnderGround(false);
+				else
+					mario->SetIsUnderGround(true);
+
+				teleported = true;
+				mario->SetPosition(tele_x, tele_y);
+			}
+			else if (travelTime > PORTAL_MAX_TRAVEL_TIME)
+			{
+				mario->SetState(MARIO_STATE_RELEASE_JUMP);
+				travelTime = 0;
+				teleported = false;
+			}
+		}
+		else if (mr < l || ml >  r || mb< t || mt > b) {
+				isActive = false;
+				mario->SetPortal(NULL);
+		}
+	}
+	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
 void CPortal::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
-	l = x - width / 2;
-	t = y - height / 2;
-	r = x + width / 2;
-	b = y + height / 2;
+	l = x-width/2 ;
+	t = y-height/2 ;
+	r = x + width/2;
+	b = y + height/2;
 }

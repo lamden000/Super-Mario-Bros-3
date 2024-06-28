@@ -9,11 +9,9 @@
 #include "Portal.h"
 #include "Coin.h"
 #include "Platform.h"
-#include "Luigi.h"
 #include "Leaf.h"
 #include "Mushroom.h"
 #include "Bush.h"
-#include "Koopas.h"
 #include "GreenKoopas.h"
 #include "SpawnPoint.h"
 #include "Cloud.h"
@@ -24,18 +22,21 @@
 #include "InGameUI.h"
 #include "Box.h"
 #include "P_Switch.h"
+#include "PlaySceneBackground.h"
 
 #include "KeyEventHandlerForMario.h"
 
 using namespace std;
 
 #define MAIN_CAMERA_HEIGHT -15
+#define SECRET_ROOM_CAMERA_HEIGHT 950
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath,DWORD timeLimit) :
 	CScene(id, filePath)
 {
 	player = NULL;
 	this->timeLimit = timeLimit;
+	isLevelEnded = false;
 }
 
 #define SCENE_SECTION_UNKNOWN -1
@@ -248,11 +249,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int sprite_middle = atoi(tokens[7].c_str());
 		int sprite_end = atoi(tokens[8].c_str());
 		int height = atoi(tokens[9].c_str());
+		int orientation = PIPE_ORIENTATION_UP;
+		if(tokens.size()>10)
+			orientation = atoi(tokens[10].c_str());
 
 		obj = new CPipe(
 			x, y,
 			cell_width, cell_height, length,
-			sprite_begin, sprite_middle, sprite_end,1,1, height
+			sprite_begin, sprite_middle, sprite_end,1,1, height, orientation
 		);
 
 		break;
@@ -261,8 +265,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	{
 		float r = (float)atof(tokens[3].c_str());
 		float b = (float)atof(tokens[4].c_str());
-		int scene_id = atoi(tokens[5].c_str());
-		obj = new CPortal(x, y, r, b, scene_id);
+		float tele_x = atof(tokens[5].c_str());
+		float tele_y = atof(tokens[6].c_str());
+		obj = new CPortal(x, y, r, b,tele_x,tele_y);
 	}
 	break;
 	case OBJECT_TYPE_SPAWNPOINT:
@@ -285,12 +290,20 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	break;
 	case OBJECT_TYPE_BOX:
 	{
-		float height = (float)atof(tokens[3].c_str());
-		float width = (float)atof(tokens[4].c_str());
+		float height = atof(tokens[3].c_str());
+		float width = atof(tokens[4].c_str());
 		int type = atoi(tokens[5].c_str());
 		obj = new CBox(x, y, height, width, type);
 	}
 	break;
+	case OBJECT_TYPE_BACKGROUND:
+	{
+		int spriteId = atoi(tokens[3].c_str());
+		float scaleX = atof(tokens[4].c_str());
+		float scaleY = atof(tokens[5].c_str());
+		obj = new CPlaySceneBackground(x, y, spriteId, scaleX, scaleY);
+	}
+		break;
 	default:
 		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
 		return;
@@ -384,25 +397,36 @@ void CPlayScene::Update(DWORD dt)
 		}
 		float cx, cy;
 		player->GetPosition(cx, cy);
+
+		if (cx > 3010&&!isLevelEnded)
+			player->SetPosition(3010, cy);
+
 		CGame* game = CGame::GetInstance();
-		cx -= game->GetBackBufferWidth() / 2;
 		int screenHeight = game->GetBackBufferHeight();
-		
+
 		if (player->GetState() == MARIO_STATE_DIE)
 			return;
 
-		if (cy > MAIN_CAMERA_HEIGHT + screenHeight)
+		if ((cy > MAIN_CAMERA_HEIGHT + screenHeight)&&!player->IsUnderGround())
 		{
 			player->SetState(MARIO_STATE_DIE);
 			player->StartUntouchable();
 		}
 
-		if (cy< MAIN_CAMERA_HEIGHT +screenHeight/5&&player->GetLevel()==MARIO_LEVEL_RACOON)
-			cy -= screenHeight / 4;
+		if (player->IsUnderGround())
+			cy= SECRET_ROOM_CAMERA_HEIGHT;
 		else
-			cy =MAIN_CAMERA_HEIGHT;
+		{
+			if (cy < MAIN_CAMERA_HEIGHT + screenHeight / 5 && player->GetLevel() == MARIO_LEVEL_RACOON) 
+				cy -= screenHeight / 4;
+			else 
+				cy = MAIN_CAMERA_HEIGHT;
+		}
+		cx -= game->GetBackBufferWidth() / 2;
 		if (cx < 0)
 			cx = 0;
+		else if (cx > 2715)
+			cx = 2715;
 		game->SetCamPos(cx, cy);
 
 	}	
@@ -414,9 +438,32 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
-	for (int i = objects.size()-1; i >=0; i--)
+	if (player->GetState() != MARIO_STATE_TRAVELLING_DOWN && player->GetState() != MARIO_STATE_TRAVELLING_UP)
 	{
-		objects[i]->Render();
+		for (int i = objects.size() - 1; i >= 0; i--)
+		{
+			objects[i]->Render();
+		}
+	}
+	else
+	{
+		for (int i = objects.size() - 1; i >= 0; i--)
+		{
+			if (i == 0)
+				continue;
+			if (!dynamic_cast<CPipe*>(objects[i])|| !dynamic_cast<CInGameUI*>(objects[i]))
+				objects[i]->Render();
+		}
+
+		objects[0]->Render();
+
+		for (int i = objects.size() - 1; i >= 0; i--)
+		{
+			if (i == 0)
+				continue;
+			if (dynamic_cast<CPipe*>(objects[i]) || dynamic_cast<CInGameUI*>(objects[i]))
+				objects[i]->Render();
+		}
 	}
 }
 

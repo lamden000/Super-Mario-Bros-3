@@ -31,8 +31,21 @@ void CBox::Render()
         scaleX = width / SPRITE_BOX_GREEN_WIDTH;
         spriteId = ID_SPRITE_BOX_GREEN;
     }
+    //render shadow
     sprites->Get(ID_SPRITE_BOX_SHADOW)->Draw(x + width / 2, y + height /5.5, 0.4, scaleY);
+    //render box
     sprites->Get(spriteId)->Draw(x, y, scaleX, scaleY);  
+    ////<<<render screws>>>
+ 
+    //bottom-right
+    sprites->Get(ID_SPRITE_BOX_SCREW)->Draw(x+width/2.8,y+height/2.5,0.4,0.4);
+    //bottom-left
+    sprites->Get(ID_SPRITE_BOX_SCREW)->Draw(x -width / 2.8, y + height / 2.5, 0.4, 0.4);
+    //top-right
+    sprites->Get(ID_SPRITE_BOX_SCREW)->Draw(x + width / 2.8, y - height / 2.5, 0.4, 0.4);
+    //top-left
+    sprites->Get(ID_SPRITE_BOX_SCREW)->Draw(x - width / 2.8, y - height / 2.5, 0.4, 0.4);
+
    // RenderBoundingBox();
 }
 

@@ -47,7 +47,7 @@ public:
 	virtual void Grow(DWORD dt, float mario_x, float mario_y);
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
-	int IsCollidable() { return 0; }
+	int IsCollidable() { return 1; }
 	void Shoot(DWORD dt);
 	int IsBlocking() { return 0; }
 };

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObject.h"
+#include "Portal.h"
 
 #include "Animation.h"
 #include "Animations.h"
@@ -19,6 +19,7 @@
 #define RACOON_MARIO_FLY_SPEED_Y 0.37f
 
 #define MARIO_GRAVITY			0.0015f
+#define MARIO_TRAVEL_GRAVITY	0.05f
 #define RACOON_MARIO_FALLING_SPEED	0.08f
 
 #define MARIO_JUMP_DEFLECT_SPEED  0.2f
@@ -36,6 +37,9 @@
 
 #define MARIO_STATE_SIT				600
 #define MARIO_STATE_SIT_RELEASE		601
+
+#define MARIO_STATE_TRAVELLING_DOWN	700
+#define MARIO_STATE_TRAVELLING_UP	701
 
 
 #pragma region ANIMATION_ID
@@ -146,7 +150,7 @@
 #define MARIO_SMALL_BBOX_WIDTH  13
 #define MARIO_SMALL_BBOX_HEIGHT 12
 
-#define MARIO_ALOW_FLY_RUN_TIME 2000
+#define MARIO_ALOW_FLY_RUN_TIME 1500
 #define MARIO_MAX_FLY_TIME 3500
 #define MARIO_UNTOUCHABLE_TIME 2500
 #define MARIO_TAIL_ATTACK_TIME 300
@@ -161,17 +165,18 @@ protected:
 	float ay;				// acceleration on y 
 	bool isHolding;
 	int level;
+	bool isUnderGround;
 	int untouchable;
 
-	DWORD runTime;
-	DWORD flyTime;
+	int runTime;
+	int flyTime;
 	int attackTime;
 	LPGAMEOBJECT holdedObject;
 	ULONGLONG untouchable_start;
 	BOOLEAN isOnPlatform;
 	D3DXVECTOR2 moveDirection;
 	D3DXVECTOR2 jumpDirection;
-
+	CPortal* portal;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopas(LPCOLLISIONEVENT e);
@@ -206,6 +211,8 @@ public:
 		holdedObject = NULL;
 		flyTime = 0;
 		attackTime = 0;
+		portal = NULL;
+		isUnderGround = false;
 	}
 
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -233,9 +240,13 @@ public:
 
 	void SetLevel(int l);
 	int GetLevel() { return level; }
+	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	bool IsUnderGround() { return isUnderGround; }
+	void SetIsUnderGround(bool isUnderGround) { this->isUnderGround= isUnderGround; }
 	DWORD GetRunTime() { return runTime; }
 	DWORD GetFlyTime() { return flyTime; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 	void DecreaseLevel();
-	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	CPortal* GetPortal() { return portal; }
+	void SetPortal(CPortal* portal) { this->portal =portal; }
 };
