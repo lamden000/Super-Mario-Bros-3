@@ -51,6 +51,7 @@
 #define MENU_UI 23
 #define OBJECT_TYPE_PORTAL	50
 #define OBJECT_TYPE_BACKGROUND	60
+#define OBJECT_TYPE_CARD_BOX	70
 
 
 #pragma region MARIO 

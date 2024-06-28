@@ -1,5 +1,6 @@
 #include "OverWorldUI.h"
 #include "PlayScene.h"
+#include "CardBox.h"
 
 void COverWorldUI::Render()
 {
@@ -76,5 +77,17 @@ void COverWorldUI::Render()
 			sprites->Get(ID_SPRITE_BLACK_P)->Draw(xx + 2, y - 4, 0.4, 0.4);
 		}
 		xx += arrowWidth;
+	}
+	//render cards
+	int cardWidth = 30;
+	vector<int> cards = game->GetCards();
+	xx = x + 110;
+	for (int i = 1; i < 4; i++)
+	{
+		if (cards.size() < i)
+			sprites->Get(ID_SPRITE_CARD_EMPTY)->Draw(xx, y, 0.4, 0.4);
+		else
+			sprites->Get(ID_SPRITE_CARD_EMPTY + cards[i - 1])->Draw(xx, y, 0.4, 0.4);
+		xx += cardWidth;
 	}
 }

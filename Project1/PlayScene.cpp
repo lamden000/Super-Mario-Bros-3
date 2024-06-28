@@ -22,9 +22,10 @@
 #include "InGameUI.h"
 #include "Box.h"
 #include "P_Switch.h"
+#include "CardBox.h"
 #include "PlaySceneBackground.h"
-
 #include "KeyEventHandlerForMario.h"
+
 
 using namespace std;
 
@@ -304,6 +305,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CPlaySceneBackground(x, y, spriteId, scaleX, scaleY);
 	}
 		break;
+	case OBJECT_TYPE_CARD_BOX:
+		obj = new CCardBox(x, y);
+	break;
 	default:
 		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
 		return;
@@ -396,12 +400,19 @@ void CPlayScene::Update(DWORD dt)
 			objects[i]->Update(dt, &coObjects);
 		}
 		float cx, cy;
+		CGame* game = CGame::GetInstance();
 		player->GetPosition(cx, cy);
 
-		if (cx > 3010&&!isLevelEnded)
-			player->SetPosition(3010, cy);
+		if (cx > 3010)
+		{	
+			if (isLevelEnded&&cx>3100)
+			{
+				game->PlayerWon();
+			}
+			else if(!isLevelEnded)
+				player->SetPosition(3010, cy);
+		}
 
-		CGame* game = CGame::GetInstance();
 		int screenHeight = game->GetBackBufferHeight();
 
 		if (player->GetState() == MARIO_STATE_DIE)
@@ -493,6 +504,7 @@ void CPlayScene::Unload()
 
 	objects.clear();
 	player = NULL;
+	isLevelEnded = false;
 
 	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
 }

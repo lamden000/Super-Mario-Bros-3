@@ -1,0 +1,10 @@
+# id	left	top	right	bottom	texture_id
+[SPRITES]
+#Empty
+46873	417	475	493	560	80
+#Mushroom
+46874	511	475	586	560	80
+#flower
+46875	604	475	680	560	80
+#star
+46876	694	475	769	560	80

@@ -59,6 +59,7 @@ class CGame
 	void _ParseSection_SETTINGS(string line);
 	void _ParseSection_SCENES(string line);
 
+	vector<int> cards;
 	int coin;
 	int point;
 	int life;
@@ -116,17 +117,22 @@ public:
 	void InitiateSwitchScene(int scene_id);
 
 	void _ParseSection_TEXTURES(string line);
+
+	void PlayerWon();
 	void AddCoin() { coin++; }
 	void AddPoint(int point);
 	void AddLife(int amount) { life += amount; }
+	void AddCard(int type) { cards.push_back(type); }
 	void DecreaseLife() { life--; }
 	int GetCoin() { return coin; }
 	int GetPoint() { return point; }
 	int GetLife() { return life; }
+	vector<int> GetCards() { return cards; }
 	void ResetGame() {
 		coin = 0;
 		point = 0;
 		life = 4;
+		cards.clear();
 	}
 
 

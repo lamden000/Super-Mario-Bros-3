@@ -2,6 +2,7 @@
 [ASSETS]
 sprites\overworld.txt
 sprites\ingameui.txt
+sprites\card.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type

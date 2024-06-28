@@ -6,8 +6,6 @@
 #include "GameObject.h"
 #include "Brick.h"
 #include "Mario.h"
-#include "Goomba.h"
-//#include "Koopas.h"
 
 class CPlayScene : public CScene
 {
@@ -44,6 +42,7 @@ public:
 	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);
 	bool IsObjectStillThere(const LPGAMEOBJECT& o);
 	void EndLevel() { isLevelEnded = true; }
+	bool IsLevelEnded() { return isLevelEnded; }
 };
 
 typedef CPlayScene* LPPLAYSCENE;

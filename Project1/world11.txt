@@ -21,6 +21,7 @@ sprites\ingameui.txt
 sprites\pswitch.txt
 sprites\piranha.txt
 sprites\world11background.txt
+sprites\card.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -28,13 +29,16 @@ sprites\world11background.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO
-0	2470	-300
+0	10	100
 
 #State board
 22	2	3
 
 #P Switch
 25	2237	98
+
+#card box
+70	2920	70
 
 #Portal	l	t	r	b	to x	to y
 50	2470	-100	2480	-50	1000	950
@@ -111,7 +115,7 @@ sprites\world11background.txt
 5	1250	150	29	28	14	200	200	200	0.3	0.3
 5	1700	150	29	28	3	200	200	200	0.3	0.3
 5	1835	150	29	28	21	200	200	200	0.3	0.3
-5	2470	150	29	28	21	200	200	200	0.3	0.3
+5	2470	150	29	28	25	200	200	200	0.3	0.3
 
 5	1600	-90	15	15	13	54000	54000	54000	1	1
 5	1520	-70	15	15	4	54000	54000	54000	1	1

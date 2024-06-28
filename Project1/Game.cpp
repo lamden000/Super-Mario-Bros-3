@@ -588,3 +588,8 @@ void CGame::AddPoint(int point)
 	if (point != POINT_LEVEL_UP_VALUE)
 		this->point += point;
 }
+
+void CGame::PlayerWon()
+{
+	InitiateSwitchScene(OVERWORLD_ID);
+}

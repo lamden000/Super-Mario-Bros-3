@@ -18,6 +18,8 @@
 #include "Venus.h"
 #include "FireBall.h"
 #include "Intro.h"
+#include "CardBox.h"
+#include "KeyHandlerForLuigi.h"
 
 #include "Collision.h"
 
@@ -35,7 +37,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				game->DecreaseLife();
 				game->InitiateSwitchScene(7);
-				game->SwitchScene();
 				return;
 			}
 		}
@@ -144,10 +145,20 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPSwitch(e);
 	else if (dynamic_cast<CQuestionBlock*>(e->obj))
 		OnCollisionWithQuestionBlock(e);
+	else if (dynamic_cast<CCardBox*>(e->obj))
+		OnCollisionWithCardBox(e);
 
 }
 
 #pragma region collision_with
+void CMario::OnCollisionWithCardBox(LPCOLLISIONEVENT e) {
+	CGame* game=CGame::GetInstance();
+	CCardBox* box = dynamic_cast<CCardBox*>(e->obj);
+	SetState(MARIO_STATE_WALKING_RIGHT);
+	game->AddCard(box->Reward());
+	((CPlayScene*)game->GetCurrentScene())->EndLevel();
+
+}
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
 	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
@@ -592,7 +603,7 @@ void CMario::Render()
 	else if (level == MARIO_LEVEL_RACOON)
 		aniId = GetAniIdRacoon();
 
-	animations->Get(aniId)->Render(x, y);
+	animations->Get(aniId)->Render(x, y,1,1,untouchable);
 
 //	RenderBoundingBox();
 }
@@ -695,6 +706,7 @@ void CMario::SetState(int state)
 		ax = 0;
 		vy = MARIO_TRAVEL_GRAVITY;
 		y += 3;
+		CGame::GetInstance()->SetKeyHandler(new CKeyHandlerForLuigi(CGame::GetInstance()->GetCurrentScene()));
 		break;
 	case MARIO_STATE_TRAVELLING_UP:
 		ay = 0;
@@ -702,6 +714,7 @@ void CMario::SetState(int state)
 		ax = 0;
 		vy = -MARIO_TRAVEL_GRAVITY;
 		y -= 3;
+		CGame::GetInstance()->SetKeyHandler(new CKeyHandlerForLuigi(CGame::GetInstance()->GetCurrentScene()));
 		break;
 	}
 }

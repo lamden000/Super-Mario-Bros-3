@@ -14,26 +14,33 @@ void CAnimation::Add(int spriteId, DWORD time)
 	frames.push_back(frame);
 }
 
-void CAnimation::Render(float x, float y,float scaleX,float scaleY)
+void CAnimation::Render(float x, float y, float scaleX, float scaleY, bool untouchable)
 {
-	ULONGLONG now = GetTickCount64();
-	if (currentFrame == -1)
-	{
-		currentFrame = 0;
-		lastFrameTime = now;
-	}
-	else
-	{
-		DWORD t = frames[currentFrame]->GetTime();
-		if (now - lastFrameTime > t)
-		{
-			currentFrame++;
-			lastFrameTime = now;
-			if (currentFrame == frames.size()) currentFrame = 0;
-		}
-
-	}
-
-	frames[currentFrame]->GetSprite()->Draw(x, y,scaleX,scaleY);
+    ULONGLONG now = GetTickCount64();
+    if (currentFrame == -1)
+    {
+        currentFrame = 0;
+        lastFrameTime = now;
+    }
+    else
+    {
+        DWORD t = frames[currentFrame]->GetTime();
+        if (now - lastFrameTime > t)
+        {
+            currentFrame++;
+            lastFrameTime = now;
+            if (currentFrame == frames.size()) currentFrame = 0;
+        }
+    }
+    if (untouchable)
+    {
+        if ((now / 100) % 2 == 0)
+        {
+            frames[currentFrame]->GetSprite()->Draw(x, y, scaleX, scaleY);
+        }
+    }
+    else
+    {
+        frames[currentFrame]->GetSprite()->Draw(x, y, scaleX, scaleY);
+    }
 }
-

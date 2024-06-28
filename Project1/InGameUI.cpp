@@ -1,5 +1,6 @@
 #include "InGameUI.h"
 #include "PlayScene.h"
+#include "CardBox.h"
 
 void CInGameUI::Render()
 {
@@ -101,6 +102,18 @@ void CInGameUI::Render()
 				CAnimations::GetInstance()->Get(ID_ANI_BLACK_WHITE_P)->Render(xx + 2, y - 4, 0.4, 0.4);
 			xx += arrowWidth;
 		}
+	//render cards
+	int cardWidth=30;
+	vector<int> cards = game->GetCards();
+	xx = x + 120;
+	for (int i =1; i < 4; i++)
+	{
+		if (cards.size() < i)
+			sprites->Get(ID_SPRITE_CARD_EMPTY)->Draw(xx,y,0.4,0.4);
+		else
+			sprites->Get(ID_SPRITE_CARD_EMPTY+cards[i-1])->Draw(xx,y,0.4,0.4);
+		xx += cardWidth;
+	}
 }
 
 int CInGameUI::getMarioRunningTimeSection(DWORD runTime) {

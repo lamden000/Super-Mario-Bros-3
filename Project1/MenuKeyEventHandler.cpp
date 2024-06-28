@@ -21,7 +21,6 @@ void CMenuKeyEventHandler::OnKeyDown(int KeyCode)
 		case DIK_W:
 			game->InitiateSwitchScene(OVERWORLD_ID);
 			game->ResetGame();
-			game->SwitchScene();
 			break;
 	}
 }

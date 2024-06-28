@@ -10,7 +10,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-	if (mario->GetState() == MARIO_STATE_TRAVELLING_UP || mario->GetState() == MARIO_STATE_TRAVELLING_DOWN)
+	if ( ((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->IsLevelEnded())
 		return;
 	switch (KeyCode)
 	{
@@ -51,7 +51,7 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	//DebugOut(L"[INFO] KeyUp: %d\n", KeyCode);
 
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-	if (mario->GetState() == MARIO_STATE_TRAVELLING_UP || mario->GetState() == MARIO_STATE_TRAVELLING_DOWN)
+	if (  ((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->IsLevelEnded())
 		return;
 	switch (KeyCode)
 	{
@@ -73,7 +73,7 @@ void CSampleKeyHandler::KeyState(BYTE* states)
 	if (mario == nullptr)
 		return;
 
-	if (mario->GetState() == MARIO_STATE_TRAVELLING_UP || mario->GetState() == MARIO_STATE_TRAVELLING_DOWN)
+	if (((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->IsLevelEnded())
 		return;
 
 	if (game->IsKeyDown(DIK_RIGHT))

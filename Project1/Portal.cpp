@@ -1,5 +1,6 @@
 #include "Portal.h"
 #include "PlayScene.h"
+#include"KeyEventHandlerForMario.h"
 
 CPortal::CPortal(float l, float t, float r, float b, float tele_x, float tele_y)
 {
@@ -73,6 +74,7 @@ void CPortal::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				mario->SetState(MARIO_STATE_RELEASE_JUMP);
 				travelTime = 0;
 				teleported = false;
+				CGame::GetInstance()->SetKeyHandler(scene->GetKeyEventHandler());
 			}
 		}
 		else if (mr < l || ml >  r || mb< t || mt > b) {

@@ -1,14 +1,14 @@
 #pragma once
 
-#include "Scene.h"
+#include "KeyEventHandlerForMario.h"
 
-class CKeyHandlerForLuigi : public CSceneKeyHandler
+class CKeyHandlerForLuigi : public CSampleKeyHandler
 {
 public:
-	virtual void KeyState(BYTE* states);
-	virtual void OnKeyDown(int KeyCode);
-	virtual void OnKeyUp(int KeyCode);
-	CKeyHandlerForLuigi(LPSCENE s) :CSceneKeyHandler(s) {};
+	void KeyState(BYTE* states);
+	void OnKeyDown(int KeyCode);
+	void OnKeyUp(int KeyCode);
+	CKeyHandlerForLuigi(LPSCENE s) :CSampleKeyHandler(s) {};
 };
 
 

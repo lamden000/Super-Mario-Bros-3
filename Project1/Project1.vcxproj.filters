@@ -240,6 +240,9 @@
     <ClCompile Include="PlaySceneBackground.cpp">
       <Filter>Source Files\Object\BackgroundObject</Filter>
     </ClCompile>
+    <ClCompile Include="CardBox.cpp">
+      <Filter>Source Files\Object\Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -421,6 +424,9 @@
     </ClInclude>
     <ClInclude Include="PlaySceneBackground.h">
       <Filter>Header Files\Object\BackgroundObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CardBox.h">
+      <Filter>Header Files\Object\Item</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
