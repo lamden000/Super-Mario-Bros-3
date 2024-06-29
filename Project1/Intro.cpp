@@ -229,8 +229,8 @@ void CIntro::AutoRun(int action)
 		objects.push_back(bush4);
 		objects.push_back(bush5);
 		CIntroGoomba* goomba = new CIntroGoomba(100, -150, 1);
-		CGreenKoopas* koopas1 = new CGreenKoopas(150, 20, 1);
-		CGreenKoopas* koopas2 = new CGreenKoopas(230,20, 1);
+		CGreenKoopas* koopas1 = new CGreenKoopas(150, 10, 1);
+		CGreenKoopas* koopas2 = new CGreenKoopas(220,10, 1);
 		CMushroom* greenMushroom = new CMushroom(250, -50, 2);
 		CMushroom* redMushroom = new CMushroom(50, -50, 1);
 		koopas1->SetState(KOOPAS_STATE_SHELL);

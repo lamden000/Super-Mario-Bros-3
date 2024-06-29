@@ -47,6 +47,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (flyTime > 0)
 		flyTime -= dt;
+	else if (flyTime < 0)
+		flyTime = 0;
 
 	if (attackTime + MARIO_TAIL_ATTACK_COOLDOWN > 0)
 		attackTime -= dt;

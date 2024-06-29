@@ -130,7 +130,7 @@ void CGreenKoopas::SetState(int state, float nx)
 	case KOOPAS_STATE_SHELL:
 		die_start = GetTickCount64();
 		if (this->state != KOOPAS_STATE_SHELL_BOUNCING)
-			y += (GREENKOOPAS_BBOX_HEIGHT - GREENKOOPAS_BBOX_HEIGHT_SHELL) / 2;		
+			y += (GREENKOOPAS_BBOX_HEIGHT - GREENKOOPAS_BBOX_HEIGHT_SHELL) / 2;	
 		break;
 	case KOOPAS_STATE_WALKING:
 		if (nx >= 0)
