@@ -17,8 +17,8 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_DOWN:
 		if(mario->GetPortal()==NULL)
 			mario->SetState(MARIO_STATE_SIT);
-		else
-			mario->SetState(MARIO_STATE_TRAVELLING_DOWN);
+		else if(mario->GetPortal()->GetState() == PORTAL_STATE_DOWN)
+				mario->SetState(MARIO_STATE_TRAVELLING_DOWN);
 		break;
 	case DIK_S:
 		mario->SetState(MARIO_STATE_JUMP);
@@ -76,7 +76,7 @@ void CSampleKeyHandler::KeyState(BYTE* states)
 	if (((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->IsLevelEnded())
 		return;
 
-	if (game->IsKeyDown(DIK_RIGHT))
+	 if (game->IsKeyDown(DIK_RIGHT))
 	{
 		if (game->IsKeyDown(DIK_A))
 		{
@@ -96,14 +96,16 @@ void CSampleKeyHandler::KeyState(BYTE* states)
 		else
 			mario->SetState(MARIO_STATE_WALKING_LEFT);
 	}
-	else if (game->IsKeyDown(DIK_UP))
-	{
-		if (mario->GetPortal() != NULL)
-			mario->SetState(MARIO_STATE_TRAVELLING_UP);
-	}
 	else 
 	{
 		mario->SetState(MARIO_STATE_IDLE);
 	}
+
+	 if (game->IsKeyDown(DIK_UP))
+	 {
+		 if (mario->GetPortal() != NULL)
+			 if (mario->GetPortal()->GetState() == PORTAL_STATE_UP)
+				 mario->SetState(MARIO_STATE_TRAVELLING_UP);
+	 }
 }
 

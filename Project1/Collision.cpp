@@ -3,7 +3,7 @@
 
 #include "debug.h"
 
-#define BLOCK_PUSH_FACTOR 0.1f
+#define BLOCK_PUSH_FACTOR 0.3f
 
 CCollision* CCollision::__instance = NULL;
 
@@ -255,7 +255,7 @@ void CCollision::Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* co
 		{
 			if (colY->t < colX->t)	// was collision on Y first ?
 			{
-				y += colY->t * dy + colY->ny * (BLOCK_PUSH_FACTOR +vy);
+				y += colY->t * dy + colY->ny * (BLOCK_PUSH_FACTOR);
 				objSrc->SetPosition(x, y);
 
 				objSrc->OnCollisionWith(colY);
@@ -311,7 +311,7 @@ void CCollision::Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* co
 
 				if (colY_other != NULL)
 				{
-					y += colY_other->t * dy + colY_other->ny * (BLOCK_PUSH_FACTOR+vy);
+					y += colY_other->t * dy + colY_other->ny * (BLOCK_PUSH_FACTOR);
 					objSrc->OnCollisionWith(colY_other);
 				}
 				else
@@ -331,8 +331,7 @@ void CCollision::Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* co
 				if (colY != NULL)
 				{
 					x += dx;
-					if (colY->ny < 0)
-						y += colY->t * dy + colY->ny * (BLOCK_PUSH_FACTOR+vy);
+					y += colY->t * dy + colY->ny * (BLOCK_PUSH_FACTOR);
 					objSrc->OnCollisionWith(colY);
 				}
 				else // both colX & colY are NULL 

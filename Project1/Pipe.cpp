@@ -48,7 +48,7 @@ void CPipe::Render()
 		else if (orientation == PIPE_ORIENTATION_DOWN)
 			s->Get(this->spriteIdEnd)->Draw(x, yy, -PIPE_SCALEX, -PIPE_SCALEY);
 	}
-//	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 

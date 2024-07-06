@@ -53,7 +53,6 @@ void COverWorld::_ParseSection_OBJECTS(string line)
 	int object_type = atoi(tokens[0].c_str());
 	float x = (float)atof(tokens[1].c_str());
 	float y = (float)atof(tokens[2].c_str());
-	DebugOut(L" object type: %d\n", object_type);
 	CGameObject* obj = NULL;
 	switch (object_type)
 	{

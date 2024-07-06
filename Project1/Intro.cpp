@@ -58,14 +58,14 @@ void CIntro::Render()
 	pD3DDevice->OMSetBlendState(g->GetAlphaBlending(), NewBlendFactor, 0xffffffff);
 
 	objects[STAGE_ID]->Render();
-	if(introTimer>=19500)
+	if(introTimer>=20500)
 		player->Render();
 	for (int i = 1; i < objects.size(); i++)
 	{
 		if (i==CURTAIN_ID||i==STAGE_ID||i==LUIGI_ID) continue;
 			objects[i]->Render();
 	}
-	if (introTimer>1700&&introTimer<19500)
+	if (introTimer>1700&&introTimer<20500)
 	{
 		player->Render();
 		objects[LUIGI_ID]->Render();
@@ -128,7 +128,7 @@ void CIntro::Update(DWORD dt)
 		player->GetSpeed(vx, vy);
 		if (vy>0.25 )
 			player->SetState(MARIO_STATE_JUMP);
-		if(vy==0&&introTimer<9050)
+		if(vy==0&&introTimer<9000)
 		{
 			player->SetState(MARIO_STATE_WALKING_RIGHT);
 			player->SetSpeed(0, 0);
@@ -161,18 +161,18 @@ void CIntro::Update(DWORD dt)
 	}
 	else if (this->action == 9)
 	{
-		if (introTimer > 13500 && introTimer < 14500)
+		if (introTimer > 14000 && introTimer < 14200)
 		{
 			CMario* mario = (CMario*)player;
 			mario->SetState(MARIO_STATE_WALKING_RIGHT);
 			mario->Hold();
 		}
-		else if (introTimer >= 15000)
+		else if (introTimer >= 16000)
 			AutoRun(10);
 	}
 	else if (this->action == 10)
 	{
-		if (introTimer > 16200)
+		if (introTimer > 17000)
 			AutoRun(11);
 	}
 	else if (this->action == 11)
@@ -185,16 +185,16 @@ void CIntro::Update(DWORD dt)
 	}
 	else if (this->action == 12)
 	{
-		if (introTimer > 17200 && introTimer < 18200)
+		if (introTimer > 18200 && introTimer < 19200)
 			player->SetState(MARIO_STATE_WALKING_RIGHT);
-		else if (introTimer >= 18200 && introTimer < 19500)
+		else if (introTimer >= 19200 && introTimer < 20500)
 			player->SetState(MARIO_STATE_WALKING_LEFT);
-		else if (introTimer >= 19500)
+		else if (introTimer >= 20500)
 			AutoRun(13);
 	}
 	else if (this->action == 13)
 	{
-		if (introTimer >= 21500)
+		if (introTimer >= 22500)
 			AutoRun(14);
 	}
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
@@ -279,7 +279,7 @@ void CIntro::AutoRun(int action)
 		CMario* mario = (CMario*)player;
 		mario->SetState(MARIO_STATE_IDLE);
 		mario->ReleaseHold();
-		objects[LUIGI_ID]->SetState(LUIGI_STATE_WALKING_RIGHT);
+		objects[LUIGI_ID]->SetState(LUIGI_STATE_RUNNING_RIGHT);
 	}
 	else if (action == 11)
 	{
@@ -337,7 +337,6 @@ void CIntro::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_LUIGI:
 		obj = new CLuigi(x, y);
-
 		CGame::GetInstance()->SetKeyHandler(key_handler);
 		break;
 	case OBJECT_TYPE_GOOMBA:

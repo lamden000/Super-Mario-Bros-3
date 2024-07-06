@@ -51,7 +51,6 @@ void CMushroom::OnCollisionWith(LPCOLLISIONEVENT e)
 void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
-	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 

@@ -293,6 +293,10 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 {
 	CPortal* p = (CPortal*)e->obj;
+	if (e->ny < 0)
+		p->SetState(PORTAL_STATE_DOWN);
+	else
+		p->SetState(PORTAL_STATE_UP);
 	p->SetAtive(true);
 	portal = p;
 }
@@ -607,7 +611,7 @@ void CMario::Render()
 
 	animations->Get(aniId)->Render(x, y,1,1,untouchable);
 
-//	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CMario::SetState(int state)
@@ -669,10 +673,10 @@ void CMario::SetState(int state)
 		break;
 
 	case MARIO_STATE_RELEASE_JUMP:
-		if (vy < 0) vy = 0;
+		if (vy < 0)
+			vy = 0;	
 		ay = MARIO_GRAVITY;
 		break;
-
 	case MARIO_STATE_SIT:
 		if ((isOnPlatform && level != MARIO_LEVEL_SMALL))
 		{

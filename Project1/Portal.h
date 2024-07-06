@@ -4,6 +4,8 @@
 #include "GameObject.h"
 
 #define PORTAL_MAX_TRAVEL_TIME 1000
+#define PORTAL_STATE_DOWN 1
+#define PORTAL_STATE_UP 2
 /*
 	Object that triggers scene switching
 */
